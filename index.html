@@ -532,6 +532,152 @@
   .anim-d5 { animation-delay: .25s; }
   .anim-d6 { animation-delay: .3s; }
 
+  .anim-d3 { animation-delay: .15s; }
+  .anim-d4 { animation-delay: .2s; }
+  .anim-d5 { animation-delay: .25s; }
+  .anim-d6 { animation-delay: .3s; }
+
+  /* ── PROFILE ANALYSIS ── */
+  .analysis-panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+    margin-bottom: 24px;
+  }
+  .analysis-tabs {
+    display: flex;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface2);
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .analysis-tabs::-webkit-scrollbar { display: none; }
+  .analysis-tab {
+    padding: 12px 18px;
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    color: var(--muted);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    white-space: nowrap;
+    transition: color .2s, border-color .2s;
+    background: none; border-top: none; border-left: none; border-right: none;
+    user-select: none;
+  }
+  .analysis-tab:hover { color: var(--text); }
+  .analysis-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+  .analysis-pane { display: none; padding: 22px 24px; }
+  .analysis-pane.active { display: block; }
+
+  .dna-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+    gap: 12px;
+  }
+  .dna-card {
+    border-radius: 10px; padding: 16px;
+    border: 1px solid var(--border); position: relative; overflow: hidden;
+  }
+  .dna-card.strength { background: rgba(16,185,129,0.06); border-color: rgba(16,185,129,0.2); }
+  .dna-card.weakness { background: rgba(239,68,68,0.06);  border-color: rgba(239,68,68,0.15); }
+  .dna-card.neutral  { background: rgba(124,58,237,0.06); border-color: rgba(124,58,237,0.15); }
+  .dna-icon { font-size: 1.3rem; margin-bottom: 8px; display: block; }
+  .dna-title { font-size: 0.82rem; font-weight: 700; margin-bottom: 3px; }
+  .dna-val  { font-family: var(--mono); font-size: 1.15rem; font-weight: 700; line-height: 1; margin-bottom: 4px; }
+  .dna-card.strength .dna-val { color: var(--accent3); }
+  .dna-card.weakness .dna-val { color: var(--danger); }
+  .dna-card.neutral  .dna-val { color: var(--accent2); }
+  .dna-desc { font-size: 0.7rem; color: var(--muted); line-height: 1.5; }
+
+  .activity-year-label { font-family: var(--mono); font-size: 0.65rem; color: var(--muted); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.08em; }
+  .activity-heatmap { display: flex; gap: 3px; flex-wrap: wrap; }
+  .activity-cell { width: 13px; height: 13px; border-radius: 2px; transition: transform .15s; cursor: default; }
+  .activity-cell:hover { transform: scale(1.4); }
+  .activity-legend { display: flex; align-items: center; gap: 6px; margin-top: 10px; font-family: var(--mono); font-size: 0.62rem; color: var(--muted); }
+  .activity-legend-cells { display: flex; gap: 3px; }
+
+  .health-list { display: flex; flex-direction: column; gap: 16px; }
+  .health-row { display: flex; flex-direction: column; gap: 5px; }
+  .health-row-head { display: flex; justify-content: space-between; align-items: baseline; }
+  .health-name { font-size: 0.82rem; font-weight: 700; }
+  .health-val  { font-family: var(--mono); font-size: 0.72rem; color: var(--muted); }
+  .health-track { height: 6px; background: var(--surface2); border-radius: 3px; overflow: hidden; position: relative; }
+  .health-fill  { height: 100%; border-radius: 3px; transition: width 1s cubic-bezier(.4,0,.2,1); width: 0%; }
+  .health-benchmark { position: absolute; top: 0; width: 2px; height: 100%; background: rgba(255,255,255,0.2); }
+  .health-caption { font-family: var(--mono); font-size: 0.62rem; color: var(--muted); margin-top: 2px; }
+
+  /* ── ENHANCED SCORE BREAKDOWN ── */
+  .score-breakdown-full {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+    margin-bottom: 24px;
+  }
+  .sbd-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 18px 24px; border-bottom: 1px solid var(--border); background: var(--surface2);
+  }
+  .sbd-title { font-size: 1rem; font-weight: 800; letter-spacing: -0.01em; }
+  .sbd-total { font-family: var(--mono); font-size: 1.4rem; font-weight: 700; letter-spacing: -0.03em; }
+
+  .radar-wrap {
+    display: flex; align-items: center; justify-content: center;
+    padding: 28px 24px; border-bottom: 1px solid var(--border); background: var(--bg);
+  }
+
+  .sbd-dim {
+    border-bottom: 1px solid var(--border); padding: 18px 24px;
+    cursor: pointer; transition: background .15s; user-select: none;
+  }
+  .sbd-dim:last-child { border-bottom: none; }
+  .sbd-dim:hover { background: rgba(255,255,255,0.02); }
+  .sbd-dim-head { display: flex; align-items: center; gap: 14px; }
+  .sbd-dim-icon {
+    width: 36px; height: 36px; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.05rem; flex-shrink: 0;
+  }
+  .sbd-dim-name { font-size: 0.88rem; font-weight: 700; flex: 1; }
+  .sbd-dim-pts  { font-family: var(--mono); font-size: 0.8rem; font-weight: 700; }
+  .sbd-dim-chevron { font-size: 0.7rem; color: var(--muted); transition: transform .2s; margin-left: 4px; }
+  .sbd-dim.open .sbd-dim-chevron { transform: rotate(90deg); }
+
+  .sbd-dim-bar-wrap { margin: 10px 0 0 50px; }
+  .sbd-dim-track { height: 5px; background: var(--surface2); border-radius: 3px; overflow: hidden; }
+  .sbd-dim-fill  { height: 100%; border-radius: 3px; transition: width 1s cubic-bezier(.4,0,.2,1); width: 0%; }
+  .sbd-dim-subtext {
+    font-family: var(--mono); font-size: 0.63rem; color: var(--muted);
+    margin-top: 4px; display: flex; justify-content: space-between;
+  }
+
+  .sbd-drill {
+    display: none; margin: 12px 0 4px 50px;
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 8px; overflow: hidden;
+  }
+  .sbd-dim.open .sbd-drill { display: block; }
+  .sbd-drill-row {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 9px 14px; border-bottom: 1px solid var(--border); font-size: 0.78rem;
+  }
+  .sbd-drill-row:last-child { border-bottom: none; }
+  .sbd-drill-label { color: var(--muted); }
+  .sbd-drill-val   { font-family: var(--mono); font-weight: 700; }
+  .sbd-drill-status { font-size: 0.63rem; padding: 2px 7px; border-radius: 4px; font-family: var(--mono); font-weight: 700; }
+  .sbd-drill-status.hit  { background: rgba(16,185,129,0.12); color: var(--accent3); }
+  .sbd-drill-status.miss { background: rgba(239,68,68,0.1);   color: var(--danger); }
+  .sbd-drill-status.part { background: rgba(245,158,11,0.1);  color: var(--warn); }
+
+  .sbd-levelup {
+    display: none; margin: 6px 0 4px 50px;
+    font-family: var(--mono); font-size: 0.68rem; color: var(--accent3);
+    padding: 8px 12px;
+    background: rgba(16,185,129,0.06); border: 1px solid rgba(16,185,129,0.15); border-radius: 6px;
+  }
+  .sbd-dim.open .sbd-levelup { display: block; }
+
   /* ── GLOBAL RANKING ── */
   .global-rank-card {
     background: var(--surface);
@@ -1051,7 +1197,182 @@ function getSuggestions(user, repos, scores) {
   return items;
 }
 
-// ── GLOBAL RANKING ENGINE ────────────────────────────────────────────────────
+// ── PROFILE ANALYSIS ─────────────────────────────────────────────────────────
+function getProfileAnalysis(user, repos) {
+  const now = Date.now();
+  const ownRepos    = repos.filter(r => !r.fork);
+  const forks       = repos.filter(r =>  r.fork);
+  const totalStars  = repos.reduce((a,r) => a + r.stargazers_count, 0);
+  const totalForks  = repos.reduce((a,r) => a + r.forks_count, 0);
+  const withDesc    = ownRepos.filter(r => r.description && r.description.length > 5);
+  const withTopics  = ownRepos.filter(r => r.topics && r.topics.length > 0);
+  const recent90    = ownRepos.filter(r => (now - new Date(r.pushed_at)) < 90*86400*1000);
+  const recent365   = ownRepos.filter(r => (now - new Date(r.pushed_at)) < 365*86400*1000);
+  const avgStars    = ownRepos.length ? (totalStars / ownRepos.length).toFixed(1) : 0;
+  const forkRatio   = repos.length    ? Math.round((forks.length / repos.length) * 100) : 0;
+  const descRatio   = ownRepos.length ? Math.round((withDesc.length / ownRepos.length) * 100) : 0;
+  const topicRatio  = ownRepos.length ? Math.round((withTopics.length / ownRepos.length) * 100) : 0;
+  const accountAge  = Math.floor((now - new Date(user.created_at)) / (365.25*86400*1000));
+
+  // Biggest repo
+  const topRepo = ownRepos.sort((a,b) => b.stargazers_count - a.stargazers_count)[0];
+
+  // Detect languages spread
+  const langSet = new Set(ownRepos.map(r => r.language).filter(Boolean));
+
+  // DNA cards
+  const dna = [
+    {
+      icon: '⭐', title: 'Avg Stars / Repo',
+      val: avgStars, type: avgStars >= 5 ? 'strength' : avgStars >= 1 ? 'neutral' : 'weakness',
+      desc: avgStars >= 5 ? 'Well above average — your repos attract attention.'
+          : avgStars >= 1 ? 'Growing steadily. Focus on visibility.'
+          : 'Low visibility yet. Add topics, descriptions & share your work.'
+    },
+    {
+      icon: '🗓️', title: 'Account Age',
+      val: `${accountAge}y`, type: accountAge >= 3 ? 'strength' : accountAge >= 1 ? 'neutral' : 'neutral',
+      desc: accountAge >= 3 ? 'Established profile — longevity signals commitment to the platform.'
+          : 'Relatively new — consistency will build credibility quickly.'
+    },
+    {
+      icon: '📂', title: 'Fork Ratio',
+      val: `${forkRatio}%`, type: forkRatio < 40 ? 'strength' : forkRatio < 60 ? 'neutral' : 'weakness',
+      desc: forkRatio < 40 ? 'Mostly original work — great signal of active creation.'
+          : forkRatio < 60 ? 'Balanced mix of original and forked repos.'
+          : 'Heavy on forks. Shift toward publishing original projects.'
+    },
+    {
+      icon: '📝', title: 'Description Coverage',
+      val: `${descRatio}%`, type: descRatio >= 70 ? 'strength' : descRatio >= 40 ? 'neutral' : 'weakness',
+      desc: descRatio >= 70 ? 'Excellent — most repos are well-described and discoverable.'
+          : descRatio >= 40 ? 'Partial coverage. Describe your top repos at minimum.'
+          : 'Most repos have no description — hurts searchability.'
+    },
+    {
+      icon: '🏷️', title: 'Topic Coverage',
+      val: `${topicRatio}%`, type: topicRatio >= 60 ? 'strength' : topicRatio >= 30 ? 'neutral' : 'weakness',
+      desc: topicRatio >= 60 ? 'Great tagging — your repos will surface in topic searches.'
+          : topicRatio >= 30 ? 'Some repos tagged. Add more for discovery.'
+          : 'Repos are not tagged. Topics significantly boost GitHub SEO.'
+    },
+    {
+      icon: '🔥', title: 'Active (90 days)',
+      val: recent90.length, type: recent90.length >= 3 ? 'strength' : recent90.length >= 1 ? 'neutral' : 'weakness',
+      desc: recent90.length >= 3 ? `${recent90.length} repos pushed recently — active contributor signal.`
+          : recent90.length >= 1 ? 'Some recent activity. Aim for at least 1 push/week.'
+          : 'No activity in 90 days — recruiters and algorithms notice inactivity.'
+    },
+    {
+      icon: '🌐', title: 'Language Diversity',
+      val: `${langSet.size} langs`, type: langSet.size >= 4 ? 'strength' : langSet.size >= 2 ? 'neutral' : 'weakness',
+      desc: langSet.size >= 4 ? `Polyglot profile: ${[...langSet].slice(0,4).join(', ')} — versatile developer signal.`
+          : langSet.size >= 2 ? `Working in ${[...langSet].join(' & ')}. Broadening adds value.`
+          : 'Single language footprint. Even small experiments in other languages help.'
+    },
+    {
+      icon: '🏆', title: 'Best Repo',
+      val: topRepo ? `⭐${topRepo.stargazers_count}` : 'n/a',
+      type: topRepo && topRepo.stargazers_count >= 10 ? 'strength' : topRepo && topRepo.stargazers_count >= 1 ? 'neutral' : 'weakness',
+      desc: topRepo ? `"${topRepo.name}" — your flagship project. Make sure it has a great README.` : 'No standout repo yet. Focus on one quality project.'
+    },
+  ];
+
+  // Activity heatmap simulation based on push dates
+  const pushDates = repos.map(r => new Date(r.pushed_at).getTime()).sort();
+  const heatmap = [];
+  const WEEKS = 26; // last 6 months
+  const now2 = Date.now();
+  for (let w = WEEKS - 1; w >= 0; w--) {
+    for (let d = 0; d < 7; d++) {
+      const dayTs = now2 - ((w * 7 + d) * 86400 * 1000);
+      const dayStart = dayTs - (dayTs % 86400000);
+      const count = pushDates.filter(ts => ts >= dayStart && ts < dayStart + 86400000).length;
+      heatmap.push({ count, date: new Date(dayTs).toISOString().slice(0,10) });
+    }
+  }
+
+  // Health ratios (benchmarks)
+  const health = [
+    { name: 'Repos with Descriptions', val: descRatio, pct: descRatio, color: descRatio>=70?'#10b981':descRatio>=40?'#f59e0b':'#ef4444', benchmark: 60, caption: `${withDesc.length}/${ownRepos.length} repos described · benchmark: 60%` },
+    { name: 'Repos with Topics',        val: topicRatio, pct: topicRatio, color: topicRatio>=60?'#10b981':topicRatio>=30?'#f59e0b':'#ef4444', benchmark: 50, caption: `${withTopics.length}/${ownRepos.length} repos tagged · benchmark: 50%` },
+    { name: 'Original vs Fork Ratio',   val: `${100-forkRatio}% original`, pct: 100-forkRatio, color: forkRatio<40?'#10b981':forkRatio<60?'#f59e0b':'#ef4444', benchmark: 60, caption: `${ownRepos.length} original, ${forks.length} forked · benchmark: ≥60% original` },
+    { name: 'Active Repos (Last Year)', val: recent365.length, pct: Math.min((recent365.length / Math.max(ownRepos.length,1))*100, 100), color: recent365.length>=5?'#10b981':recent365.length>=2?'#f59e0b':'#ef4444', benchmark: 40, caption: `${recent365.length} of ${ownRepos.length} pushed in last 12 months` },
+    { name: 'Stars per 10 Repos',       val: `${(totalStars/(Math.max(ownRepos.length,1)/10)).toFixed(0)} ⭐`, pct: Math.min(parseFloat(avgStars)*10, 100), color: avgStars>=5?'#10b981':avgStars>=1?'#f59e0b':'#ef4444', benchmark: 25, caption: `Total ${totalStars} stars across ${ownRepos.length} original repos` },
+  ];
+
+  return { dna, heatmap, health };
+}
+
+// ── SCORE BREAKDOWN FULL ──────────────────────────────────────────────────────
+function getScoreBreakdownFull(user, repos, scores, finalScore) {
+  const ownRepos  = repos.filter(r => !r.fork);
+  const withDesc  = ownRepos.filter(r => r.description && r.description.length > 5);
+  const withTopics= ownRepos.filter(r => r.topics && r.topics.length > 0);
+  const forks     = repos.filter(r => r.fork);
+  const now       = Date.now();
+  const recentRepos = ownRepos.filter(r => (now - new Date(r.pushed_at)) < 90*86400*1000);
+  const totalStars= repos.reduce((a,r) => a + r.stargazers_count, 0);
+  const totalForks= repos.reduce((a,r) => a + r.forks_count, 0);
+
+  const dims = [
+    {
+      key: 'completeness', icon: '👤', color: '#7c3aed', bg: 'rgba(124,58,237,0.1)',
+      levelup: user.bio && user.blog && user.location ? '✓ All major fields filled!' : `Add ${[!user.bio&&'bio',!user.blog&&'website',!user.location&&'location',!user.email&&'email',!user.twitter_username&&'X handle'].filter(Boolean).join(', ')} to reach full marks.`,
+      drill: [
+        { label: 'Display Name',   val: user.name    || '—', status: user.name    ? 'hit' : 'miss' },
+        { label: 'Bio',            val: user.bio ? user.bio.slice(0,30)+'…' : 'Not set', status: user.bio ? 'hit' : 'miss' },
+        { label: 'Location',       val: user.location || 'Not set', status: user.location ? 'hit' : 'miss' },
+        { label: 'Website',        val: user.blog     || 'Not set', status: user.blog     ? 'hit' : 'miss' },
+        { label: 'Email',          val: user.email    || 'Not set', status: user.email    ? 'hit' : 'miss' },
+        { label: 'X / Twitter',    val: user.twitter_username ? `@${user.twitter_username}` : 'Not set', status: user.twitter_username ? 'hit' : 'miss' },
+        { label: 'Company',        val: user.company  || 'Not set', status: user.company  ? 'hit' : 'miss' },
+      ]
+    },
+    {
+      key: 'popularity', icon: '⭐', color: '#f59e0b', bg: 'rgba(245,158,11,0.1)',
+      levelup: `You have ${totalStars} stars & ${user.followers} followers. Stars milestone: ${totalStars < 20 ? '20 stars (share your best repos)' : totalStars < 50 ? '50 stars' : '100 stars'}.`,
+      drill: [
+        { label: 'Total Stars',    val: totalStars,       status: totalStars>=20?'hit':totalStars>=5?'part':'miss' },
+        { label: 'Followers',      val: user.followers,   status: user.followers>=50?'hit':user.followers>=10?'part':'miss' },
+        { label: 'Total Forks',    val: totalForks,       status: totalForks>=10?'hit':totalForks>=2?'part':'miss' },
+        { label: 'Following',      val: user.following,   status: user.following>=10?'hit':'part' },
+      ]
+    },
+    {
+      key: 'activity', icon: '🔥', color: '#ef4444', bg: 'rgba(239,68,68,0.1)',
+      levelup: recentRepos.length < 5 ? `Push to ${5 - recentRepos.length} more repos in the next 90 days to improve activity score.` : `Active in ${recentRepos.length} repos last 90d — keep the momentum!`,
+      drill: [
+        { label: 'Public Repos',      val: user.public_repos,  status: user.public_repos>=20?'hit':user.public_repos>=5?'part':'miss' },
+        { label: 'Active (90 days)',   val: `${recentRepos.length} repos`, status: recentRepos.length>=5?'hit':recentRepos.length>=1?'part':'miss' },
+        { label: 'Public Gists',       val: user.public_gists || 0, status: (user.public_gists||0)>=3?'hit':(user.public_gists||0)>=1?'part':'miss' },
+        { label: 'Original Repos',     val: ownRepos.length,  status: ownRepos.length>=10?'hit':ownRepos.length>=3?'part':'miss' },
+      ]
+    },
+    {
+      key: 'quality', icon: '💎', color: '#00e5ff', bg: 'rgba(0,229,255,0.08)',
+      levelup: withDesc.length < ownRepos.length ? `Add descriptions to ${ownRepos.length - withDesc.length} more repos. Each description adds discoverability.` : `All repos described! Add topics to ${ownRepos.length - withTopics.length} repos without them.`,
+      drill: [
+        { label: 'With Descriptions', val: `${withDesc.length}/${ownRepos.length}`, status: withDesc.length>=ownRepos.length*0.7?'hit':withDesc.length>0?'part':'miss' },
+        { label: 'With Topics',        val: `${withTopics.length}/${ownRepos.length}`, status: withTopics.length>=ownRepos.length*0.5?'hit':withTopics.length>0?'part':'miss' },
+        { label: 'Original (non-fork)',val: ownRepos.length, status: ownRepos.length>=10?'hit':ownRepos.length>=3?'part':'miss' },
+        { label: 'Avg Stars/Repo',     val: (totalStars/Math.max(ownRepos.length,1)).toFixed(1), status: totalStars/Math.max(ownRepos.length,1)>=2?'hit':totalStars>0?'part':'miss' },
+      ]
+    },
+    {
+      key: 'community', icon: '🤝', color: '#10b981', bg: 'rgba(16,185,129,0.1)',
+      levelup: user.followers < 50 ? `Follow active devs in your niche, contribute to OSS — ${50 - user.followers} more followers needed to unlock next tier.` : 'Strong community presence! Keep contributing and engaging.',
+      drill: [
+        { label: 'Followers',       val: user.followers,         status: user.followers>=50?'hit':user.followers>=10?'part':'miss' },
+        { label: 'Following',       val: user.following,         status: user.following>=30?'hit':user.following>=10?'part':'miss' },
+        { label: 'Forked Others',   val: `${forks.length} repos`, status: forks.length>=5?'hit':forks.length>=1?'part':'miss' },
+      ]
+    },
+  ];
+  return dims;
+}
+
+// ── GLOBAL RANKING ENGINE ─────────────────────────────────────────────────────
 // Benchmarks derived from GitHub's 180M user base (2025 data)
 // Median developer: ~8 repos, ~3 followers, ~1 star total
 // Top 10%: 50+ repos, 50+ followers, 20+ stars
@@ -1249,10 +1570,12 @@ function renderResults(user, repos) {
   const totalForks  = repos.reduce((a,r) => a + r.forks_count, 0);
 
   // NEW data
-  const globalRank  = getGlobalRanking(user, repos, finalScore);
-  const languages   = getTopLanguages(repos);
-  const quickWins   = getQuickWins(user, repos, finalScore);
+  const globalRank         = getGlobalRanking(user, repos, finalScore);
+  const languages          = getTopLanguages(repos);
+  const quickWins          = getQuickWins(user, repos, finalScore);
   const { metrics: compareMetrics, elites } = buildEliteComparison(user, repos, finalScore);
+  const profileAnalysis    = getProfileAnalysis(user, repos);
+  const scoreBreakdownDims = getScoreBreakdownFull(user, repos, scores, finalScore);
 
   const circumference = 2 * Math.PI * 44;
   const dashOffset    = circumference - (finalScore / 100) * circumference;
@@ -1322,24 +1645,116 @@ function renderResults(user, repos) {
     </div>
   </div>
 
-  <!-- SCORE BREAKDOWN -->
+  <!-- PROFILE ANALYSIS -->
+  <div class="anim anim-d2 section-title">// profile analysis</div>
+  <div class="anim anim-d2 analysis-panel">
+    <div class="analysis-tabs">
+      <button class="analysis-tab active" onclick="switchTab(this,'tab-dna')">🧬 Profile DNA</button>
+      <button class="analysis-tab" onclick="switchTab(this,'tab-health')">📊 Health Ratios</button>
+      <button class="analysis-tab" onclick="switchTab(this,'tab-activity')">🗓 Activity</button>
+    </div>
+
+    <!-- DNA Tab -->
+    <div class="analysis-pane active" id="tab-dna">
+      <div class="dna-grid">
+        ${profileAnalysis.dna.map(d => `
+        <div class="dna-card ${d.type}">
+          <span class="dna-icon">${d.icon}</span>
+          <div class="dna-title">${d.title}</div>
+          <div class="dna-val">${d.val}</div>
+          <div class="dna-desc">${d.desc}</div>
+        </div>`).join('')}
+      </div>
+    </div>
+
+    <!-- Health Tab -->
+    <div class="analysis-pane" id="tab-health">
+      <div class="health-list">
+        ${profileAnalysis.health.map(h => `
+        <div class="health-row">
+          <div class="health-row-head">
+            <div class="health-name">${h.name}</div>
+            <div class="health-val">${h.val}</div>
+          </div>
+          <div class="health-track">
+            <div class="health-fill" data-width="${h.pct}" style="background:${h.color};width:0%"></div>
+            <div class="health-benchmark" style="left:${h.benchmark}%"></div>
+          </div>
+          <div class="health-caption">${h.caption} · white line = benchmark</div>
+        </div>`).join('')}
+      </div>
+    </div>
+
+    <!-- Activity Tab -->
+    <div class="analysis-pane" id="tab-activity">
+      <div class="activity-year-label">Last 6 months — push activity heatmap</div>
+      <div class="activity-heatmap">
+        ${profileAnalysis.heatmap.map(cell => {
+          const lvl = cell.count === 0 ? 0 : cell.count === 1 ? 1 : cell.count <= 3 ? 2 : 3;
+          const colors = ['rgba(255,255,255,0.05)','rgba(0,229,255,0.2)','rgba(0,229,255,0.5)','rgba(0,229,255,0.9)'];
+          return `<div class="activity-cell" style="background:${colors[lvl]}" title="${cell.date}: ${cell.count} push${cell.count!==1?'es':''}"></div>`;
+        }).join('')}
+      </div>
+      <div class="activity-legend">
+        <span>Less</span>
+        <div class="activity-legend-cells">
+          ${['rgba(255,255,255,0.05)','rgba(0,229,255,0.2)','rgba(0,229,255,0.5)','rgba(0,229,255,0.9)'].map(c=>`<div style="width:13px;height:13px;border-radius:2px;background:${c}"></div>`).join('')}
+        </div>
+        <span>More</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ENHANCED SCORE BREAKDOWN -->
   <div class="anim anim-d3 section-title">// score breakdown</div>
-  <div class="anim anim-d3 breakdown-grid">
-    ${Object.values(scores).map(s => {
-      const pct = Math.round((s.pts / s.max) * 100);
-      const color = getColor(pct);
-      return `
-      <div class="breakdown-item">
-        <div class="breakdown-header">
-          <div class="breakdown-name">${s.label}</div>
-          <div class="breakdown-pts">${s.pts}/${s.max}</div>
-        </div>
-        <div class="progress-track">
-          <div class="progress-fill" data-width="${pct}" style="background:${color};width:0%"></div>
-        </div>
-        <div class="breakdown-desc">${s.desc}</div>
-      </div>`;
-    }).join('')}
+  <div class="anim anim-d3 score-breakdown-full">
+    <div class="sbd-header">
+      <div class="sbd-title">Score Breakdown <span style="font-size:0.7rem;font-weight:400;color:var(--muted);font-family:var(--mono)">— click any row to expand</span></div>
+      <div class="sbd-total" style="color:${scoreColor}">${finalScore}<span style="font-size:0.75rem;color:var(--muted)">/100</span></div>
+    </div>
+
+    <!-- Radar chart -->
+    <div class="radar-wrap">
+      <canvas id="radar-canvas" width="300" height="300"></canvas>
+    </div>
+
+    <!-- Dimension rows -->
+    <div class="sbd-dimensions">
+      ${scoreBreakdownDims.map((dim, i) => {
+        const s = scores[dim.key];
+        const pct = Math.round((s.pts / s.max) * 100);
+        const c = getColor(pct);
+        return `
+        <div class="sbd-dim" onclick="toggleDim(this)">
+          <div class="sbd-dim-head">
+            <div class="sbd-dim-icon" style="background:${dim.bg}">${dim.icon}</div>
+            <div class="sbd-dim-name">${s.label}</div>
+            <div class="sbd-dim-pts" style="color:${c}">${s.pts}<span style="color:var(--muted);font-size:0.65rem">/${s.max}</span></div>
+            <div class="sbd-dim-chevron">▶</div>
+          </div>
+          <div class="sbd-dim-bar-wrap">
+            <div class="sbd-dim-track">
+              <div class="sbd-dim-fill" data-width="${pct}" style="background:${c};width:0%"></div>
+            </div>
+            <div class="sbd-dim-subtext">
+              <span>${s.desc}</span>
+              <span style="color:${c}">${pct}%</span>
+            </div>
+          </div>
+          <div class="sbd-drill">
+            ${dim.drill.map(dr => `
+            <div class="sbd-drill-row">
+              <div class="sbd-drill-label">${dr.label}</div>
+              <div style="display:flex;align-items:center;gap:10px">
+                <div class="sbd-drill-val">${dr.val}</div>
+                <div class="sbd-drill-status ${dr.status}">${dr.status==='hit'?'✓ Good':dr.status==='part'?'~ Partial':'✗ Missing'}</div>
+              </div>
+            </div>`).join('')}
+          </div>
+          <div class="sbd-levelup">💡 ${dim.levelup}</div>
+        </div>`;
+      }).join('')}
+    </div>
   </div>
 
   <!-- ①  GLOBAL RANKING -->
@@ -1554,9 +1969,9 @@ function renderResults(user, repos) {
       if (cur >= finalScore) clearInterval(counter);
     }, 16);
 
-    // All progress bars
+    // All progress bars (health + sbd)
     setTimeout(() => {
-      document.querySelectorAll('.progress-fill, .lang-fill').forEach(bar => {
+      document.querySelectorAll('.progress-fill, .lang-fill, .sbd-dim-fill, .health-fill').forEach(bar => {
         bar.style.width = bar.getAttribute('data-width') + '%';
       });
       // Global percentile bar
@@ -1566,14 +1981,170 @@ function renderResults(user, repos) {
       document.querySelectorAll('.lang-rainbow-seg').forEach(seg => {
         seg.style.flex = seg.getAttribute('data-pct');
       });
-      // Active rank tier fix
+      // Active rank tier
       const tiers = document.querySelectorAll('.rank-tier');
       const thresholds = [95, 80, 60, 40, 20, 0];
-      tiers.forEach((t, i) => t.classList.remove('active'));
+      tiers.forEach(t => t.classList.remove('active'));
       const tierIdx = thresholds.findIndex(th => globalRank.percentile >= th);
       if (tierIdx >= 0 && tiers[tierIdx]) tiers[tierIdx].classList.add('active');
+
+      // Draw radar chart
+      drawRadar(scores, finalScore);
     }, 350);
   });
+}
+
+// ── TAB SWITCHER ──────────────────────────────────────────────────────────────
+function switchTab(btn, paneId) {
+  const panel = btn.closest('.analysis-panel');
+  panel.querySelectorAll('.analysis-tab').forEach(t => t.classList.remove('active'));
+  panel.querySelectorAll('.analysis-pane').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  const pane = document.getElementById(paneId);
+  if (pane) {
+    pane.classList.add('active');
+    // Animate health bars if switching to health tab
+    if (paneId === 'tab-health') {
+      setTimeout(() => {
+        pane.querySelectorAll('.health-fill').forEach(bar => {
+          bar.style.width = bar.getAttribute('data-width') + '%';
+        });
+      }, 50);
+    }
+  }
+}
+
+// ── DIM TOGGLE ────────────────────────────────────────────────────────────────
+function toggleDim(el) {
+  const wasOpen = el.classList.contains('open');
+  document.querySelectorAll('.sbd-dim.open').forEach(d => d.classList.remove('open'));
+  if (!wasOpen) el.classList.add('open');
+}
+
+// ── RADAR CHART ───────────────────────────────────────────────────────────────
+function drawRadar(scores, finalScore) {
+  const canvas = document.getElementById('radar-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  const cx = W / 2, cy = H / 2;
+  const R = Math.min(W, H) * 0.38;
+
+  const dims = Object.values(scores);
+  const N = dims.length;
+  const labels = ['Completeness','Popularity','Activity','Quality','Community'];
+  const values = dims.map(d => d.pts / d.max);
+  const colors = ['#7c3aed','#f59e0b','#ef4444','#00e5ff','#10b981'];
+
+  ctx.clearRect(0, 0, W, H);
+
+  // Grid rings
+  for (let ring = 1; ring <= 4; ring++) {
+    const r = (R / 4) * ring;
+    ctx.beginPath();
+    for (let i = 0; i < N; i++) {
+      const angle = (i / N) * Math.PI * 2 - Math.PI / 2;
+      const x = cx + r * Math.cos(angle);
+      const y = cy + r * Math.sin(angle);
+      i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+    }
+    ctx.closePath();
+    ctx.strokeStyle = 'rgba(255,255,255,0.07)';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+  }
+
+  // Axes
+  for (let i = 0; i < N; i++) {
+    const angle = (i / N) * Math.PI * 2 - Math.PI / 2;
+    ctx.beginPath();
+    ctx.moveTo(cx, cy);
+    ctx.lineTo(cx + R * Math.cos(angle), cy + R * Math.sin(angle));
+    ctx.strokeStyle = 'rgba(255,255,255,0.08)';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+  }
+
+  // Filled polygon (animated via JS)
+  const animDuration = 800;
+  const startTime = performance.now();
+  function animateRadar(now) {
+    const t = Math.min((now - startTime) / animDuration, 1);
+    const ease = 1 - Math.pow(1 - t, 3);
+    ctx.clearRect(0, 0, W, H);
+
+    // Redraw grid
+    for (let ring = 1; ring <= 4; ring++) {
+      const r = (R / 4) * ring;
+      ctx.beginPath();
+      for (let i = 0; i < N; i++) {
+        const angle = (i / N) * Math.PI * 2 - Math.PI / 2;
+        const x = cx + r * Math.cos(angle);
+        const y = cy + r * Math.sin(angle);
+        i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+      }
+      ctx.closePath();
+      ctx.strokeStyle = 'rgba(255,255,255,0.07)';
+      ctx.lineWidth = 1;
+      ctx.stroke();
+    }
+    for (let i = 0; i < N; i++) {
+      const angle = (i / N) * Math.PI * 2 - Math.PI / 2;
+      ctx.beginPath();
+      ctx.moveTo(cx, cy);
+      ctx.lineTo(cx + R * Math.cos(angle), cy + R * Math.sin(angle));
+      ctx.strokeStyle = 'rgba(255,255,255,0.08)';
+      ctx.lineWidth = 1;
+      ctx.stroke();
+    }
+
+    // Polygon fill
+    ctx.beginPath();
+    for (let i = 0; i < N; i++) {
+      const angle = (i / N) * Math.PI * 2 - Math.PI / 2;
+      const r = values[i] * ease * R;
+      const x = cx + r * Math.cos(angle);
+      const y = cy + r * Math.sin(angle);
+      i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+    }
+    ctx.closePath();
+    ctx.fillStyle = 'rgba(0,229,255,0.08)';
+    ctx.fill();
+    ctx.strokeStyle = 'rgba(0,229,255,0.6)';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+
+    // Dots & labels
+    for (let i = 0; i < N; i++) {
+      const angle = (i / N) * Math.PI * 2 - Math.PI / 2;
+      const r = values[i] * ease * R;
+      const x = cx + r * Math.cos(angle);
+      const y = cy + r * Math.sin(angle);
+      ctx.beginPath();
+      ctx.arc(x, y, 4, 0, Math.PI * 2);
+      ctx.fillStyle = colors[i];
+      ctx.fill();
+
+      // Label
+      const lx = cx + (R + 22) * Math.cos(angle);
+      const ly = cy + (R + 22) * Math.sin(angle);
+      ctx.font = '600 10px Syne, sans-serif';
+      ctx.fillStyle = 'rgba(255,255,255,0.7)';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(labels[i], lx, ly);
+
+      // Score label on dot
+      if (t === 1) {
+        ctx.font = 'bold 9px Space Mono, monospace';
+        ctx.fillStyle = colors[i];
+        ctx.fillText(`${dims[i].pts}/${dims[i].max}`, x, y - 10);
+      }
+    }
+
+    if (t < 1) requestAnimationFrame(animateRadar);
+  }
+  requestAnimationFrame(animateRadar);
 }
 
 function copyShare(login, score, rank, topPct) {
