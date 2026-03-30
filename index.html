@@ -1,0 +1,980 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>GitHub Profile Analyzer · EknathaLabs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #111118;
+    --surface2: #16161f;
+    --border: rgba(255,255,255,0.07);
+    --accent: #00e5ff;
+    --accent2: #7c3aed;
+    --accent3: #10b981;
+    --warn: #f59e0b;
+    --danger: #ef4444;
+    --text: #e2e8f0;
+    --muted: #64748b;
+    --mono: 'Space Mono', monospace;
+    --sans: 'Syne', sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* BG grid */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0,229,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,229,255,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .glow-orb {
+    position: fixed;
+    width: 600px; height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(124,58,237,0.12) 0%, transparent 70%);
+    top: -150px; right: -150px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ── HEADER ── */
+  header {
+    position: relative; z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 40px;
+    border-bottom: 1px solid var(--border);
+    backdrop-filter: blur(10px);
+    background: rgba(10,10,15,0.8);
+    position: sticky; top: 0;
+  }
+
+  .logo {
+    font-size: 1.1rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .logo-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 12px var(--accent);
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.6;transform:scale(0.85)} }
+
+  .logo-brand { color: var(--accent); }
+  .header-tag {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    color: var(--muted);
+    border: 1px solid var(--border);
+    padding: 4px 10px;
+    border-radius: 4px;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    position: relative; z-index: 1;
+    text-align: center;
+    padding: 80px 20px 60px;
+  }
+
+  .hero-label {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    color: var(--accent);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    display: inline-block;
+  }
+
+  .hero h1 {
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    margin-bottom: 18px;
+  }
+
+  .hero h1 em {
+    font-style: normal;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero p {
+    font-size: 1.05rem;
+    color: var(--muted);
+    max-width: 520px;
+    margin: 0 auto 40px;
+    line-height: 1.7;
+  }
+
+  /* ── SEARCH BOX ── */
+  .search-wrap {
+    display: flex;
+    align-items: center;
+    max-width: 520px;
+    margin: 0 auto;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    transition: border-color .2s, box-shadow .2s;
+  }
+  .search-wrap:focus-within {
+    border-color: rgba(0,229,255,0.4);
+    box-shadow: 0 0 0 3px rgba(0,229,255,0.08);
+  }
+
+  .search-icon {
+    padding: 0 14px;
+    color: var(--muted);
+    font-size: 1.1rem;
+    flex-shrink: 0;
+    font-family: var(--mono);
+  }
+
+  #username-input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    font-family: var(--mono);
+    font-size: 0.95rem;
+    color: var(--text);
+    padding: 16px 8px;
+  }
+  #username-input::placeholder { color: var(--muted); }
+
+  #analyze-btn {
+    background: var(--accent);
+    color: #000;
+    border: none;
+    padding: 12px 24px;
+    margin: 6px;
+    border-radius: 6px;
+    font-family: var(--sans);
+    font-weight: 700;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: background .2s, transform .1s;
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+  #analyze-btn:hover { background: #00cfea; transform: translateY(-1px); }
+  #analyze-btn:active { transform: translateY(0); }
+  #analyze-btn:disabled { opacity: .5; cursor: not-allowed; transform: none; }
+
+  /* ── LOADING ── */
+  #loading {
+    display: none;
+    text-align: center;
+    padding: 80px 20px;
+    position: relative; z-index: 1;
+  }
+  .loader-ring {
+    width: 56px; height: 56px;
+    border: 2px solid var(--border);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin: 0 auto 20px;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .loader-text { font-family: var(--mono); font-size: 0.8rem; color: var(--muted); }
+
+  /* ── ERROR ── */
+  #error-msg {
+    display: none;
+    max-width: 500px;
+    margin: 30px auto;
+    background: rgba(239,68,68,0.08);
+    border: 1px solid rgba(239,68,68,0.25);
+    border-radius: 8px;
+    padding: 16px 20px;
+    font-family: var(--mono);
+    font-size: 0.8rem;
+    color: #f87171;
+    text-align: center;
+    position: relative; z-index: 1;
+  }
+
+  /* ── RESULTS ── */
+  #results {
+    display: none;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px 20px 80px;
+    position: relative; z-index: 1;
+  }
+
+  /* Profile Card */
+  .profile-card {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 28px;
+    margin-bottom: 24px;
+  }
+
+  .profile-avatar {
+    width: 90px; height: 90px;
+    border-radius: 50%;
+    border: 2px solid var(--accent);
+    object-fit: cover;
+    flex-shrink: 0;
+  }
+
+  .profile-info { flex: 1; min-width: 0; }
+  .profile-name { font-size: 1.5rem; font-weight: 800; letter-spacing: -0.02em; }
+  .profile-login { font-family: var(--mono); font-size: 0.8rem; color: var(--accent); margin-top: 2px; }
+  .profile-bio { font-size: 0.9rem; color: var(--muted); margin-top: 8px; line-height: 1.5; }
+  .profile-meta { display: flex; gap: 16px; margin-top: 12px; flex-wrap: wrap; }
+  .profile-meta-item { font-family: var(--mono); font-size: 0.75rem; color: var(--muted); }
+  .profile-meta-item span { color: var(--text); font-weight: 700; }
+
+  /* Score Ring */
+  .score-block {
+    text-align: center;
+    flex-shrink: 0;
+  }
+  .score-ring-wrap {
+    position: relative;
+    width: 100px; height: 100px;
+  }
+  .score-svg { transform: rotate(-90deg); }
+  .score-bg-circle { fill: none; stroke: var(--surface2); stroke-width: 6; }
+  .score-fg-circle {
+    fill: none;
+    stroke-width: 6;
+    stroke-linecap: round;
+    transition: stroke-dashoffset 1.2s cubic-bezier(.4,0,.2,1);
+  }
+  .score-num {
+    position: absolute;
+    inset: 0;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    font-size: 1.6rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1;
+  }
+  .score-num small {
+    font-size: 0.55rem;
+    font-weight: 400;
+    font-family: var(--mono);
+    color: var(--muted);
+    margin-top: 2px;
+    letter-spacing: 0.05em;
+  }
+  .score-label {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    margin-top: 8px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+  }
+
+  /* Section title */
+  .section-title {
+    font-size: 0.7rem;
+    font-family: var(--mono);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--muted);
+    margin-bottom: 14px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* Metrics grid */
+  .metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 14px;
+    margin-bottom: 24px;
+  }
+
+  .metric-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px;
+    position: relative;
+    overflow: hidden;
+    transition: border-color .2s, transform .2s;
+  }
+  .metric-card:hover { border-color: rgba(0,229,255,0.2); transform: translateY(-2px); }
+  .metric-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px; height: 100%;
+  }
+
+  .metric-card.good::before { background: var(--accent3); }
+  .metric-card.warn::before { background: var(--warn); }
+  .metric-card.bad::before { background: var(--danger); }
+  .metric-card.neutral::before { background: var(--accent2); }
+
+  .metric-label {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 8px;
+  }
+  .metric-value {
+    font-size: 1.6rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1;
+  }
+  .metric-sub {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+
+  /* Score breakdown */
+  .breakdown-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 14px;
+    margin-bottom: 24px;
+  }
+
+  .breakdown-item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px;
+  }
+
+  .breakdown-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+  }
+  .breakdown-name { font-size: 0.9rem; font-weight: 700; }
+  .breakdown-pts {
+    font-family: var(--mono);
+    font-size: 0.8rem;
+    color: var(--accent);
+    font-weight: 700;
+  }
+  .progress-track {
+    height: 4px;
+    background: var(--surface2);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    border-radius: 2px;
+    transition: width 1s cubic-bezier(.4,0,.2,1);
+    width: 0%;
+  }
+  .breakdown-desc {
+    font-size: 0.75rem;
+    color: var(--muted);
+    margin-top: 8px;
+    line-height: 1.5;
+  }
+
+  /* Top repos */
+  .repos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 14px;
+    margin-bottom: 24px;
+  }
+
+  .repo-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    transition: border-color .2s, transform .2s;
+  }
+  .repo-card:hover { border-color: rgba(0,229,255,0.3); transform: translateY(-2px); }
+  .repo-name { font-weight: 700; font-size: 0.9rem; margin-bottom: 6px; color: var(--accent); }
+  .repo-desc { font-size: 0.78rem; color: var(--muted); line-height: 1.5; margin-bottom: 10px; min-height: 36px; }
+  .repo-stats { display: flex; gap: 14px; }
+  .repo-stat { font-family: var(--mono); font-size: 0.7rem; color: var(--muted); }
+  .repo-stat span { color: var(--text); }
+
+  /* Suggestions */
+  .suggestions-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 24px; }
+
+  .suggestion-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+  }
+  .suggestion-icon {
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1rem;
+    flex-shrink: 0;
+  }
+  .suggestion-icon.ok { background: rgba(16,185,129,0.12); }
+  .suggestion-icon.warn { background: rgba(245,158,11,0.12); }
+  .suggestion-icon.bad { background: rgba(239,68,68,0.12); }
+  .suggestion-text { flex: 1; }
+  .suggestion-title { font-size: 0.88rem; font-weight: 700; margin-bottom: 3px; }
+  .suggestion-desc { font-size: 0.78rem; color: var(--muted); line-height: 1.5; }
+
+  /* Rank badge */
+  .rank-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 8px 14px;
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    margin-top: 10px;
+  }
+  .rank-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+  }
+
+  /* share btn */
+  .share-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all .2s;
+    margin-top: 24px;
+  }
+  .share-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* Footer */
+  footer {
+    text-align: center;
+    padding: 40px 20px;
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    color: var(--muted);
+    position: relative; z-index: 1;
+    border-top: 1px solid var(--border);
+  }
+  footer a { color: var(--accent); text-decoration: none; }
+
+  /* Animations */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .anim { animation: fadeUp .4s ease both; }
+  .anim-d1 { animation-delay: .05s; }
+  .anim-d2 { animation-delay: .1s; }
+  .anim-d3 { animation-delay: .15s; }
+  .anim-d4 { animation-delay: .2s; }
+  .anim-d5 { animation-delay: .25s; }
+  .anim-d6 { animation-delay: .3s; }
+
+  @media (max-width: 600px) {
+    header { padding: 14px 20px; }
+    .hero { padding: 50px 20px 40px; }
+    .profile-card { flex-direction: column; text-align: center; }
+    .profile-meta { justify-content: center; }
+    .score-block { order: -1; }
+  }
+</style>
+</head>
+<body>
+
+<div class="glow-orb"></div>
+
+<header>
+  <div class="logo">
+    <div class="logo-dot"></div>
+    <span>Eknatha<span class="logo-brand">Labs</span></span>
+  </div>
+  <div class="header-tag">github-profile-analyzer</div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="hero-label">// profile analyzer v1.0</div>
+    <h1>Rate Your<br><em>GitHub Profile</em></h1>
+    <p>Analyze any GitHub profile with a custom scoring algorithm. Get insights, discover strengths, and unlock improvements.</p>
+
+    <div class="search-wrap">
+      <div class="search-icon">@</div>
+      <input
+        id="username-input"
+        type="text"
+        placeholder="github-username"
+        autocomplete="off"
+        spellcheck="false"
+      />
+      <button id="analyze-btn" onclick="analyze()">Analyze →</button>
+    </div>
+  </section>
+
+  <div id="loading">
+    <div class="loader-ring"></div>
+    <div class="loader-text" id="loading-text">Fetching profile data...</div>
+  </div>
+
+  <div id="error-msg"></div>
+
+  <section id="results"></section>
+</main>
+
+<footer>
+  Built by <a href="https://eknathalabs.com" target="_blank">eknathalabs.com</a> · Powered by GitHub API · No data stored
+</footer>
+
+<script>
+// ── SCORING ENGINE ──────────────────────────────────────────────────────────
+
+function scoreProfile(user, repos) {
+  const scores = {};
+  let total = 0;
+
+  // 1. Profile Completeness (20 pts)
+  let completeness = 0;
+  if (user.name)       completeness += 4;
+  if (user.bio)        completeness += 4;
+  if (user.location)   completeness += 3;
+  if (user.blog)       completeness += 3;
+  if (user.email)      completeness += 2;
+  if (user.twitter_username) completeness += 2;
+  if (user.company)    completeness += 2;
+  scores.completeness = { pts: Math.min(completeness, 20), max: 20,
+    label: 'Profile Completeness',
+    desc: `Name, bio, location, website, email, social links — ${completeness}/20 pts` };
+
+  // 2. Popularity (25 pts)
+  const totalStars = repos.reduce((a,r) => a + r.stargazers_count, 0);
+  const totalForks = repos.reduce((a,r) => a + r.forks_count, 0);
+  const followers = user.followers;
+  let popularity = 0;
+  popularity += Math.min(totalStars / 2, 10);    // up to 10 pts from stars
+  popularity += Math.min(followers / 10, 8);      // up to 8 pts from followers
+  popularity += Math.min(totalForks / 5, 7);      // up to 7 pts from forks
+  scores.popularity = { pts: Math.round(Math.min(popularity, 25)), max: 25,
+    label: 'Popularity & Reach',
+    desc: `${totalStars} ⭐  ${followers} followers  ${totalForks} forks` };
+
+  // 3. Activity (20 pts)
+  const repoCount = user.public_repos;
+  const gistCount = user.public_gists || 0;
+  let activity = 0;
+  activity += Math.min(repoCount * 0.5, 10);
+  // recent pushes
+  const now = Date.now();
+  const recentRepos = repos.filter(r => {
+    const d = new Date(r.pushed_at).getTime();
+    return (now - d) < 90 * 24 * 60 * 60 * 1000; // last 90 days
+  });
+  activity += Math.min(recentRepos.length * 1.5, 8);
+  activity += Math.min(gistCount * 0.5, 2);
+  scores.activity = { pts: Math.round(Math.min(activity, 20)), max: 20,
+    label: 'Activity & Output',
+    desc: `${repoCount} repos  ${recentRepos.length} active last 90d  ${gistCount} gists` };
+
+  // 4. Repo Quality (20 pts)
+  let quality = 0;
+  const withDesc = repos.filter(r => r.description && r.description.length > 10);
+  const withTopics = repos.filter(r => r.topics && r.topics.length > 0);
+  const withReadme = repos.filter(r => !r.fork); // non-forks approximation
+  quality += Math.min((withDesc.length / Math.max(repos.length, 1)) * 10, 10);
+  quality += Math.min((withTopics.length / Math.max(repos.length, 1)) * 6, 6);
+  quality += Math.min(withReadme.length * 0.2, 4);
+  scores.quality = { pts: Math.round(Math.min(quality, 20)), max: 20,
+    label: 'Repository Quality',
+    desc: `${withDesc.length}/${repos.length} with descriptions  ${withTopics.length} with topics` };
+
+  // 5. Community (15 pts)
+  let community = 0;
+  community += Math.min(user.following / 5, 5);       // follows others
+  community += Math.min(user.followers / 15, 5);      // earned followers
+  const forkedFromOthers = repos.filter(r => r.fork);
+  community += Math.min(forkedFromOthers.length * 0.5, 5); // contributes
+  scores.community = { pts: Math.round(Math.min(community, 15)), max: 15,
+    label: 'Community Engagement',
+    desc: `Following ${user.following}  Forks from others: ${forkedFromOthers.length}` };
+
+  for (const k in scores) total += scores[k].pts;
+  const finalScore = Math.min(Math.round(total), 100);
+
+  return { scores, finalScore };
+}
+
+function getRank(score) {
+  if (score >= 90) return { label: 'LEGENDARY', color: '#f59e0b', emoji: '🏆' };
+  if (score >= 75) return { label: 'ELITE',     color: '#00e5ff', emoji: '⚡' };
+  if (score >= 60) return { label: 'ADVANCED',  color: '#10b981', emoji: '🚀' };
+  if (score >= 45) return { label: 'RISING',    color: '#7c3aed', emoji: '📈' };
+  if (score >= 30) return { label: 'DEVELOPING',color: '#64748b', emoji: '🌱' };
+  return                { label: 'BEGINNER',    color: '#ef4444', emoji: '🐣' };
+}
+
+function getColor(pct) {
+  if (pct >= 75) return '#10b981';
+  if (pct >= 50) return '#f59e0b';
+  return '#ef4444';
+}
+
+function getSuggestions(user, repos, scores) {
+  const items = [];
+
+  if (!user.bio)
+    items.push({ type:'bad', title:'Add a bio', desc:'A short bio helps people understand who you are and what you build.' });
+  else
+    items.push({ type:'ok', title:'Bio present ✓', desc:'Great — your profile tells your story.' });
+
+  if (!user.blog)
+    items.push({ type:'warn', title:'Add a website / portfolio', desc:'Link your portfolio or LinkedIn to drive traffic from GitHub.' });
+  else
+    items.push({ type:'ok', title:'Website linked ✓', desc:`Pointing to ${user.blog}` });
+
+  if (!user.location)
+    items.push({ type:'warn', title:'Add your location', desc:'Location helps with local recruiter visibility.' });
+
+  const withDesc = repos.filter(r => r.description && r.description.length > 10).length;
+  if (withDesc < repos.length / 2)
+    items.push({ type:'bad', title:'Add repo descriptions', desc:`Only ${withDesc}/${repos.length} repos have descriptions. Descriptions boost discoverability.` });
+  else
+    items.push({ type:'ok', title:'Good repo descriptions ✓', desc:`${withDesc}/${repos.length} repos described — looking good.` });
+
+  const withTopics = repos.filter(r => r.topics && r.topics.length > 0).length;
+  if (withTopics < 3)
+    items.push({ type:'warn', title:'Add topics to repos', desc:'Topics make repos findable on GitHub search. Tag your best projects.' });
+
+  if (user.followers < 10)
+    items.push({ type:'warn', title:'Grow your followers', desc:'Follow devs in your niche, contribute to OSS, and post about your work.' });
+  else
+    items.push({ type:'ok', title:`${user.followers} followers ✓`, desc:'You have a presence — keep engaging the community.' });
+
+  return items;
+}
+
+// ── UI HELPERS ───────────────────────────────────────────────────────────────
+
+function setLoading(msg) {
+  document.getElementById('loading').style.display = 'block';
+  document.getElementById('loading-text').textContent = msg;
+  document.getElementById('results').style.display = 'none';
+  document.getElementById('error-msg').style.display = 'none';
+}
+
+function hideLoading() {
+  document.getElementById('loading').style.display = 'none';
+}
+
+function showError(msg) {
+  hideLoading();
+  const el = document.getElementById('error-msg');
+  el.textContent = '⚠ ' + msg;
+  el.style.display = 'block';
+}
+
+function fmtNum(n) {
+  if (n >= 1000) return (n/1000).toFixed(1) + 'k';
+  return n;
+}
+
+function timeSince(dateStr) {
+  const d = new Date(dateStr);
+  const diff = Math.floor((Date.now() - d) / 1000);
+  if (diff < 60) return 'just now';
+  if (diff < 3600) return Math.floor(diff/60) + 'm ago';
+  if (diff < 86400) return Math.floor(diff/3600) + 'h ago';
+  if (diff < 2592000) return Math.floor(diff/86400) + 'd ago';
+  return Math.floor(diff/2592000) + 'mo ago';
+}
+
+// ── MAIN RENDER ──────────────────────────────────────────────────────────────
+
+function renderResults(user, repos) {
+  const { scores, finalScore } = scoreProfile(user, repos);
+  const rank = getRank(finalScore);
+  const suggestions = getSuggestions(user, repos, scores);
+  const topRepos = repos.filter(r => !r.fork).sort((a,b) => b.stargazers_count - a.stargazers_count).slice(0, 6);
+  const totalStars = repos.reduce((a,r) => a + r.stargazers_count, 0);
+  const totalForks = repos.reduce((a,r) => a + r.forks_count, 0);
+
+  const circumference = 2 * Math.PI * 44;
+  const dashOffset = circumference - (finalScore / 100) * circumference;
+  const scoreColor = getColor(finalScore);
+
+  const html = `
+  <div class="anim anim-d1 profile-card">
+    <img class="profile-avatar" src="${user.avatar_url}&s=180" alt="${user.login}" />
+    <div class="profile-info">
+      <div class="profile-name">${user.name || user.login}</div>
+      <div class="profile-login">@${user.login}</div>
+      ${user.bio ? `<div class="profile-bio">${user.bio}</div>` : ''}
+      <div class="profile-meta">
+        ${user.company ? `<div class="profile-meta-item">🏢 ${user.company}</div>` : ''}
+        ${user.location ? `<div class="profile-meta-item">📍 ${user.location}</div>` : ''}
+        ${user.blog ? `<div class="profile-meta-item">🔗 <a href="${user.blog}" style="color:var(--accent)" target="_blank">website</a></div>` : ''}
+        <div class="profile-meta-item">Joined <span>${new Date(user.created_at).getFullYear()}</span></div>
+      </div>
+      <div class="rank-badge">
+        <div class="rank-dot" style="background:${rank.color}"></div>
+        ${rank.emoji} ${rank.label}
+      </div>
+    </div>
+    <div class="score-block">
+      <div class="score-ring-wrap">
+        <svg class="score-svg" viewBox="0 0 100 100" width="100" height="100">
+          <circle class="score-bg-circle" cx="50" cy="50" r="44" />
+          <circle class="score-fg-circle"
+            id="score-ring"
+            cx="50" cy="50" r="44"
+            stroke="${scoreColor}"
+            stroke-dasharray="${circumference}"
+            stroke-dashoffset="${circumference}" />
+        </svg>
+        <div class="score-num" style="color:${scoreColor}">
+          <span id="score-display">0</span>
+          <small>/ 100</small>
+        </div>
+      </div>
+      <div class="score-label" style="color:${scoreColor}">${rank.label}</div>
+    </div>
+  </div>
+
+  <div class="anim anim-d2 section-title">// stats overview</div>
+  <div class="anim anim-d2 metrics-grid">
+    <div class="metric-card ${totalStars > 50 ? 'good' : totalStars > 10 ? 'warn' : 'bad'}">
+      <div class="metric-label">Total Stars</div>
+      <div class="metric-value">${fmtNum(totalStars)}</div>
+      <div class="metric-sub">across all repos</div>
+    </div>
+    <div class="metric-card ${user.followers > 50 ? 'good' : user.followers > 10 ? 'warn' : 'bad'}">
+      <div class="metric-label">Followers</div>
+      <div class="metric-value">${fmtNum(user.followers)}</div>
+      <div class="metric-sub">following ${fmtNum(user.following)}</div>
+    </div>
+    <div class="metric-card ${user.public_repos > 20 ? 'good' : user.public_repos > 5 ? 'warn' : 'bad'}">
+      <div class="metric-label">Public Repos</div>
+      <div class="metric-value">${user.public_repos}</div>
+      <div class="metric-sub">${user.public_gists} gists</div>
+    </div>
+    <div class="metric-card neutral">
+      <div class="metric-label">Total Forks</div>
+      <div class="metric-value">${fmtNum(totalForks)}</div>
+      <div class="metric-sub">from your repos</div>
+    </div>
+  </div>
+
+  <div class="anim anim-d3 section-title">// score breakdown</div>
+  <div class="anim anim-d3 breakdown-grid">
+    ${Object.values(scores).map(s => {
+      const pct = Math.round((s.pts / s.max) * 100);
+      const color = getColor(pct);
+      return `
+      <div class="breakdown-item">
+        <div class="breakdown-header">
+          <div class="breakdown-name">${s.label}</div>
+          <div class="breakdown-pts">${s.pts}/${s.max}</div>
+        </div>
+        <div class="progress-track">
+          <div class="progress-fill" data-width="${pct}" style="background:${color};width:0%"></div>
+        </div>
+        <div class="breakdown-desc">${s.desc}</div>
+      </div>`;
+    }).join('')}
+  </div>
+
+  ${topRepos.length > 0 ? `
+  <div class="anim anim-d4 section-title">// top repositories</div>
+  <div class="anim anim-d4 repos-grid">
+    ${topRepos.map(r => `
+    <a class="repo-card" href="${r.html_url}" target="_blank" rel="noopener">
+      <div class="repo-name">${r.name}</div>
+      <div class="repo-desc">${r.description || '<span style="color:var(--muted);font-style:italic">No description</span>'}</div>
+      <div class="repo-stats">
+        <div class="repo-stat">⭐ <span>${r.stargazers_count}</span></div>
+        <div class="repo-stat">🍴 <span>${r.forks_count}</span></div>
+        <div class="repo-stat">🕐 <span>${timeSince(r.pushed_at)}</span></div>
+      </div>
+    </a>`).join('')}
+  </div>` : ''}
+
+  <div class="anim anim-d5 section-title">// suggestions to improve</div>
+  <div class="anim anim-d5 suggestions-list">
+    ${suggestions.map(s => `
+    <div class="suggestion-item">
+      <div class="suggestion-icon ${s.type}">${s.type==='ok'?'✓':s.type==='warn'?'⚠':'✗'}</div>
+      <div class="suggestion-text">
+        <div class="suggestion-title">${s.title}</div>
+        <div class="suggestion-desc">${s.desc}</div>
+      </div>
+    </div>`).join('')}
+  </div>
+
+  <div class="anim anim-d6" style="text-align:center">
+    <button class="share-btn" onclick="copyShare('${user.login}', ${finalScore}, '${rank.label}')">
+      📋 Copy shareable result
+    </button>
+  </div>`;
+
+  const el = document.getElementById('results');
+  el.innerHTML = html;
+  el.style.display = 'block';
+
+  // Animate score ring
+  requestAnimationFrame(() => {
+    const ring = document.getElementById('score-ring');
+    if (ring) {
+      ring.style.strokeDashoffset = dashOffset;
+    }
+    // count up
+    let current = 0;
+    const step = finalScore / 60;
+    const counter = setInterval(() => {
+      current = Math.min(current + step, finalScore);
+      const el = document.getElementById('score-display');
+      if (el) el.textContent = Math.round(current);
+      if (current >= finalScore) clearInterval(counter);
+    }, 16);
+    // animate progress bars
+    document.querySelectorAll('.progress-fill').forEach(bar => {
+      const w = bar.getAttribute('data-width');
+      setTimeout(() => { bar.style.width = w + '%'; }, 300);
+    });
+  });
+}
+
+function copyShare(login, score, rank) {
+  const text = `🔍 GitHub Profile Analyzed by EknathaLabs\n@${login} scored ${score}/100 — ${rank}\nCheck yours: https://eknathalabs.com/github-profile-analyzer`;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.querySelector('.share-btn');
+    btn.textContent = '✓ Copied!';
+    setTimeout(() => btn.textContent = '📋 Copy shareable result', 2000);
+  });
+}
+
+// ── MAIN ANALYZE FUNCTION ────────────────────────────────────────────────────
+
+async function analyze() {
+  const input = document.getElementById('username-input');
+  const btn   = document.getElementById('analyze-btn');
+  const username = input.value.trim().replace(/^@/, '');
+
+  if (!username) {
+    input.focus();
+    return;
+  }
+
+  btn.disabled = true;
+
+  const steps = [
+    'Fetching profile data...',
+    'Analyzing repositories...',
+    'Running scoring algorithm...',
+    'Generating insights...'
+  ];
+  let stepIdx = 0;
+  setLoading(steps[stepIdx]);
+  const stepTimer = setInterval(() => {
+    stepIdx = (stepIdx + 1) % steps.length;
+    document.getElementById('loading-text').textContent = steps[stepIdx];
+  }, 1200);
+
+  try {
+    const [userRes, reposRes] = await Promise.all([
+      fetch(`https://api.github.com/users/${encodeURIComponent(username)}`),
+      fetch(`https://api.github.com/users/${encodeURIComponent(username)}/repos?per_page=100&sort=pushed`)
+    ]);
+
+    clearInterval(stepTimer);
+
+    if (userRes.status === 404) throw new Error(`User "@${username}" not found on GitHub.`);
+    if (userRes.status === 403) throw new Error('GitHub API rate limit hit. Please wait a minute and try again.');
+    if (!userRes.ok) throw new Error(`GitHub API error: ${userRes.status}`);
+
+    const user  = await userRes.json();
+    const repos = await reposRes.json();
+
+    hideLoading();
+    renderResults(user, Array.isArray(repos) ? repos : []);
+
+  } catch (err) {
+    clearInterval(stepTimer);
+    showError(err.message || 'Something went wrong. Please try again.');
+  } finally {
+    btn.disabled = false;
+  }
+}
+
+// Enter key
+document.getElementById('username-input').addEventListener('keydown', e => {
+  if (e.key === 'Enter') analyze();
+});
+
+// Auto-analyze if ?user= param present
+const urlUser = new URLSearchParams(location.search).get('user');
+if (urlUser) {
+  document.getElementById('username-input').value = urlUser;
+  analyze();
+}
+</script>
+</body>
+</html>
