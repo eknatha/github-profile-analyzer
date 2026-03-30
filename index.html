@@ -532,6 +532,77 @@
   .anim-d5 { animation-delay: .25s; }
   .anim-d6 { animation-delay: .3s; }
 
+  /* ── VISITOR COUNTER ── */
+  .visitor-counter {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 7px 14px;
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    color: var(--muted);
+    position: relative;
+    overflow: hidden;
+    transition: border-color .2s;
+  }
+  .visitor-counter:hover { border-color: rgba(0,229,255,0.25); }
+  .visitor-counter::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent, rgba(0,229,255,0.04), transparent);
+    transform: translateX(-100%);
+    animation: shimmer 3s ease-in-out infinite;
+  }
+  @keyframes shimmer { to { transform: translateX(100%); } }
+
+  .vc-icon {
+    font-size: 0.9rem;
+    line-height: 1;
+  }
+  .vc-body { display: flex; flex-direction: column; align-items: flex-start; gap: 1px; }
+  .vc-label { font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); line-height: 1; }
+  .vc-counts { display: flex; align-items: baseline; gap: 6px; }
+  .vc-total {
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: var(--accent);
+    letter-spacing: -0.02em;
+    transition: opacity .3s;
+  }
+  .vc-sep { color: var(--border); font-size: 0.7rem; }
+  .vc-today { font-size: 0.72rem; color: var(--accent3); }
+  .vc-today-label { font-size: 0.6rem; color: var(--muted); }
+  .vc-live-dot {
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: var(--accent3);
+    box-shadow: 0 0 6px var(--accent3);
+    animation: pulse 2s ease-in-out infinite;
+    flex-shrink: 0;
+  }
+
+  /* footer visitor strip */
+  .footer-vc {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 12px;
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    color: var(--muted);
+  }
+  .footer-vc-num { color: var(--accent); font-weight: 700; }
+
+  @media (max-width: 600px) {
+    .visitor-counter .vc-body { display: none; }
+    .visitor-counter { gap: 6px; padding: 7px 10px; }
+  }
+
   @media (max-width: 600px) {
     header { padding: 14px 20px; }
     .hero { padding: 50px 20px 40px; }
@@ -545,12 +616,34 @@
 
 <div class="glow-orb"></div>
 
+<!-- Hidden hit tracker increments count on every page load -->
+<img id="hit-tracker"
+  src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Feknathareddyp.github.io%2Fgithub-profile-analyzer&count_bg=%2300e5ff&title_bg=%23111118&icon=github&icon_color=%2300e5ff&title=visits&edge_flat=true"
+  style="position:absolute;width:1px;height:1px;opacity:0;pointer-events:none"
+  alt=""
+/>
+
 <header>
   <div class="logo">
     <div class="logo-dot"></div>
     <span>Eknatha<span class="logo-brand">Labs</span></span>
   </div>
-  <div class="header-tag">github-profile-analyzer</div>
+  <div style="display:flex;align-items:center;gap:12px">
+    <div class="header-tag">github-profile-analyzer</div>
+    <div class="visitor-counter" title="Site visitors — total / today">
+      <div class="vc-live-dot"></div>
+      <span class="vc-icon">👁</span>
+      <div class="vc-body">
+        <div class="vc-label">Visitors</div>
+        <div class="vc-counts">
+          <span class="vc-total" id="vc-total">—</span>
+          <span class="vc-sep">|</span>
+          <span class="vc-today" id="vc-today">—</span>
+          <span class="vc-today-label">today</span>
+        </div>
+      </div>
+    </div>
+  </div>
 </header>
 
 <main>
@@ -583,6 +676,14 @@
 </main>
 
 <footer>
+  <div class="footer-vc">
+    <span>👁</span>
+    <span>Total visits:</span>
+    <span class="footer-vc-num" id="footer-vc-total">loading...</span>
+    <span>·</span>
+    <span>Today:</span>
+    <span class="footer-vc-num" id="footer-vc-today">—</span>
+  </div>
   Built by <a href="https://eknathalabs.com" target="_blank">eknathalabs.com</a> · Powered by GitHub API · No data stored
 </footer>
 
@@ -963,6 +1064,78 @@ async function analyze() {
     btn.disabled = false;
   }
 }
+
+// ── VISITOR COUNTER ─────────────────────────────────────────────────────────
+// hits.seeyoufarm.com returns an SVG with two <text> nodes: title + counts
+// The counts text looks like "123 / 45" (total / today)
+async function loadVisitorCount() {
+  const BADGE_URL = 'https://hits.seeyoufarm.com/api/count/incr/badge.svg' +
+    '?url=https%3A%2F%2Feknathareddyp.github.io%2Fgithub-profile-analyzer' +
+    '&count_bg=%2300e5ff&title_bg=%23111118&icon=github&icon_color=%2300e5ff' +
+    '&title=visits&edge_flat=true';
+
+  try {
+    const res = await fetch(BADGE_URL, { cache: 'no-store' });
+    if (!res.ok) throw new Error('badge fetch failed');
+    const svgText = await res.text();
+
+    // Parse SVG to find the count text nodes
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(svgText, 'image/svg+xml');
+    const texts = Array.from(doc.querySelectorAll('text'));
+
+    // The count value is in a text node that looks like "NNN / NNN"
+    let total = null, today = null;
+    for (const t of texts) {
+      const content = t.textContent.trim();
+      // Match pattern "1234 / 56" (total / today)
+      const m = content.match(/^(\d[\d,]*)\s*\/\s*(\d[\d,]*)$/);
+      if (m) {
+        total = m[1].replace(/,/g, '');
+        today = m[2].replace(/,/g, '');
+        break;
+      }
+    }
+
+    // Fallback: if pattern not matched, grab any 2+ digit numbers
+    if (!total) {
+      const nums = texts
+        .map(t => t.textContent.trim())
+        .filter(t => /^\d+$/.test(t))
+        .map(Number);
+      if (nums.length >= 2) { total = String(nums[0]); today = String(nums[1]); }
+      else if (nums.length === 1) { total = String(nums[0]); today = '0'; }
+    }
+
+    if (total) {
+      const fmt = n => Number(n) >= 1000
+        ? (Number(n)/1000).toFixed(1) + 'k'
+        : n;
+
+      // Header
+      const vcTotal = document.getElementById('vc-total');
+      const vcToday = document.getElementById('vc-today');
+      if (vcTotal) vcTotal.textContent = fmt(total);
+      if (vcToday) vcToday.textContent = fmt(today);
+
+      // Footer
+      const fvTotal = document.getElementById('footer-vc-total');
+      const fvToday = document.getElementById('footer-vc-today');
+      if (fvTotal) fvTotal.textContent = Number(total).toLocaleString();
+      if (fvToday) fvToday.textContent = Number(today).toLocaleString();
+    }
+  } catch (e) {
+    // Silently fail — badge img fallback still visible for stats
+    const els = ['vc-total','vc-today','footer-vc-total','footer-vc-today'];
+    els.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = '—';
+    });
+  }
+}
+
+// Load count after a brief delay (let the hit-tracker img fire first)
+window.addEventListener('load', () => setTimeout(loadVisitorCount, 1500));
 
 // Enter key
 document.getElementById('username-input').addEventListener('keydown', e => {
