@@ -532,6 +532,244 @@
   .anim-d5 { animation-delay: .25s; }
   .anim-d6 { animation-delay: .3s; }
 
+  /* ── GLOBAL RANKING ── */
+  .global-rank-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 24px 28px;
+    margin-bottom: 24px;
+    position: relative;
+    overflow: hidden;
+  }
+  .global-rank-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at top right, rgba(0,229,255,0.04) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .rank-tiers {
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+    margin: 18px 0 14px;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+  .rank-tier {
+    flex: 1;
+    padding: 10px 6px;
+    text-align: center;
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    border-right: 1px solid var(--border);
+    position: relative;
+    transition: background .2s;
+  }
+  .rank-tier:last-child { border-right: none; }
+  .rank-tier.active {
+    background: rgba(0,229,255,0.08);
+    border-top: 2px solid var(--accent);
+  }
+  .rank-tier.active::before {
+    content: '▼';
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.7rem;
+    color: var(--accent);
+  }
+  .rank-tier-emoji { font-size: 1rem; display: block; margin-bottom: 3px; }
+  .rank-tier-name { color: var(--muted); font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.08em; }
+  .rank-tier-range { color: var(--text); font-size: 0.6rem; margin-top: 2px; display: block; }
+
+  .percentile-bar-wrap { margin-top: 16px; }
+  .percentile-bar-label {
+    display: flex; justify-content: space-between;
+    font-family: var(--mono); font-size: 0.65rem;
+    color: var(--muted); margin-bottom: 6px;
+  }
+  .percentile-track {
+    height: 8px; background: var(--surface2);
+    border-radius: 4px; overflow: hidden; position: relative;
+  }
+  .percentile-fill {
+    height: 100%; border-radius: 4px;
+    background: linear-gradient(90deg, var(--accent2), var(--accent));
+    transition: width 1.2s cubic-bezier(.4,0,.2,1);
+    width: 0%;
+  }
+  .percentile-marker {
+    position: absolute; top: -4px;
+    width: 2px; height: 16px;
+    background: rgba(255,255,255,0.3);
+  }
+  .global-stats-row {
+    display: flex; gap: 20px; flex-wrap: wrap; margin-top: 16px;
+  }
+  .global-stat {
+    font-family: var(--mono); font-size: 0.72rem;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 8px 12px;
+    display: flex; flex-direction: column; gap: 2px;
+  }
+  .global-stat-val { color: var(--accent); font-weight: 700; font-size: 0.85rem; }
+  .global-stat-lbl { color: var(--muted); font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.07em; }
+
+  /* ── QUICK WINS ── */
+  .quick-wins-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+  .quick-win-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+    display: flex; gap: 14px; align-items: flex-start;
+    transition: border-color .2s, transform .2s;
+    position: relative; overflow: hidden;
+  }
+  .quick-win-card:hover { border-color: rgba(16,185,129,0.3); transform: translateY(-2px); }
+  .quick-win-badge {
+    flex-shrink: 0;
+    width: 38px; height: 38px;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem;
+    background: rgba(16,185,129,0.1);
+    border: 1px solid rgba(16,185,129,0.2);
+  }
+  .quick-win-pts {
+    position: absolute; top: 12px; right: 12px;
+    font-family: var(--mono); font-size: 0.65rem;
+    color: var(--accent3); font-weight: 700;
+    background: rgba(16,185,129,0.08);
+    border: 1px solid rgba(16,185,129,0.15);
+    padding: 2px 7px; border-radius: 4px;
+  }
+  .quick-win-title { font-size: 0.88rem; font-weight: 700; margin-bottom: 3px; padding-right: 40px; }
+  .quick-win-desc { font-size: 0.75rem; color: var(--muted); line-height: 1.5; }
+  .quick-win-effort {
+    font-family: var(--mono); font-size: 0.6rem;
+    color: var(--warn); margin-top: 6px;
+    text-transform: uppercase; letter-spacing: 0.06em;
+  }
+
+  /* ── TOP LANGUAGES ── */
+  .languages-wrap {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 22px 24px;
+    margin-bottom: 24px;
+  }
+  .lang-rainbow {
+    display: flex; height: 10px; border-radius: 5px;
+    overflow: hidden; gap: 2px; margin: 14px 0 18px;
+  }
+  .lang-rainbow-seg {
+    border-radius: 3px;
+    transition: flex .8s cubic-bezier(.4,0,.2,1);
+    flex: 0;
+  }
+  .lang-list { display: flex; flex-direction: column; gap: 10px; }
+  .lang-row {
+    display: flex; align-items: center; gap: 12px;
+  }
+  .lang-dot {
+    width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0;
+  }
+  .lang-name { font-size: 0.85rem; font-weight: 700; min-width: 100px; }
+  .lang-track {
+    flex: 1; height: 4px; background: var(--surface2); border-radius: 2px; overflow: hidden;
+  }
+  .lang-fill {
+    height: 100%; border-radius: 2px;
+    transition: width 1s cubic-bezier(.4,0,.2,1); width: 0%;
+  }
+  .lang-pct {
+    font-family: var(--mono); font-size: 0.7rem;
+    color: var(--muted); min-width: 36px; text-align: right;
+  }
+  .lang-repos {
+    font-family: var(--mono); font-size: 0.65rem;
+    color: var(--muted); min-width: 60px; text-align: right;
+  }
+
+  /* ── ELITE COMPARISON ── */
+  .compare-table {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+    margin-bottom: 24px;
+  }
+  .compare-header {
+    display: grid;
+    grid-template-columns: 1.4fr repeat(4, 1fr);
+    background: var(--surface2);
+    border-bottom: 1px solid var(--border);
+    padding: 12px 20px;
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    gap: 8px;
+  }
+  .compare-header .col-you { color: var(--accent); }
+  .compare-row {
+    display: grid;
+    grid-template-columns: 1.4fr repeat(4, 1fr);
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--border);
+    align-items: center;
+    gap: 8px;
+    transition: background .15s;
+  }
+  .compare-row:last-child { border-bottom: none; }
+  .compare-row:hover { background: rgba(255,255,255,0.02); }
+  .compare-metric-name { font-size: 0.82rem; font-weight: 700; }
+  .compare-metric-sub { font-family: var(--mono); font-size: 0.6rem; color: var(--muted); margin-top: 2px; }
+  .compare-cell { font-family: var(--mono); font-size: 0.82rem; text-align: center; }
+  .compare-cell.you { color: var(--accent); font-weight: 700; }
+  .compare-cell.better { color: var(--accent3); }
+  .compare-cell.worse { color: var(--danger); }
+  .compare-cell.elite { color: var(--warn); }
+  .compare-delta {
+    font-size: 0.65rem;
+    margin-top: 2px;
+    display: block;
+  }
+  .compare-profile {
+    display: flex; align-items: center; gap: 8px;
+    padding: 10px 20px;
+    background: var(--surface2);
+    border-bottom: 1px solid var(--border);
+  }
+  .compare-profile img {
+    width: 22px; height: 22px; border-radius: 50%;
+    border: 1px solid var(--border);
+  }
+  .compare-profile-name { font-size: 0.8rem; font-weight: 700; }
+  .compare-profile-title { font-family: var(--mono); font-size: 0.65rem; color: var(--muted); }
+  .compare-legend {
+    display: flex; gap: 16px; flex-wrap: wrap;
+    padding: 10px 20px;
+    border-top: 1px solid var(--border);
+    background: var(--surface2);
+  }
+  .compare-legend-item { font-family: var(--mono); font-size: 0.65rem; color: var(--muted); display: flex; align-items: center; gap: 5px; }
+  .compare-legend-dot { width: 6px; height: 6px; border-radius: 50%; }
+
   /* ── VISITOR COUNTER ── */
   .visitor-counter {
     display: flex;
@@ -813,6 +1051,158 @@ function getSuggestions(user, repos, scores) {
   return items;
 }
 
+// ── GLOBAL RANKING ENGINE ────────────────────────────────────────────────────
+// Benchmarks derived from GitHub's 180M user base (2025 data)
+// Median developer: ~8 repos, ~3 followers, ~1 star total
+// Top 10%: 50+ repos, 50+ followers, 20+ stars
+// Top 1%:  150+ repos, 500+ followers, 200+ stars
+
+function getGlobalRanking(user, repos, finalScore) {
+  const totalStars = repos.reduce((a,r) => a + r.stargazers_count, 0);
+  const followers  = user.followers;
+  const repoCount  = user.public_repos;
+
+  // Percentile estimation per dimension (log-scale, calibrated to GH population)
+  function logPercentile(val, p50, p90, p99) {
+    if (val <= 0) return 1;
+    if (val >= p99) return 99;
+    if (val >= p90) return 90 + ((val - p90) / (p99 - p90)) * 9;
+    if (val >= p50) return 50 + ((val - p50) / (p90 - p50)) * 40;
+    return Math.max(1, (val / p50) * 50);
+  }
+
+  const starsP  = logPercentile(totalStars, 1, 20,  200);
+  const followP = logPercentile(followers,  3, 50,  500);
+  const reposP  = logPercentile(repoCount,  8, 50,  150);
+  const scoreP  = logPercentile(finalScore, 35, 65, 90);
+
+  // Weighted composite percentile
+  const globalPct = Math.round((starsP * 0.35 + followP * 0.35 + reposP * 0.15 + scoreP * 0.15));
+  const clampedPct = Math.min(Math.max(globalPct, 1), 99);
+
+  // Estimated rank out of 180M
+  const totalDevs = 180_000_000;
+  const rankNum = Math.round(totalDevs * (1 - clampedPct / 100));
+
+  const tiers = [
+    { min: 95, label: 'S-Class',   emoji: '🏆', color: '#f59e0b', range: 'Top 5%'  },
+    { min: 80, label: 'A+ Elite',  emoji: '⚡', color: '#00e5ff', range: 'Top 20%' },
+    { min: 60, label: 'A Advanced',emoji: '🚀', color: '#10b981', range: 'Top 40%' },
+    { min: 40, label: 'B Rising',  emoji: '📈', color: '#7c3aed', range: 'Top 60%' },
+    { min: 20, label: 'C Active',  emoji: '🌱', color: '#64748b', range: 'Top 80%' },
+    { min: 0,  label: 'D Starter', emoji: '🐣', color: '#ef4444', range: 'Top 100%'},
+  ];
+  const tier = tiers.find(t => clampedPct >= t.min) || tiers[tiers.length - 1];
+
+  return {
+    percentile: clampedPct,
+    rankNum,
+    tier,
+    breakdown: { starsP, followP, reposP, scoreP }
+  };
+}
+
+// ── TOP LANGUAGES ─────────────────────────────────────────────────────────────
+// GitHub language colors (official)
+const LANG_COLORS = {
+  JavaScript: '#f1e05a', TypeScript: '#3178c6', Python: '#3572A5',
+  Java: '#b07219', 'C++': '#f34b7d', C: '#555555', 'C#': '#178600',
+  Go: '#00ADD8', Rust: '#dea584', Ruby: '#701516', PHP: '#4F5D95',
+  Swift: '#F05138', Kotlin: '#A97BFF', Shell: '#89e051', HTML: '#e34c26',
+  CSS: '#563d7c', Scala: '#c22d40', R: '#198CE7', Dart: '#00B4AB',
+  Elixir: '#6e4a7e', Haskell: '#5e5086', Lua: '#000080', Vim: '#199f4b',
+  SCSS: '#c6538c', Vue: '#41b883', HCL: '#844FBA', Dockerfile: '#384d54',
+  Makefile: '#427819', Nix: '#7e7eff', PowerShell: '#012456',
+};
+
+function getTopLanguages(repos) {
+  const langMap = {};
+  repos.filter(r => !r.fork && r.language).forEach(r => {
+    langMap[r.language] = langMap[r.language] || { count: 0, stars: 0 };
+    langMap[r.language].count++;
+    langMap[r.language].stars += r.stargazers_count;
+  });
+  const total = Object.values(langMap).reduce((a, v) => a + v.count, 0) || 1;
+  return Object.entries(langMap)
+    .sort((a, b) => b[1].count - a[1].count)
+    .slice(0, 8)
+    .map(([lang, data]) => ({
+      lang,
+      count: data.count,
+      stars: data.stars,
+      pct: Math.round((data.count / total) * 100),
+      color: LANG_COLORS[lang] || '#' + Math.floor(Math.abs(Math.sin(lang.charCodeAt(0)) * 16777215)).toString(16).padStart(6,'0'),
+    }));
+}
+
+// ── QUICK WINS ────────────────────────────────────────────────────────────────
+function getQuickWins(user, repos, finalScore) {
+  const wins = [];
+  const withDesc   = repos.filter(r => r.description && r.description.length > 10);
+  const withTopics = repos.filter(r => r.topics && r.topics.length > 0);
+  const noDesc     = repos.filter(r => !r.fork && (!r.description || r.description.length < 5));
+  const noTopics   = repos.filter(r => !r.fork && (!r.topics || r.topics.length === 0));
+
+  if (!user.bio)
+    wins.push({ emoji:'✍️', title:'Write a bio', pts:'+4 pts',
+      effort:'5 min', desc:'A 1-2 line bio describing your role and tech stack. Recruiters scan this first.' });
+
+  if (!user.blog)
+    wins.push({ emoji:'🔗', title:'Add your website or portfolio', pts:'+3 pts',
+      effort:'2 min', desc:'Link to LinkedIn, portfolio, or your personal site. Boosts credibility instantly.' });
+
+  if (!user.location)
+    wins.push({ emoji:'📍', title:'Set your location', pts:'+3 pts',
+      effort:'1 min', desc:'Improves local recruiter discoverability and personalizes your profile.' });
+
+  if (!user.twitter_username)
+    wins.push({ emoji:'𝕏', title:'Connect your X / Twitter handle', pts:'+2 pts',
+      effort:'1 min', desc:'Cross-links your social presence and shows you\'re active in the developer community.' });
+
+  if (noDesc.length > 0)
+    wins.push({ emoji:'📝', title:`Add descriptions to ${Math.min(noDesc.length, 5)} repos`, pts:'+up to 10 pts',
+      effort:'10 min', desc:`${noDesc.slice(0,3).map(r=>`"${r.name}"`).join(', ')}${noDesc.length>3?' and more':''} have no description. One sentence each is enough.` });
+
+  if (noTopics.length > 0)
+    wins.push({ emoji:'🏷️', title:`Tag ${Math.min(noTopics.length,5)} repos with topics`, pts:'+up to 6 pts',
+      effort:'5 min', desc:'Topics like "kubernetes", "devops", "python" make repos appear in GitHub topic searches and trending feeds.' });
+
+  if (user.public_repos < 10)
+    wins.push({ emoji:'📦', title:'Push more public repos', pts:'+up to 10 pts',
+      effort:'ongoing', desc:'Each public repo signals output. Even utilities, scripts, and dotfiles count.' });
+
+  if (user.followers < 20)
+    wins.push({ emoji:'🤝', title:'Build your follower base', pts:'+up to 8 pts',
+      effort:'ongoing', desc:'Follow 50 active developers in your domain. Many will follow back — this compounds over time.' });
+
+  // Pin a profile README
+  wins.push({ emoji:'📌', title:'Create a profile README', pts:'+visibility',
+    effort:'15 min', desc:'A GitHub profile README (repo named your username) is prime real estate — add stats, skills, and contact.' });
+
+  return wins.slice(0, 6);
+}
+
+// ── ELITE COMPARISON ─────────────────────────────────────────────────────────
+const ELITE_PROFILES = [
+  { login:'torvalds',     name:'Linus Torvalds',  title:'Creator of Linux & Git',     avatar:'https://avatars.githubusercontent.com/u/1024025',   repos:7,   stars:220000, followers:236000, score:100 },
+  { login:'gaearon',      name:'Dan Abramov',      title:'React Core Team',            avatar:'https://avatars.githubusercontent.com/u/810438',    repos:250, stars:78000,  followers:98000,  score:98 },
+  { login:'sindresorhus', name:'Sindre Sorhus',    title:'OSS prolific contributor',   avatar:'https://avatars.githubusercontent.com/u/170270',   repos:1100,stars:72000,  followers:42000,  score:97 },
+  { login:'yyx990803',    name:'Evan You',          title:'Creator of Vue.js',          avatar:'https://avatars.githubusercontent.com/u/499550',   repos:130, stars:46000,  followers:90000,  score:96 },
+];
+
+function buildEliteComparison(user, repos, finalScore) {
+  const totalStars = repos.reduce((a,r) => a + r.stargazers_count, 0);
+
+  const metrics = [
+    { label:'Score',       sub:'out of 100',   you: finalScore,            fmt: v => v,             eliteKey:'score',     unit:'' },
+    { label:'Followers',   sub:'community size', you: user.followers,       fmt: v => fmtNum(v),     eliteKey:'followers', unit:'' },
+    { label:'Stars',       sub:'total earned',  you: totalStars,            fmt: v => fmtNum(v),     eliteKey:'stars',     unit:'' },
+    { label:'Repos',       sub:'public repos',  you: user.public_repos,     fmt: v => v,             eliteKey:'repos',     unit:'' },
+  ];
+
+  return { metrics, elites: ELITE_PROFILES };
+}
+
 // ── UI HELPERS ───────────────────────────────────────────────────────────────
 
 function setLoading(msg) {
@@ -852,17 +1242,25 @@ function timeSince(dateStr) {
 
 function renderResults(user, repos) {
   const { scores, finalScore } = scoreProfile(user, repos);
-  const rank = getRank(finalScore);
+  const rank        = getRank(finalScore);
   const suggestions = getSuggestions(user, repos, scores);
-  const topRepos = repos.filter(r => !r.fork).sort((a,b) => b.stargazers_count - a.stargazers_count).slice(0, 6);
-  const totalStars = repos.reduce((a,r) => a + r.stargazers_count, 0);
-  const totalForks = repos.reduce((a,r) => a + r.forks_count, 0);
+  const topRepos    = repos.filter(r => !r.fork).sort((a,b) => b.stargazers_count - a.stargazers_count).slice(0, 6);
+  const totalStars  = repos.reduce((a,r) => a + r.stargazers_count, 0);
+  const totalForks  = repos.reduce((a,r) => a + r.forks_count, 0);
+
+  // NEW data
+  const globalRank  = getGlobalRanking(user, repos, finalScore);
+  const languages   = getTopLanguages(repos);
+  const quickWins   = getQuickWins(user, repos, finalScore);
+  const { metrics: compareMetrics, elites } = buildEliteComparison(user, repos, finalScore);
 
   const circumference = 2 * Math.PI * 44;
-  const dashOffset = circumference - (finalScore / 100) * circumference;
-  const scoreColor = getColor(finalScore);
+  const dashOffset    = circumference - (finalScore / 100) * circumference;
+  const scoreColor    = getColor(finalScore);
 
+  // ── HTML ──
   const html = `
+  <!-- PROFILE CARD -->
   <div class="anim anim-d1 profile-card">
     <img class="profile-avatar" src="${user.avatar_url}&s=180" alt="${user.login}" />
     <div class="profile-info">
@@ -870,9 +1268,9 @@ function renderResults(user, repos) {
       <div class="profile-login">@${user.login}</div>
       ${user.bio ? `<div class="profile-bio">${user.bio}</div>` : ''}
       <div class="profile-meta">
-        ${user.company ? `<div class="profile-meta-item">🏢 ${user.company}</div>` : ''}
+        ${user.company  ? `<div class="profile-meta-item">🏢 ${user.company}</div>` : ''}
         ${user.location ? `<div class="profile-meta-item">📍 ${user.location}</div>` : ''}
-        ${user.blog ? `<div class="profile-meta-item">🔗 <a href="${user.blog}" style="color:var(--accent)" target="_blank">website</a></div>` : ''}
+        ${user.blog     ? `<div class="profile-meta-item">🔗 <a href="${user.blog}" style="color:var(--accent)" target="_blank">website</a></div>` : ''}
         <div class="profile-meta-item">Joined <span>${new Date(user.created_at).getFullYear()}</span></div>
       </div>
       <div class="rank-badge">
@@ -885,8 +1283,7 @@ function renderResults(user, repos) {
         <svg class="score-svg" viewBox="0 0 100 100" width="100" height="100">
           <circle class="score-bg-circle" cx="50" cy="50" r="44" />
           <circle class="score-fg-circle"
-            id="score-ring"
-            cx="50" cy="50" r="44"
+            id="score-ring" cx="50" cy="50" r="44"
             stroke="${scoreColor}"
             stroke-dasharray="${circumference}"
             stroke-dashoffset="${circumference}" />
@@ -900,6 +1297,7 @@ function renderResults(user, repos) {
     </div>
   </div>
 
+  <!-- STATS OVERVIEW -->
   <div class="anim anim-d2 section-title">// stats overview</div>
   <div class="anim anim-d2 metrics-grid">
     <div class="metric-card ${totalStars > 50 ? 'good' : totalStars > 10 ? 'warn' : 'bad'}">
@@ -924,6 +1322,7 @@ function renderResults(user, repos) {
     </div>
   </div>
 
+  <!-- SCORE BREAKDOWN -->
   <div class="anim anim-d3 section-title">// score breakdown</div>
   <div class="anim anim-d3 breakdown-grid">
     ${Object.values(scores).map(s => {
@@ -943,9 +1342,168 @@ function renderResults(user, repos) {
     }).join('')}
   </div>
 
+  <!-- ①  GLOBAL RANKING -->
+  <div class="anim anim-d3 section-title">// global ranking</div>
+  <div class="anim anim-d3 global-rank-card">
+    <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap">
+      <div>
+        <div style="font-size:2.6rem;font-weight:800;letter-spacing:-0.04em;line-height:1;color:${globalRank.tier.color}">
+          Top ${100 - globalRank.percentile}%
+        </div>
+        <div style="font-family:var(--mono);font-size:0.7rem;color:var(--muted);margin-top:4px">
+          of ~180M GitHub developers worldwide
+        </div>
+      </div>
+      <div style="flex:1;min-width:120px">
+        <div style="font-size:1.6rem;font-weight:800;color:var(--text)">${globalRank.tier.emoji} ${globalRank.tier.label}</div>
+        <div style="font-family:var(--mono);font-size:0.7rem;color:var(--muted);margin-top:3px">
+          Est. rank: ~#${globalRank.rankNum.toLocaleString()}
+        </div>
+      </div>
+    </div>
+
+    <!-- Tier strip -->
+    <div style="margin-top:22px;position:relative;padding-top:18px">
+      <div class="rank-tiers">
+        ${[
+          {label:'S-Class',emoji:'🏆',range:'Top 5%',   min:95},
+          {label:'A+ Elite',emoji:'⚡',range:'Top 20%',  min:80},
+          {label:'A Adv.',emoji:'🚀',range:'Top 40%',    min:60},
+          {label:'B Rising',emoji:'📈',range:'Top 60%',  min:40},
+          {label:'C Active',emoji:'🌱',range:'Top 80%',  min:20},
+          {label:'D Start.',emoji:'🐣',range:'All',       min:0},
+        ].map(t => `
+          <div class="rank-tier ${globalRank.percentile >= t.min && (t.min === 0 || globalRank.percentile < (t.min === 95 ? 101 : [95,80,60,40,20,0][[95,80,60,40,20,0].indexOf(t.min)-1]||101)) ? 'active' : ''}">
+            <span class="rank-tier-emoji">${t.emoji}</span>
+            <span class="rank-tier-name">${t.label}</span>
+            <span class="rank-tier-range">${t.range}</span>
+          </div>`).join('')}
+      </div>
+    </div>
+
+    <!-- Percentile bar -->
+    <div class="percentile-bar-wrap">
+      <div class="percentile-bar-label">
+        <span>Global Percentile</span>
+        <span style="color:${globalRank.tier.color};font-weight:700">${globalRank.percentile}th percentile</span>
+      </div>
+      <div class="percentile-track">
+        <div class="percentile-fill" id="pct-fill" data-width="${globalRank.percentile}" style="width:0%"></div>
+        <div class="percentile-marker" style="left:5%"  title="Median (50th)"></div>
+        <div class="percentile-marker" style="left:90%" title="Top 10%"></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;font-family:var(--mono);font-size:0.6rem;color:var(--muted);margin-top:4px">
+        <span>0th</span><span>← Median</span><span>Top 10% →</span><span>99th</span>
+      </div>
+    </div>
+
+    <!-- Sub-dimension stats -->
+    <div class="global-stats-row">
+      <div class="global-stat">
+        <span class="global-stat-val">${Math.round(globalRank.breakdown.starsP)}th</span>
+        <span class="global-stat-lbl">Stars percentile</span>
+      </div>
+      <div class="global-stat">
+        <span class="global-stat-val">${Math.round(globalRank.breakdown.followP)}th</span>
+        <span class="global-stat-lbl">Followers percentile</span>
+      </div>
+      <div class="global-stat">
+        <span class="global-stat-val">${Math.round(globalRank.breakdown.reposP)}th</span>
+        <span class="global-stat-lbl">Repos percentile</span>
+      </div>
+      <div class="global-stat">
+        <span class="global-stat-val">${Math.round(globalRank.breakdown.scoreP)}th</span>
+        <span class="global-stat-lbl">Score percentile</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ② QUICK WINS -->
+  <div class="anim anim-d4 section-title">// quick wins — easy score boosts</div>
+  <div class="anim anim-d4 quick-wins-grid">
+    ${quickWins.map(w => `
+    <div class="quick-win-card">
+      <div class="quick-win-badge">${w.emoji}</div>
+      <div style="flex:1;min-width:0">
+        <div class="quick-win-pts">${w.pts}</div>
+        <div class="quick-win-title">${w.title}</div>
+        <div class="quick-win-desc">${w.desc}</div>
+        <div class="quick-win-effort">⏱ ${w.effort}</div>
+      </div>
+    </div>`).join('')}
+  </div>
+
+  <!-- ③ TOP LANGUAGES -->
+  <div class="anim anim-d4 section-title">// top languages</div>
+  <div class="anim anim-d4 languages-wrap">
+    ${languages.length === 0
+      ? `<div style="font-family:var(--mono);font-size:0.8rem;color:var(--muted);text-align:center;padding:20px">No language data found — all repos may be forks.</div>`
+      : `
+    <div style="font-family:var(--mono);font-size:0.7rem;color:var(--muted);margin-bottom:2px">${languages.length} languages detected across ${repos.filter(r=>!r.fork).length} original repos</div>
+    <div class="lang-rainbow" id="lang-rainbow">
+      ${languages.map(l => `<div class="lang-rainbow-seg" data-pct="${l.pct}" style="background:${l.color};flex:0" title="${l.lang} ${l.pct}%"></div>`).join('')}
+    </div>
+    <div class="lang-list">
+      ${languages.map((l, i) => `
+      <div class="lang-row">
+        <div class="lang-dot" style="background:${l.color}"></div>
+        <div class="lang-name">${l.lang}</div>
+        <div class="lang-track">
+          <div class="lang-fill" data-width="${l.pct}" style="background:${l.color};width:0%"></div>
+        </div>
+        <div class="lang-pct">${l.pct}%</div>
+        <div class="lang-repos">${l.count} repo${l.count > 1 ? 's' : ''} · ⭐${l.stars}</div>
+      </div>`).join('')}
+    </div>`}
+  </div>
+
+  <!-- ④ ELITE COMPARISON -->
+  <div class="anim anim-d5 section-title">// you vs top github profiles</div>
+  <div class="anim anim-d5 compare-table">
+    <div class="compare-header">
+      <div>Metric</div>
+      <div class="col-you">@${user.login}</div>
+      ${elites.map(e => `<div title="${e.title}">@${e.login.slice(0,10)}</div>`).join('')}
+    </div>
+    ${elites.slice(0,1).map(e => `
+    <div class="compare-profile">
+      ${elites.map(e2 => `
+        <div style="display:flex;align-items:center;gap:6px;margin-right:16px">
+          <img src="${e2.avatar}" alt="${e2.login}" />
+          <div>
+            <div class="compare-profile-name">${e2.name}</div>
+            <div class="compare-profile-title">${e2.title}</div>
+          </div>
+        </div>`).join('')}
+    </div>`).join('')}
+    ${compareMetrics.map(m => `
+    <div class="compare-row">
+      <div>
+        <div class="compare-metric-name">${m.label}</div>
+        <div class="compare-metric-sub">${m.sub}</div>
+      </div>
+      <div class="compare-cell you">${m.fmt(m.you)}</div>
+      ${elites.map(e => {
+        const eliteVal = e[m.eliteKey];
+        const ratio = m.you > 0 ? Math.round((m.you / eliteVal) * 100) : 0;
+        const isClose = ratio >= 70;
+        return `<div class="compare-cell elite">
+          ${m.fmt(eliteVal)}
+          <span class="compare-delta" style="color:${isClose?'#10b981':'#64748b'}">${ratio}% of theirs</span>
+        </div>`;
+      }).join('')}
+    </div>`).join('')}
+    <div class="compare-legend">
+      <div class="compare-legend-item"><div class="compare-legend-dot" style="background:var(--accent)"></div> You</div>
+      <div class="compare-legend-item"><div class="compare-legend-dot" style="background:var(--warn)"></div> Elite profile values</div>
+      <div class="compare-legend-item"><div class="compare-legend-dot" style="background:var(--accent3)"></div> ≥70% — close match</div>
+    </div>
+  </div>
+
+  <!-- TOP REPOS -->
   ${topRepos.length > 0 ? `
-  <div class="anim anim-d4 section-title">// top repositories</div>
-  <div class="anim anim-d4 repos-grid">
+  <div class="anim anim-d5 section-title">// top repositories</div>
+  <div class="anim anim-d5 repos-grid">
     ${topRepos.map(r => `
     <a class="repo-card" href="${r.html_url}" target="_blank" rel="noopener">
       <div class="repo-name">${r.name}</div>
@@ -958,7 +1516,8 @@ function renderResults(user, repos) {
     </a>`).join('')}
   </div>` : ''}
 
-  <div class="anim anim-d5 section-title">// suggestions to improve</div>
+  <!-- SUGGESTIONS -->
+  <div class="anim anim-d5 section-title">// improvement checklist</div>
   <div class="anim anim-d5 suggestions-list">
     ${suggestions.map(s => `
     <div class="suggestion-item">
@@ -971,7 +1530,7 @@ function renderResults(user, repos) {
   </div>
 
   <div class="anim anim-d6" style="text-align:center">
-    <button class="share-btn" onclick="copyShare('${user.login}', ${finalScore}, '${rank.label}')">
+    <button class="share-btn" onclick="copyShare('${user.login}', ${finalScore}, '${rank.label}', ${100-globalRank.percentile})">
       📋 Copy shareable result
     </button>
   </div>`;
@@ -980,31 +1539,45 @@ function renderResults(user, repos) {
   el.innerHTML = html;
   el.style.display = 'block';
 
-  // Animate score ring
+  // Animations
   requestAnimationFrame(() => {
+    // Score ring
     const ring = document.getElementById('score-ring');
-    if (ring) {
-      ring.style.strokeDashoffset = dashOffset;
-    }
-    // count up
-    let current = 0;
-    const step = finalScore / 60;
+    if (ring) ring.style.strokeDashoffset = dashOffset;
+
+    // Score counter
+    let cur = 0; const step = finalScore / 60;
     const counter = setInterval(() => {
-      current = Math.min(current + step, finalScore);
+      cur = Math.min(cur + step, finalScore);
       const el = document.getElementById('score-display');
-      if (el) el.textContent = Math.round(current);
-      if (current >= finalScore) clearInterval(counter);
+      if (el) el.textContent = Math.round(cur);
+      if (cur >= finalScore) clearInterval(counter);
     }, 16);
-    // animate progress bars
-    document.querySelectorAll('.progress-fill').forEach(bar => {
-      const w = bar.getAttribute('data-width');
-      setTimeout(() => { bar.style.width = w + '%'; }, 300);
-    });
+
+    // All progress bars
+    setTimeout(() => {
+      document.querySelectorAll('.progress-fill, .lang-fill').forEach(bar => {
+        bar.style.width = bar.getAttribute('data-width') + '%';
+      });
+      // Global percentile bar
+      const pf = document.getElementById('pct-fill');
+      if (pf) pf.style.width = pf.getAttribute('data-width') + '%';
+      // Language rainbow
+      document.querySelectorAll('.lang-rainbow-seg').forEach(seg => {
+        seg.style.flex = seg.getAttribute('data-pct');
+      });
+      // Active rank tier fix
+      const tiers = document.querySelectorAll('.rank-tier');
+      const thresholds = [95, 80, 60, 40, 20, 0];
+      tiers.forEach((t, i) => t.classList.remove('active'));
+      const tierIdx = thresholds.findIndex(th => globalRank.percentile >= th);
+      if (tierIdx >= 0 && tiers[tierIdx]) tiers[tierIdx].classList.add('active');
+    }, 350);
   });
 }
 
-function copyShare(login, score, rank) {
-  const text = `🔍 GitHub Profile Analyzed by EknathaLabs\n@${login} scored ${score}/100 — ${rank}\nCheck yours: https://eknathalabs.com/github-profile-analyzer`;
+function copyShare(login, score, rank, topPct) {
+  const text = `🔍 GitHub Profile Analyzed by EknathaLabs\n@${login} scored ${score}/100 — ${rank}\n🌍 Global ranking: Top ${topPct}% of 180M developers\nCheck yours: https://eknathareddyp.github.io/github-profile-analyzer`;
   navigator.clipboard.writeText(text).then(() => {
     const btn = document.querySelector('.share-btn');
     btn.textContent = '✓ Copied!';
