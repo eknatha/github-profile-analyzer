@@ -21,7 +21,45 @@
     --muted: #64748b;
     --mono: 'Space Mono', monospace;
     --sans: 'Syne', sans-serif;
+    --shadow: 0 4px 24px rgba(0,0,0,0.4);
   }
+
+  /* ── LIGHT MODE ── */
+  html.light {
+    --bg: #f4f6fa;
+    --surface: #ffffff;
+    --surface2: #eef0f5;
+    --border: rgba(0,0,0,0.08);
+    --accent: #0284c7;
+    --accent2: #7c3aed;
+    --accent3: #059669;
+    --warn: #d97706;
+    --danger: #dc2626;
+    --text: #0f172a;
+    --muted: #64748b;
+    --shadow: 0 4px 24px rgba(0,0,0,0.1);
+  }
+  html.light body::before {
+    background-image:
+      linear-gradient(rgba(2,132,199,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(2,132,199,0.04) 1px, transparent 1px);
+  }
+  html.light .glow-orb { background: radial-gradient(circle, rgba(124,58,237,0.06) 0%, transparent 70%); }
+  html.light header { background: rgba(244,246,250,0.9); }
+  html.light .score-bg-circle { stroke: var(--surface2); }
+  html.light .radar-wrap { background: var(--surface2); }
+  html.light .activity-cell { filter: saturate(1.4); }
+  html.light .section-title { color: var(--muted); }
+  html.light .metric-card { box-shadow: 0 1px 6px rgba(0,0,0,0.06); }
+  html.light .profile-card { box-shadow: 0 2px 12px rgba(0,0,0,0.07); }
+  html.light .analysis-panel,
+  html.light .score-breakdown-full,
+  html.light .global-rank-card,
+  html.light .compare-users-wrap,
+  html.light .languages-wrap,
+  html.light .compare-table { box-shadow: 0 1px 6px rgba(0,0,0,0.06); }
+  html.light .rt-output.roast-active { background: rgba(239,68,68,0.04); }
+  html.light .rt-output.toast-active { background: rgba(16,185,129,0.04); }
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -506,6 +544,151 @@
     margin-top: 24px;
   }
   .share-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* share btn */
+  .share-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all .2s;
+    margin-top: 24px;
+  }
+  .share-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* ── THEME TOGGLE ── */
+  .theme-toggle {
+    display: flex; align-items: center;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 3px;
+    gap: 2px;
+    flex-shrink: 0;
+  }
+  .theme-btn {
+    width: 30px; height: 30px; border-radius: 16px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.9rem; border: none; background: transparent;
+    cursor: pointer; transition: background .2s, transform .15s; color: var(--muted);
+  }
+  .theme-btn.active { background: var(--surface); color: var(--text); transform: scale(1.05); box-shadow: 0 2px 8px rgba(0,0,0,0.3); }
+
+  /* ── USER COMPARISON ── */
+  .compare-users-wrap {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 14px; overflow: hidden; margin-bottom: 24px;
+  }
+  .cmp-toggle-bar {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 16px 22px; cursor: pointer; user-select: none;
+    transition: background .15s;
+  }
+  .cmp-toggle-bar:hover { background: rgba(255,255,255,0.02); }
+  .cmp-toggle-label { font-size: 0.9rem; font-weight: 700; display: flex; align-items: center; gap: 10px; }
+  .cmp-toggle-meta { font-family: var(--mono); font-size: 0.65rem; color: var(--muted); font-weight: 400; margin-left: 4px; }
+  .cmp-toggle-chevron { font-size: 0.7rem; color: var(--muted); transition: transform .2s; }
+  .compare-users-wrap.open .cmp-toggle-chevron { transform: rotate(90deg); }
+  .cmp-body { display: none; padding: 0 22px 22px; border-top: 1px solid var(--border); }
+  .compare-users-wrap.open .cmp-body { display: block; }
+  .cmp-input-row { display: flex; gap: 10px; margin-top: 16px; align-items: center; flex-wrap: wrap; }
+  .cmp-input {
+    flex: 1; min-width: 160px; background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 8px; padding: 11px 14px; font-family: var(--mono); font-size: 0.82rem;
+    color: var(--text); outline: none; transition: border-color .2s;
+  }
+  .cmp-input::placeholder { color: var(--muted); }
+  .cmp-input:focus { border-color: rgba(0,229,255,0.35); }
+  .cmp-btn {
+    background: var(--accent); color: #000; border: none; border-radius: 8px;
+    padding: 11px 20px; font-family: var(--sans); font-weight: 700; font-size: 0.82rem;
+    cursor: pointer; white-space: nowrap; transition: opacity .2s; flex-shrink: 0;
+  }
+  .cmp-btn:hover { opacity: .85; }
+  .cmp-btn:disabled { opacity: .45; cursor: not-allowed; }
+  .cmp-loading { font-family: var(--mono); font-size: 0.75rem; color: var(--muted); text-align: center; padding: 20px; display: none; }
+  .cmp-error   { font-family: var(--mono); font-size: 0.75rem; color: var(--danger); padding: 10px 0; display: none; }
+  .cmp-results { margin-top: 20px; display: none; }
+  .cmp-heads {
+    display: grid; grid-template-columns: 1fr 40px 1fr;
+    gap: 12px; margin-bottom: 18px; align-items: center;
+  }
+  .cmp-profile-mini {
+    display: flex; flex-direction: column; align-items: center; gap: 8px; text-align: center;
+    background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; padding: 14px;
+  }
+  .cmp-avatar { width: 58px; height: 58px; border-radius: 50%; border: 2px solid var(--accent); }
+  .cmp-profile-name { font-size: 0.82rem; font-weight: 700; }
+  .cmp-profile-login { font-family: var(--mono); font-size: 0.68rem; color: var(--accent); }
+  .cmp-profile-score { font-family: var(--mono); font-size: 1.3rem; font-weight: 700; }
+  .cmp-vs { font-family: var(--mono); font-size: 0.8rem; color: var(--muted); text-align: center; }
+  .cmp-metric-list { display: flex; flex-direction: column; gap: 8px; }
+  .cmp-metric-row { display: grid; grid-template-columns: 1fr auto 1fr; gap: 6px; align-items: center; }
+  .cmp-metric-a { text-align: right; }
+  .cmp-metric-b { text-align: left; }
+  .cmp-metric-center { font-family: var(--mono); font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); text-align: center; padding: 0 6px; white-space: nowrap; }
+  .cmp-val {
+    font-family: var(--mono); font-size: 0.85rem; font-weight: 700;
+    padding: 6px 10px; border-radius: 6px; background: var(--surface2); display: inline-block;
+  }
+  .cmp-val.winner { background: rgba(16,185,129,0.12); color: var(--accent3); }
+  .cmp-val.loser  { background: rgba(239,68,68,0.08);  color: var(--danger); }
+  .cmp-val.tied   { background: rgba(245,158,11,0.08); color: var(--warn); }
+  .cmp-winner-banner {
+    text-align: center; margin-top: 16px; padding: 14px; border-radius: 10px;
+    font-weight: 700; font-size: 0.92rem;
+    background: rgba(16,185,129,0.08); border: 1px solid rgba(16,185,129,0.2); color: var(--accent3);
+  }
+
+  /* ── ROAST / TOAST ── */
+  .roast-toast-wrap { margin-bottom: 24px; }
+  .rt-toggle-row {
+    display: flex; align-items: stretch; justify-content: center;
+    background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+    overflow: hidden; margin-bottom: 12px;
+  }
+  .rt-tab {
+    flex: 1; padding: 14px 20px; font-family: var(--sans); font-weight: 700; font-size: 0.88rem;
+    border: none; cursor: pointer; transition: background .2s, color .2s;
+    background: transparent; color: var(--muted);
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    border-bottom: 2px solid transparent;
+  }
+  .rt-tab.roast.active { background: rgba(239,68,68,0.08); color: #f87171; border-bottom-color: #ef4444; }
+  .rt-tab.toast.active { background: rgba(16,185,129,0.08); color: var(--accent3); border-bottom-color: var(--accent3); }
+  .rt-tab:hover:not(.active) { background: rgba(255,255,255,0.03); color: var(--text); }
+  .rt-divider { width: 1px; background: var(--border); }
+
+  .rt-output {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+    padding: 22px; min-height: 80px; display: none;
+  }
+  .rt-output.show { display: block; animation: fadeUp .3s ease; }
+  .rt-output.roast-active { border-color: rgba(239,68,68,0.3); background: rgba(239,68,68,0.02); }
+  .rt-output.toast-active { border-color: rgba(16,185,129,0.3); background: rgba(16,185,129,0.02); }
+  .rt-lines { display: flex; flex-direction: column; gap: 12px; }
+  .rt-line { display: flex; gap: 12px; align-items: flex-start; animation: fadeUp .35s ease both; }
+  .rt-emoji { font-size: 1.15rem; flex-shrink: 0; margin-top: 1px; }
+  .rt-text { font-size: 0.87rem; line-height: 1.65; color: var(--muted); }
+  .rt-text strong { color: var(--text); }
+  .rt-generate-btn {
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    width: 100%; padding: 13px; background: var(--surface2);
+    border: 1px dashed var(--border); border-radius: 10px;
+    font-family: var(--sans); font-weight: 700; font-size: 0.85rem;
+    color: var(--muted); cursor: pointer; transition: border-color .2s, color .2s;
+    margin-top: 12px;
+  }
+  .rt-generate-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .rt-spinner { display: none; text-align: center; font-family: var(--mono); font-size: 0.75rem; color: var(--muted); padding: 18px; }
+  .rt-spinner.show { display: block; }
 
   /* Footer */
   footer {
@@ -1014,6 +1197,11 @@
   </div>
   <div style="display:flex;align-items:center;gap:12px">
     <div class="header-tag">github-profile-analyzer</div>
+    <!-- Theme Toggle -->
+    <div class="theme-toggle" title="Toggle light/dark mode">
+      <button class="theme-btn active" id="btn-dark" onclick="setTheme('dark')" title="Dark mode">🌙</button>
+      <button class="theme-btn" id="btn-light" onclick="setTheme('light')" title="Light mode">☀️</button>
+    </div>
     <div class="visitor-counter" title="Site visitors — total / today">
       <div class="vc-live-dot"></div>
       <span class="vc-icon">👁</span>
@@ -1915,6 +2103,27 @@ function renderResults(user, repos) {
     </div>
   </div>
 
+  <!-- USER COMPARISON -->
+  <div class="anim anim-d5 section-title">// user comparison</div>
+  <div class="anim anim-d5 compare-users-wrap" id="user-cmp-wrap">
+    <div class="cmp-toggle-bar" onclick="toggleCmp()">
+      <div class="cmp-toggle-label">
+        👥 Compare with another GitHub user
+        <span class="cmp-toggle-meta">— side-by-side metrics</span>
+      </div>
+      <span class="cmp-toggle-chevron">▶</span>
+    </div>
+    <div class="cmp-body">
+      <div class="cmp-input-row">
+        <input class="cmp-input" id="cmp-username" type="text" placeholder="Enter GitHub username" spellcheck="false" autocomplete="off" />
+        <button class="cmp-btn" id="cmp-btn" onclick="runComparison('${user.login}', ${finalScore})">Compare →</button>
+      </div>
+      <div class="cmp-error" id="cmp-error"></div>
+      <div class="cmp-loading" id="cmp-loading">⟳ Fetching profile...</div>
+      <div class="cmp-results" id="cmp-results"></div>
+    </div>
+  </div>
+
   <!-- TOP REPOS -->
   ${topRepos.length > 0 ? `
   <div class="anim anim-d5 section-title">// top repositories</div>
@@ -1944,11 +2153,32 @@ function renderResults(user, repos) {
     </div>`).join('')}
   </div>
 
+  <!-- PORTFOLIO ROAST / TOAST -->
+  <div class="anim anim-d6 section-title">// portfolio roast &amp; toast</div>
+  <div class="anim anim-d6 roast-toast-wrap">
+    <div class="rt-toggle-row">
+      <button class="rt-tab roast" id="rt-roast-btn" onclick="generateRT('roast', ${finalScore}, '${user.login}', ${totalStars}, ${user.public_repos}, ${user.followers})">
+        🔥 Roast Me
+      </button>
+      <div class="rt-divider"></div>
+      <button class="rt-tab toast" id="rt-toast-btn" onclick="generateRT('toast', ${finalScore}, '${user.login}', ${totalStars}, ${user.public_repos}, ${user.followers})">
+        🥂 Toast Me
+      </button>
+    </div>
+    <div class="rt-spinner" id="rt-spinner">✦ Generating your ${finalScore >= 60 ? 'roast' : 'toast'}...</div>
+    <div class="rt-output" id="rt-output"></div>
+    <button class="rt-generate-btn" id="rt-regen" style="display:none" onclick="regenRT()">↺ Generate another</button>
+  </div>
+
   <div class="anim anim-d6" style="text-align:center">
     <button class="share-btn" onclick="copyShare('${user.login}', ${finalScore}, '${rank.label}', ${100-globalRank.percentile})">
       📋 Copy shareable result
     </button>
   </div>`;
+
+  // Cache for radar redraw on theme switch
+  window._lastScores     = scores;
+  window._lastFinalScore = finalScore;
 
   const el = document.getElementById('results');
   el.innerHTML = html;
@@ -2084,7 +2314,8 @@ function drawRadar(scores, finalScore) {
         i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
       }
       ctx.closePath();
-      ctx.strokeStyle = 'rgba(255,255,255,0.07)';
+      const isLightMode = document.documentElement.classList.contains('light');
+      ctx.strokeStyle = isLightMode ? 'rgba(0,0,0,0.08)' : 'rgba(255,255,255,0.07)';
       ctx.lineWidth = 1;
       ctx.stroke();
     }
@@ -2093,7 +2324,8 @@ function drawRadar(scores, finalScore) {
       ctx.beginPath();
       ctx.moveTo(cx, cy);
       ctx.lineTo(cx + R * Math.cos(angle), cy + R * Math.sin(angle));
-      ctx.strokeStyle = 'rgba(255,255,255,0.08)';
+      const isLightMode2 = document.documentElement.classList.contains('light');
+      ctx.strokeStyle = isLightMode2 ? 'rgba(0,0,0,0.08)' : 'rgba(255,255,255,0.08)';
       ctx.lineWidth = 1;
       ctx.stroke();
     }
@@ -2129,7 +2361,8 @@ function drawRadar(scores, finalScore) {
       const lx = cx + (R + 22) * Math.cos(angle);
       const ly = cy + (R + 22) * Math.sin(angle);
       ctx.font = '600 10px Syne, sans-serif';
-      ctx.fillStyle = 'rgba(255,255,255,0.7)';
+      const isLight = document.documentElement.classList.contains('light');
+      ctx.fillStyle = isLight ? 'rgba(15,23,42,0.7)' : 'rgba(255,255,255,0.7)';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
       ctx.fillText(labels[i], lx, ly);
@@ -2145,6 +2378,216 @@ function drawRadar(scores, finalScore) {
     if (t < 1) requestAnimationFrame(animateRadar);
   }
   requestAnimationFrame(animateRadar);
+}
+
+// ── THEME TOGGLE ─────────────────────────────────────────────────────────────
+function setTheme(mode) {
+  document.documentElement.classList.toggle('light', mode === 'light');
+  const btnDark  = document.getElementById('btn-dark');
+  const btnLight = document.getElementById('btn-light');
+  if (btnDark)  btnDark.classList.toggle('active',  mode === 'dark');
+  if (btnLight) btnLight.classList.toggle('active', mode === 'light');
+  localStorage.setItem('eknathalabs-theme', mode);
+  // Redraw radar with updated colours
+  if (window._lastScores) drawRadar(window._lastScores, window._lastFinalScore);
+}
+// Restore theme on DOMContentLoaded so buttons exist
+document.addEventListener('DOMContentLoaded', () => {
+  const saved = localStorage.getItem('eknathalabs-theme');
+  if (saved === 'light') setTheme('light');
+});
+
+// ── USER COMPARISON ───────────────────────────────────────────────────────────
+function toggleCmp() {
+  document.getElementById('user-cmp-wrap').classList.toggle('open');
+}
+
+// Enter key in comparison input
+document.addEventListener('keydown', e => {
+  if (e.key !== 'Enter') return;
+  const inp = document.getElementById('cmp-username');
+  if (inp && document.activeElement === inp) {
+    const btn = document.getElementById('cmp-btn');
+    if (btn && !btn.disabled) btn.click();
+  }
+});
+
+async function runComparison(loginA, scoreA) {
+  const input   = document.getElementById('cmp-username');
+  const loginB  = input ? input.value.trim().replace(/^@/, '') : '';
+  if (!loginB) { input && input.focus(); return; }
+  if (loginB.toLowerCase() === loginA.toLowerCase()) {
+    showCmpError('Enter a different username to compare.'); return;
+  }
+
+  const btn     = document.getElementById('cmp-btn');
+  const loading = document.getElementById('cmp-loading');
+  const results = document.getElementById('cmp-results');
+  const errEl   = document.getElementById('cmp-error');
+
+  if (btn) btn.disabled = true;
+  if (loading) loading.style.display = 'block';
+  if (results) results.style.display = 'none';
+  if (errEl)   errEl.style.display   = 'none';
+
+  try {
+    const [uRes, rRes] = await Promise.all([
+      fetch(`https://api.github.com/users/${encodeURIComponent(loginB)}`),
+      fetch(`https://api.github.com/users/${encodeURIComponent(loginB)}/repos?per_page=100&sort=pushed`)
+    ]);
+    if (uRes.status === 404) throw new Error(`@${loginB} not found on GitHub.`);
+    if (uRes.status === 403) throw new Error('Rate limit hit. Wait a minute and retry.');
+    if (!uRes.ok) throw new Error('GitHub API error.');
+
+    const userB  = await uRes.json();
+    const reposB = await rRes.json();
+    const { finalScore: scoreB } = scoreProfile(userB, Array.isArray(reposB) ? reposB : []);
+
+    const userA  = window._lastUser;
+    const reposA = window._lastRepos || [];
+    const starsA = reposA.reduce((a,r) => a + r.stargazers_count, 0);
+    const starsB = (Array.isArray(reposB) ? reposB : []).reduce((a,r) => a + r.stargazers_count, 0);
+
+    const metrics = [
+      { label:'Score',     a: scoreA,                  b: scoreB,        fmt: v=>`${v}/100` },
+      { label:'Stars',     a: starsA,                  b: starsB,        fmt: v=>fmtNum(v) },
+      { label:'Followers', a: userA?.followers || 0,   b: userB.followers, fmt: v=>fmtNum(v) },
+      { label:'Repos',     a: userA?.public_repos || 0, b: userB.public_repos, fmt: v=>v },
+      { label:'Following', a: userA?.following || 0,   b: userB.following, fmt: v=>v },
+    ];
+
+    const aWins = metrics.filter(m => m.a > m.b).length;
+    const bWins = metrics.filter(m => m.b > m.a).length;
+    const winnerLogin = aWins > bWins ? loginA : bWins > aWins ? loginB : null;
+
+    if (results) {
+      results.innerHTML = `
+      <div class="cmp-heads">
+        <div class="cmp-profile-mini">
+          ${userA ? `<img class="cmp-avatar" src="${userA.avatar_url}&s=120" alt="${loginA}">` : ''}
+          <div class="cmp-profile-name">${userA?.name || loginA}</div>
+          <div class="cmp-profile-login">@${loginA}</div>
+          <div class="cmp-profile-score" style="color:${getColor(scoreA)}">${scoreA}</div>
+        </div>
+        <div class="cmp-vs">VS</div>
+        <div class="cmp-profile-mini">
+          <img class="cmp-avatar" src="${userB.avatar_url}&s=120" alt="${loginB}">
+          <div class="cmp-profile-name">${userB.name || loginB}</div>
+          <div class="cmp-profile-login">@${loginB}</div>
+          <div class="cmp-profile-score" style="color:${getColor(scoreB)}">${scoreB}</div>
+        </div>
+      </div>
+      <div class="cmp-metric-list">
+        ${metrics.map(m => {
+          const aWin = m.a > m.b, bWin = m.b > m.a;
+          return `
+          <div class="cmp-metric-row">
+            <div class="cmp-metric-a"><span class="cmp-val ${aWin?'winner':bWin?'loser':'tied'}">${m.fmt(m.a)}</span></div>
+            <div class="cmp-metric-center">${m.label}</div>
+            <div class="cmp-metric-b"><span class="cmp-val ${bWin?'winner':aWin?'loser':'tied'}">${m.fmt(m.b)}</span></div>
+          </div>`;
+        }).join('')}
+      </div>
+      <div class="cmp-winner-banner">
+        ${winnerLogin
+          ? `🏆 @${winnerLogin} wins ${Math.max(aWins,bWins)}–${Math.min(aWins,bWins)} across ${metrics.length} metrics`
+          : `🤝 It's a draw! Both profiles are evenly matched.`}
+      </div>`;
+      results.style.display = 'block';
+    }
+  } catch(e) {
+    showCmpError(e.message);
+  } finally {
+    if (btn) btn.disabled = false;
+    if (loading) loading.style.display = 'none';
+  }
+}
+
+function showCmpError(msg) {
+  const el = document.getElementById('cmp-error');
+  if (el) { el.textContent = '⚠ ' + msg; el.style.display = 'block'; }
+  const loading = document.getElementById('cmp-loading');
+  if (loading) loading.style.display = 'none';
+  const btn = document.getElementById('cmp-btn');
+  if (btn) btn.disabled = false;
+}
+
+// ── PORTFOLIO ROAST / TOAST ───────────────────────────────────────────────────
+let _rtMode='', _rtScore=0, _rtLogin='', _rtStars=0, _rtRepos=0, _rtFollowers=0;
+
+const ROAST_SETS = [
+  (s,l,st,r,f) => [
+    { e:'🔥', t:`<strong>@${l}</strong>, your GitHub profile is so empty the tumbleweeds filed a noise complaint.` },
+    { e:'💀', t:`<strong>${r} repos</strong> and only <strong>${st} stars</strong>? That's not a portfolio — that's a drafts folder with commitment issues.` },
+    { e:'👻', t:`Your last push was so long ago, GitHub sent you an "are you still there?" notification. They were not joking.` },
+    { e:'📉', t:`A score of <strong>${s}/100</strong>. That's not a score — it's a cry for help disguised as a number. Add a bio. Any bio. Just words.` },
+  ],
+  (s,l,st,r,f) => [
+    { e:'🫠', t:`<strong>${f} followers</strong>. Your mom has more LinkedIn connections. I'm just saying the bar exists and it exists lower than this.` },
+    { e:'🧟', t:`Profile completeness is giving "abandoned construction site." No bio, no website, no mercy for anyone trying to hire you.` },
+    { e:'🪦', t:`With <strong>${st} stars</strong>, your repos have the engagement of a terms-of-service page. People see them. They scroll past. They forget.` },
+    { e:'🤡', t:`Score: <strong>${s}/100</strong>. Not rock bottom — just hovering peacefully above it like a drone with no mission.` },
+  ],
+  (s,l,st,r,f) => [
+    { e:'☕', t:`<strong>@${l}</strong>'s GitHub is fine. Not good. Not bad. Fine. Like a hotel breakfast. Functional. Forgettable.` },
+    { e:'🪤', t:`<strong>${r} repos</strong> with fewer topics than a blank index card. GitHub search cannot find you. Recruiters cannot find you. Are you a developer or a witness in protection?` },
+    { e:'😬', t:`You clearly write code. You just don't want anyone to know about it. That's not modesty — that's sabotage.` },
+    { e:'🎯', t:`Score: <strong>${s}/100</strong>. You've achieved the "developer who codes in secret" tier. The work is there. The visibility isn't.` },
+  ],
+];
+
+const TOAST_SETS = [
+  (s,l,st,r,f) => [
+    { e:'🥂', t:`<strong>@${l}</strong>, raise a glass — a score of <strong>${s}/100</strong> puts you ahead of most developers on this platform. That's not luck. That's discipline.` },
+    { e:'⭐', t:`<strong>${st} stars</strong> across your repos. Real developers — strangers — found your code, ran it, liked it, and starred it. That is a meaningful signal.` },
+    { e:'🚀', t:`<strong>${r} public repos</strong>. Each one is a public statement that you ship. Not everyone does. You do.` },
+    { e:'🤝', t:`<strong>${f} followers</strong> watching what you build next. That is a community. Nurture it and it compounds.` },
+  ],
+  (s,l,st,r,f) => [
+    { e:'💎', t:`A score of <strong>${s}/100</strong> lands you in the top tier. The descriptions, the topics, the active commits — it's all paying off.` },
+    { e:'🌟', t:`<strong>${st} stars</strong> earned honestly. No gimmicks, no follow-for-follow. Just good code and clear documentation speaking for itself.` },
+    { e:'🏗️', t:`<strong>${r} repos</strong>, most described and active. You understand that a GitHub profile is a portfolio. Yours is looking genuinely sharp.` },
+    { e:'🧭', t:`Keep the pace. At this trajectory, the right recruiter will find this profile before you even apply.` },
+  ],
+  (s,l,st,r,f) => [
+    { e:'🎖️', t:`Genuinely — a score of <strong>${s}/100</strong> is the kind of number that makes engineering managers take a second look at a résumé.` },
+    { e:'📣', t:`<strong>${f} followers</strong> and growing. Your GitHub is doing the networking you don't have to do manually.` },
+    { e:'🔬', t:`The work ethic is clear: <strong>${r} repos</strong>, active pushes, consistent contributions. Building in public is rarer than it sounds. You're doing it.` },
+    { e:'🏆', t:`You're in the developer minority that actively maintains their GitHub. The stars and followers? They're just receipts from the work.` },
+  ],
+];
+
+function generateRT(mode, score, login, stars, repos, followers) {
+  _rtMode=mode; _rtScore=score; _rtLogin=login; _rtStars=stars; _rtRepos=repos; _rtFollowers=followers;
+  document.getElementById('rt-roast-btn').classList.toggle('active', mode==='roast');
+  document.getElementById('rt-toast-btn').classList.toggle('active', mode==='toast');
+  _renderRT();
+}
+
+function regenRT() { _renderRT(); }
+
+function _renderRT() {
+  const spinner = document.getElementById('rt-spinner');
+  const output  = document.getElementById('rt-output');
+  const regen   = document.getElementById('rt-regen');
+  if (!spinner || !output || !regen) return;
+
+  spinner.className  = 'rt-spinner show';
+  output.className   = 'rt-output';
+  regen.style.display = 'none';
+
+  setTimeout(() => {
+    const bank = _rtMode === 'roast' ? ROAST_SETS : TOAST_SETS;
+    const set  = bank[Math.floor(Math.random() * bank.length)](_rtScore, _rtLogin, _rtStars, _rtRepos, _rtFollowers);
+    spinner.className  = 'rt-spinner';
+    output.className   = `rt-output show ${_rtMode === 'roast' ? 'roast-active' : 'toast-active'}`;
+    output.innerHTML   = `<div class="rt-lines">${set.map((line, i) =>
+      `<div class="rt-line" style="animation-delay:${i * 0.08}s">
+        <span class="rt-emoji">${line.e}</span>
+        <div class="rt-text">${line.t}</div>
+      </div>`).join('')}</div>`;
+    regen.style.display = 'flex';
+  }, 650);
 }
 
 function copyShare(login, score, rank, topPct) {
@@ -2197,6 +2640,10 @@ async function analyze() {
 
     const user  = await userRes.json();
     const repos = await reposRes.json();
+
+    // Cache for user comparison and radar redraw
+    window._lastUser  = user;
+    window._lastRepos = Array.isArray(repos) ? repos : [];
 
     hideLoading();
     renderResults(user, Array.isArray(repos) ? repos : []);
