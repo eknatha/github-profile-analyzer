@@ -563,6 +563,191 @@
   }
   .share-btn:hover { border-color: var(--accent); color: var(--accent); }
 
+  /* ── HIRABILITY SCORE ── */
+  .hire-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 14px; overflow: hidden; margin-bottom: 24px;
+  }
+  .hire-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 18px 24px; border-bottom: 1px solid var(--border);
+    background: var(--surface2);
+  }
+  .hire-title { font-size: 1rem; font-weight: 800; }
+  .hire-score-badge {
+    display: flex; align-items: center; gap: 10px;
+    font-family: var(--mono);
+  }
+  .hire-score-num { font-size: 1.8rem; font-weight: 800; letter-spacing: -0.04em; }
+  .hire-score-label { font-size: 0.65rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
+  .hire-grade {
+    font-size: 0.7rem; font-weight: 700; padding: 4px 10px;
+    border-radius: 20px; font-family: var(--mono);
+  }
+  .hire-body { padding: 20px 24px; }
+  .hire-meter-wrap { margin-bottom: 20px; }
+  .hire-meter-track {
+    height: 8px; background: var(--surface2);
+    border-radius: 4px; overflow: hidden; position: relative;
+  }
+  .hire-meter-fill {
+    height: 100%; border-radius: 4px;
+    transition: width 1.2s cubic-bezier(.4,0,.2,1); width: 0%;
+  }
+  .hire-signals { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px,1fr)); gap: 10px; }
+  .hire-signal {
+    display: flex; align-items: flex-start; gap: 10px;
+    padding: 10px 12px; border-radius: 8px;
+    border: 1px solid var(--border);
+  }
+  .hire-signal.pass { background: rgba(16,185,129,0.06); border-color: rgba(16,185,129,0.18); }
+  .hire-signal.fail { background: rgba(239,68,68,0.05);  border-color: rgba(239,68,68,0.12); }
+  .hire-signal.warn { background: rgba(245,158,11,0.05); border-color: rgba(245,158,11,0.15); }
+  .hire-signal-icon { font-size: 1rem; flex-shrink: 0; margin-top: 1px; }
+  .hire-signal-body { min-width: 0; }
+  .hire-signal-name { font-size: 0.8rem; font-weight: 700; }
+  .hire-signal-desc { font-size: 0.7rem; color: var(--muted); margin-top: 2px; line-height: 1.45; }
+  .hire-tip {
+    margin-top: 16px; padding: 12px 16px;
+    background: rgba(0,229,255,0.05); border: 1px solid rgba(0,229,255,0.15);
+    border-radius: 8px; font-size: 0.8rem; color: var(--muted); line-height: 1.6;
+  }
+  .hire-tip strong { color: var(--accent); }
+
+  /* ── README QUALITY ── */
+  .readme-panel {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 14px; overflow: hidden; margin-bottom: 24px;
+  }
+  .readme-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 16px 22px; border-bottom: 1px solid var(--border); background: var(--surface2);
+  }
+  .readme-title { font-size: 0.95rem; font-weight: 800; }
+  .readme-overall {
+    font-family: var(--mono); font-size: 0.75rem; font-weight: 700;
+    padding: 4px 12px; border-radius: 20px;
+  }
+  .readme-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(260px,1fr));
+    gap: 1px; background: var(--border);
+  }
+  .readme-repo-card {
+    background: var(--surface); padding: 16px 18px;
+    display: flex; flex-direction: column; gap: 10px;
+  }
+  .readme-repo-head { display: flex; align-items: center; justify-content: space-between; }
+  .readme-repo-name { font-size: 0.85rem; font-weight: 700; color: var(--accent); }
+  .readme-repo-grade {
+    font-family: var(--mono); font-size: 0.65rem; font-weight: 700;
+    padding: 2px 8px; border-radius: 12px;
+  }
+  .grade-A { background: rgba(16,185,129,0.15); color: var(--accent3); }
+  .grade-B { background: rgba(0,229,255,0.12);  color: var(--accent); }
+  .grade-C { background: rgba(245,158,11,0.12); color: var(--warn); }
+  .grade-D { background: rgba(239,68,68,0.1);   color: var(--danger); }
+  .readme-checks { display: flex; flex-wrap: wrap; gap: 5px; }
+  .readme-check {
+    font-family: var(--mono); font-size: 0.62rem;
+    padding: 2px 7px; border-radius: 4px; display: flex; align-items: center; gap: 3px;
+  }
+  .readme-check.y { background: rgba(16,185,129,0.1); color: var(--accent3); }
+  .readme-check.n { background: rgba(239,68,68,0.08); color: var(--danger); }
+  .readme-score-bar { height: 3px; background: var(--surface2); border-radius: 2px; overflow: hidden; }
+  .readme-score-fill { height: 100%; border-radius: 2px; transition: width 1s ease; width: 0%; }
+  .readme-loading {
+    padding: 24px; text-align: center;
+    font-family: var(--mono); font-size: 0.75rem; color: var(--muted);
+  }
+  .readme-empty {
+    padding: 20px 22px; font-family: var(--mono);
+    font-size: 0.75rem; color: var(--muted); text-align: center;
+  }
+
+  /* ── CONTRIBUTION CALENDAR ── */
+  .contrib-panel {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 14px; overflow: hidden; margin-bottom: 24px;
+  }
+  .contrib-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 16px 22px; border-bottom: 1px solid var(--border); background: var(--surface2);
+  }
+  .contrib-title { font-size: 0.95rem; font-weight: 800; }
+  .contrib-stats { display: flex; gap: 16px; font-family: var(--mono); font-size: 0.7rem; color: var(--muted); }
+  .contrib-stat-val { color: var(--accent); font-weight: 700; }
+  .contrib-body { padding: 20px 22px; }
+  .contrib-months {
+    display: flex; gap: 0; margin-bottom: 6px;
+    font-family: var(--mono); font-size: 0.6rem; color: var(--muted);
+    padding-left: 24px;
+  }
+  .contrib-month-label { flex: 1; text-align: left; }
+  .contrib-grid-wrap { display: flex; gap: 4px; }
+  .contrib-days-label {
+    display: flex; flex-direction: column;
+    gap: 3px; padding-top: 2px;
+    font-family: var(--mono); font-size: 0.55rem; color: var(--muted);
+  }
+  .contrib-day-lbl { height: 11px; line-height: 11px; }
+  .contrib-weeks { display: flex; gap: 3px; flex: 1; overflow-x: auto; }
+  .contrib-week { display: flex; flex-direction: column; gap: 3px; }
+  .contrib-cell {
+    width: 11px; height: 11px; border-radius: 2px;
+    cursor: default; transition: transform .12s; flex-shrink: 0;
+  }
+  .contrib-cell:hover { transform: scale(1.5); z-index: 2; position: relative; }
+  .contrib-legend {
+    display: flex; align-items: center; gap: 6px; margin-top: 12px;
+    font-family: var(--mono); font-size: 0.6rem; color: var(--muted);
+    justify-content: flex-end;
+  }
+  .contrib-legend-cells { display: flex; gap: 3px; }
+  .contrib-streak-row {
+    display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px;
+  }
+  .contrib-streak-card {
+    flex: 1; min-width: 100px;
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 8px; padding: 10px 14px; text-align: center;
+  }
+  .contrib-streak-num {
+    font-family: var(--mono); font-size: 1.4rem; font-weight: 700;
+    color: var(--accent); letter-spacing: -0.03em;
+  }
+  .contrib-streak-lbl {
+    font-family: var(--mono); font-size: 0.6rem;
+    color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em;
+    margin-top: 2px;
+  }
+
+  /* ── SCORE CARD PNG ── */
+  .scorecard-wrap {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 14px; padding: 22px 24px; margin-bottom: 24px;
+  }
+  .scorecard-preview {
+    border-radius: 12px; overflow: hidden;
+    margin-bottom: 14px; display: flex; justify-content: center;
+    background: #0a0a0f; padding: 0;
+  }
+  .scorecard-preview canvas { display: block; max-width: 100%; border-radius: 12px; }
+  .scorecard-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+  .scorecard-btn {
+    flex: 1; min-width: 140px; display: flex; align-items: center; justify-content: center;
+    gap: 8px; padding: 11px 18px; border-radius: 8px;
+    font-family: var(--sans); font-weight: 700; font-size: 0.82rem;
+    cursor: pointer; transition: all .2s; border: none;
+  }
+  .scorecard-btn.primary {
+    background: var(--accent); color: #000;
+  }
+  .scorecard-btn.primary:hover { opacity: .88; transform: translateY(-1px); }
+  .scorecard-btn.secondary {
+    background: transparent; border: 1px solid var(--border); color: var(--muted);
+  }
+  .scorecard-btn.secondary:hover { border-color: var(--accent); color: var(--accent); }
+
   /* ── THEME TOGGLE ── */
   .theme-toggle {
     display: flex; align-items: center;
@@ -1747,9 +1932,379 @@ function timeSince(dateStr) {
   return Math.floor(diff/2592000) + 'mo ago';
 }
 
+// ── HIRABILITY SCORE ──────────────────────────────────────────────────────────
+function getHirabilityScore(user, repos) {
+  const ownRepos   = repos.filter(r => !r.fork);
+  const totalStars = repos.reduce((a,r) => a + r.stargazers_count, 0);
+  const withDesc   = ownRepos.filter(r => r.description && r.description.length > 10);
+  const withTopics = ownRepos.filter(r => r.topics && r.topics.length > 0);
+  const now        = Date.now();
+  const recent90   = ownRepos.filter(r => (now - new Date(r.pushed_at)) < 90*86400*1000);
+  const langSet    = new Set(ownRepos.map(r => r.language).filter(Boolean));
+
+  const signals = [
+    {
+      name: 'Professional Bio',
+      icon: user.bio ? '✅' : '❌',
+      type: user.bio ? 'pass' : 'fail',
+      pts: user.bio ? 15 : 0, max: 15,
+      desc: user.bio ? `Bio set: "${user.bio.slice(0,50)}…"` : 'No bio — recruiters skip unnamed profiles.'
+    },
+    {
+      name: 'Website / Portfolio',
+      icon: user.blog ? '✅' : '⚠️',
+      type: user.blog ? 'pass' : 'warn',
+      pts: user.blog ? 10 : 0, max: 10,
+      desc: user.blog ? `Links to: ${user.blog.slice(0,35)}` : 'No portfolio link — missed credibility signal.'
+    },
+    {
+      name: 'Location Set',
+      icon: user.location ? '✅' : '⚠️',
+      type: user.location ? 'pass' : 'warn',
+      pts: user.location ? 5 : 0, max: 5,
+      desc: user.location ? `📍 ${user.location}` : 'Location helps local recruiter matching.'
+    },
+    {
+      name: 'Recent Activity',
+      icon: recent90.length >= 3 ? '✅' : recent90.length >= 1 ? '⚠️' : '❌',
+      type: recent90.length >= 3 ? 'pass' : recent90.length >= 1 ? 'warn' : 'fail',
+      pts: Math.min(recent90.length * 4, 12), max: 12,
+      desc: `${recent90.length} repos pushed in last 90 days. Active code = active developer.`
+    },
+    {
+      name: 'Repo Descriptions',
+      icon: withDesc.length / Math.max(ownRepos.length,1) >= 0.6 ? '✅' : '⚠️',
+      type: withDesc.length / Math.max(ownRepos.length,1) >= 0.6 ? 'pass' : 'warn',
+      pts: Math.round((withDesc.length / Math.max(ownRepos.length,1)) * 12), max: 12,
+      desc: `${withDesc.length}/${ownRepos.length} repos described. Recruiters read these.`
+    },
+    {
+      name: 'Public Repo Volume',
+      icon: ownRepos.length >= 10 ? '✅' : ownRepos.length >= 4 ? '⚠️' : '❌',
+      type: ownRepos.length >= 10 ? 'pass' : ownRepos.length >= 4 ? 'warn' : 'fail',
+      pts: Math.min(ownRepos.length * 1.2, 12), max: 12,
+      desc: `${ownRepos.length} original repos. Volume signals breadth of experience.`
+    },
+    {
+      name: 'Stars Earned',
+      icon: totalStars >= 20 ? '✅' : totalStars >= 5 ? '⚠️' : '❌',
+      type: totalStars >= 20 ? 'pass' : totalStars >= 5 ? 'warn' : 'fail',
+      pts: Math.min(totalStars * 0.5, 10), max: 10,
+      desc: `${totalStars} total stars. Peer-validated quality signal.`
+    },
+    {
+      name: 'Language Diversity',
+      icon: langSet.size >= 3 ? '✅' : '⚠️',
+      type: langSet.size >= 3 ? 'pass' : 'warn',
+      pts: Math.min(langSet.size * 3, 9), max: 9,
+      desc: `${langSet.size} languages: ${[...langSet].slice(0,4).join(', ')}. Polyglots are preferred.`
+    },
+    {
+      name: 'Follower Presence',
+      icon: user.followers >= 20 ? '✅' : '⚠️',
+      type: user.followers >= 20 ? 'pass' : 'warn',
+      pts: Math.min(user.followers * 0.3, 9), max: 9,
+      desc: `${user.followers} followers signals community recognition.`
+    },
+    {
+      name: 'Topics / Tags',
+      icon: withTopics.length >= 3 ? '✅' : '❌',
+      type: withTopics.length >= 3 ? 'pass' : 'fail',
+      pts: Math.min(withTopics.length * 2, 6), max: 6,
+      desc: `${withTopics.length} repos tagged. Topics are GitHub SEO.`
+    },
+  ];
+
+  const raw = signals.reduce((a, s) => a + Math.min(s.pts, s.max), 0);
+  const maxPts = signals.reduce((a, s) => a + s.max, 0);
+  const score = Math.min(Math.round((raw / maxPts) * 100), 100);
+
+  const grade = score >= 85 ? { label:'Hire-Ready', color:'#10b981', bg:'rgba(16,185,129,0.15)' }
+              : score >= 70 ? { label:'Strong',      color:'#00e5ff', bg:'rgba(0,229,255,0.12)' }
+              : score >= 55 ? { label:'Developing',  color:'#f59e0b', bg:'rgba(245,158,11,0.12)' }
+              :               { label:'Needs Work',  color:'#ef4444', bg:'rgba(239,68,68,0.1)' };
+
+  const tip = score >= 85
+    ? '🎯 Your profile is <strong>recruiter-ready</strong>. Focus on pinning your best 6 repos and keeping activity consistent.'
+    : score >= 70
+    ? `🔧 You're <strong>close to hire-ready</strong>. Quick wins: ${[!user.bio&&'add a bio',!user.blog&&'add a website',withTopics.length<3&&'tag repos'].filter(Boolean).slice(0,2).join(' & ')}.`
+    : `🚧 Key gaps: ${signals.filter(s=>s.type!=='pass').map(s=>s.name).slice(0,3).join(', ')}. Fixing these can move your hirability score 20+ points.`;
+
+  return { score, grade, signals, tip };
+}
+
+// ── CONTRIBUTION CALENDAR ─────────────────────────────────────────────────────
+function buildContribCalendar(repos) {
+  // Build a simulated 52-week heatmap from repo push dates
+  // Real contributions API requires auth — we use repo push dates as proxy
+  const now = Date.now();
+  const DAYS = 364;
+  const dayMap = {};
+
+  repos.forEach(r => {
+    // count the push as 1 contribution on that day
+    const d = new Date(r.pushed_at);
+    const key = d.toISOString().slice(0,10);
+    dayMap[key] = (dayMap[key] || 0) + 1;
+  });
+
+  // Build week array (52 weeks × 7 days, oldest first)
+  const weeks = [];
+  // align to Sunday
+  const endDate = new Date();
+  endDate.setHours(0,0,0,0);
+  const startDate = new Date(endDate);
+  startDate.setDate(startDate.getDate() - DAYS);
+  // adjust to last Sunday
+  startDate.setDate(startDate.getDate() - startDate.getDay());
+
+  let d = new Date(startDate);
+  let week = [];
+  while (d <= endDate) {
+    const key = d.toISOString().slice(0,10);
+    week.push({ date: key, count: dayMap[key] || 0 });
+    if (week.length === 7) { weeks.push(week); week = []; }
+    d.setDate(d.getDate() + 1);
+  }
+  if (week.length) { while(week.length < 7) week.push({ date:'', count:0 }); weeks.push(week); }
+
+  const totalContribs = Object.values(dayMap).reduce((a,v)=>a+v,0);
+  const activeDays    = Object.values(dayMap).filter(v=>v>0).length;
+  const maxDay        = Math.max(...Object.values(dayMap), 1);
+
+  // Streak calculation
+  let curStreak = 0, maxStreak = 0, streak = 0;
+  const allDays = [];
+  for (let i = 0; i <= DAYS; i++) {
+    const dd = new Date(endDate); dd.setDate(endDate.getDate() - i);
+    allDays.push(dd.toISOString().slice(0,10));
+  }
+  // current streak (from today backwards)
+  for (const day of allDays) {
+    if (dayMap[day]) { curStreak++; } else break;
+  }
+  // max streak
+  let run = 0;
+  for (const day of [...allDays].reverse()) {
+    if (dayMap[day]) { run++; maxStreak = Math.max(maxStreak, run); } else run = 0;
+  }
+
+  return { weeks, totalContribs, activeDays, maxDay, curStreak, maxStreak };
+}
+
+// ── README QUALITY SCORER ─────────────────────────────────────────────────────
+async function scoreREADMEs(repos) {
+  const targets = repos
+    .filter(r => !r.fork)
+    .sort((a,b) => b.stargazers_count - a.stargazers_count)
+    .slice(0, 6);
+
+  const results = await Promise.allSettled(
+    targets.map(async repo => {
+      try {
+        const res = await fetch(
+          `https://api.github.com/repos/${repo.full_name}/readme`,
+          { headers: { Accept: 'application/vnd.github.v3.raw' } }
+        );
+        if (!res.ok) return { repo, hasReadme: false, content: '', checks: {}, score: 0 };
+        const content = await res.text();
+        const checks = {
+          exists:       true,
+          hasTitle:     /^#\s.+/m.test(content),
+          hasBadges:    /!\[.*?\]\(https?:\/\/(img\.shields\.io|badge\.fury|github\.com\/.*\/badge)\)/i.test(content),
+          hasInstall:   /##?\s*(install|setup|getting started|quick start)/i.test(content),
+          hasUsage:     /##?\s*(usage|example|demo|how to use)/i.test(content),
+          hasScreenshot:/!\[.*?\]\(.*\.(png|gif|jpg|jpeg|svg|webp)/i.test(content),
+          hasLicense:   /##?\s*license/i.test(content),
+          hasContrib:   /##?\s*(contribut|contributing)/i.test(content),
+          length:       content.length,
+          wordCount:    content.split(/\s+/).length,
+        };
+        const pts = [
+          checks.hasTitle?15:0, checks.hasBadges?10:0,
+          checks.hasInstall?20:0, checks.hasUsage?20:0,
+          checks.hasScreenshot?15:0, checks.hasLicense?10:0,
+          checks.hasContrib?5:0,
+          Math.min(Math.round(checks.wordCount/10),5),
+        ].reduce((a,b)=>a+b,0);
+        const score = Math.min(pts, 100);
+        return { repo, hasReadme: true, content, checks, score };
+      } catch {
+        return { repo, hasReadme: false, content: '', checks: {}, score: 0 };
+      }
+    })
+  );
+  return results.map(r => r.value || r.reason);
+}
+
+// ── SCORE CARD PNG ────────────────────────────────────────────────────────────
+function drawScoreCard(canvas, user, repos, finalScore, rank, globalRank) {
+  const W = 800, H = 420;
+  canvas.width  = W;
+  canvas.height = H;
+  const ctx = canvas.getContext('2d');
+
+  const totalStars = repos.reduce((a,r)=>a+r.stargazers_count,0);
+  const languages  = getTopLanguages(repos);
+  const scoreColor = finalScore >= 75 ? '#10b981' : finalScore >= 50 ? '#f59e0b' : '#ef4444';
+
+  // Background
+  ctx.fillStyle = '#0a0a0f';
+  ctx.fillRect(0, 0, W, H);
+
+  // Grid lines
+  ctx.strokeStyle = 'rgba(0,229,255,0.04)';
+  ctx.lineWidth = 1;
+  for (let x = 0; x < W; x += 40) { ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,H); ctx.stroke(); }
+  for (let y = 0; y < H; y += 40) { ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(W,y); ctx.stroke(); }
+
+  // Glow orb
+  const grd = ctx.createRadialGradient(W-60, 60, 0, W-60, 60, 250);
+  grd.addColorStop(0, 'rgba(124,58,237,0.18)');
+  grd.addColorStop(1, 'rgba(124,58,237,0)');
+  ctx.fillStyle = grd;
+  ctx.fillRect(0, 0, W, H);
+
+  // Left accent bar
+  ctx.fillStyle = scoreColor;
+  ctx.fillRect(0, 0, 4, H);
+
+  // Brand
+  ctx.font = 'bold 13px monospace';
+  ctx.fillStyle = 'rgba(0,229,255,0.7)';
+  ctx.fillText('EKNATHALABS', 28, 36);
+  ctx.font = '11px monospace';
+  ctx.fillStyle = 'rgba(255,255,255,0.3)';
+  ctx.fillText('github-profile-analyzer', 28, 54);
+
+  // Avatar circle (draw after image loads)
+  const img = new Image();
+  img.crossOrigin = 'anonymous';
+  img.onload = () => {
+    // Avatar
+    ctx.save();
+    ctx.beginPath();
+    ctx.arc(W - 80, 70, 46, 0, Math.PI*2);
+    ctx.strokeStyle = scoreColor;
+    ctx.lineWidth = 3;
+    ctx.stroke();
+    ctx.clip();
+    ctx.drawImage(img, W-126, 24, 92, 92);
+    ctx.restore();
+
+    // Redraw brand over avatar area
+    ctx.font = 'bold 13px monospace';
+    ctx.fillStyle = 'rgba(0,229,255,0.7)';
+    ctx.fillText('EKNATHALABS', 28, 36);
+
+    // Re-export after image drawn
+    finalizeCard();
+  };
+  img.onerror = () => finalizeCard();
+  img.src = `${user.avatar_url}&s=100`;
+
+  // Name + login
+  ctx.font = 'bold 32px Syne, sans-serif';
+  ctx.fillStyle = '#e2e8f0';
+  ctx.fillText(user.name || user.login, 28, 105);
+  ctx.font = '14px monospace';
+  ctx.fillStyle = 'rgba(0,229,255,0.8)';
+  ctx.fillText(`@${user.login}`, 28, 126);
+  if (user.bio) {
+    ctx.font = '12px Syne, sans-serif';
+    ctx.fillStyle = 'rgba(255,255,255,0.45)';
+    const bio = user.bio.length > 60 ? user.bio.slice(0,57)+'...' : user.bio;
+    ctx.fillText(bio, 28, 146);
+  }
+
+  // BIG SCORE
+  ctx.font = 'bold 90px Syne, sans-serif';
+  ctx.fillStyle = scoreColor;
+  ctx.fillText(`${finalScore}`, 28, 265);
+  ctx.font = 'bold 20px monospace';
+  ctx.fillStyle = 'rgba(255,255,255,0.3)';
+  ctx.fillText('/ 100', 28 + ctx.measureText(`${finalScore}`).width - 18, 240);
+
+  // Rank label
+  ctx.font = 'bold 15px monospace';
+  ctx.fillStyle = rank.color;
+  ctx.fillText(`${rank.emoji} ${rank.label}`, 32, 290);
+
+  // Global rank
+  ctx.font = '12px monospace';
+  ctx.fillStyle = 'rgba(255,255,255,0.4)';
+  ctx.fillText(`TOP ${100 - globalRank.percentile}% OF 180M DEVELOPERS`, 32, 312);
+
+  // Divider
+  ctx.strokeStyle = 'rgba(255,255,255,0.08)';
+  ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(28, 330); ctx.lineTo(W-28, 330); ctx.stroke();
+
+  // Stats row
+  const stats = [
+    { label:'STARS',     val: fmtNum(totalStars) },
+    { label:'FOLLOWERS', val: fmtNum(user.followers) },
+    { label:'REPOS',     val: user.public_repos },
+    { label:'FOLLOWING', val: user.following },
+    { label:'TOP LANG',  val: languages[0]?.lang || '—' },
+  ];
+  stats.forEach((s, i) => {
+    const x = 28 + i * 152;
+    ctx.font = 'bold 18px monospace';
+    ctx.fillStyle = '#e2e8f0';
+    ctx.fillText(s.val, x, 362);
+    ctx.font = '10px monospace';
+    ctx.fillStyle = 'rgba(255,255,255,0.3)';
+    ctx.fillText(s.label, x, 380);
+  });
+
+  // Language dots
+  languages.slice(0,5).forEach((l, i) => {
+    const x = 28 + i * 25;
+    ctx.beginPath();
+    ctx.arc(x+6, 400, 5, 0, Math.PI*2);
+    ctx.fillStyle = l.color;
+    ctx.fill();
+  });
+
+  // Footer URL
+  ctx.font = '11px monospace';
+  ctx.fillStyle = 'rgba(0,229,255,0.4)';
+  ctx.textAlign = 'right';
+  ctx.fillText('eknathareddyp.github.io/github-profile-analyzer', W-28, H-12);
+  ctx.textAlign = 'left';
+
+  function finalizeCard() {
+    // Store data URL for download
+    window._scorecardDataURL = canvas.toDataURL('image/png');
+  }
+}
+
+function downloadScoreCard() {
+  const url = window._scorecardDataURL;
+  if (!url) return;
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `eknathalabs-score-${window._lastUser?.login || 'card'}.png`;
+  a.click();
+}
+
+function copyScoreCard() {
+  const url = window._scorecardDataURL;
+  if (!url) return;
+  fetch(url).then(r=>r.blob()).then(blob => {
+    navigator.clipboard.write([new ClipboardItem({'image/png': blob})]).then(() => {
+      const btn = document.getElementById('sc-copy-btn');
+      if (btn) { const orig = btn.textContent; btn.textContent = '✓ Copied!'; setTimeout(()=>btn.textContent=orig,2000); }
+    }).catch(() => {
+      downloadScoreCard(); // fallback
+    });
+  });
+}
+
 // ── MAIN RENDER ──────────────────────────────────────────────────────────────
 
-function renderResults(user, repos) {
+function renderResults(user, repos, readmeScores = []) {
   const { scores, finalScore } = scoreProfile(user, repos);
   const rank        = getRank(finalScore);
   const suggestions = getSuggestions(user, repos, scores);
@@ -1757,13 +2312,17 @@ function renderResults(user, repos) {
   const totalStars  = repos.reduce((a,r) => a + r.stargazers_count, 0);
   const totalForks  = repos.reduce((a,r) => a + r.forks_count, 0);
 
-  // NEW data
+  // Existing feature data
   const globalRank         = getGlobalRanking(user, repos, finalScore);
   const languages          = getTopLanguages(repos);
   const quickWins          = getQuickWins(user, repos, finalScore);
   const { metrics: compareMetrics, elites } = buildEliteComparison(user, repos, finalScore);
   const profileAnalysis    = getProfileAnalysis(user, repos);
   const scoreBreakdownDims = getScoreBreakdownFull(user, repos, scores, finalScore);
+
+  // NEW feature data
+  const hireData    = getHirabilityScore(user, repos);
+  const contribData = buildContribCalendar(repos);
 
   const circumference = 2 * Math.PI * 44;
   const dashOffset    = circumference - (finalScore / 100) * circumference;
@@ -2153,6 +2712,191 @@ function renderResults(user, repos) {
     </div>`).join('')}
   </div>
 
+  <!-- HIRABILITY SCORE -->
+  <div class="anim anim-d4 section-title">// hirability score</div>
+  <div class="anim anim-d4 hire-card">
+    <div class="hire-header">
+      <div>
+        <div class="hire-title">💼 Recruiter-Ready Rating</div>
+        <div style="font-family:var(--mono);font-size:0.65rem;color:var(--muted);margin-top:3px">How your profile reads to a hiring manager</div>
+      </div>
+      <div class="hire-score-badge">
+        <div>
+          <div class="hire-score-num" style="color:${hireData.grade.color}">${hireData.score}</div>
+          <div class="hire-score-label">/ 100</div>
+        </div>
+        <div class="hire-grade" style="background:${hireData.grade.bg};color:${hireData.grade.color}">
+          ${hireData.grade.label}
+        </div>
+      </div>
+    </div>
+    <div class="hire-body">
+      <div class="hire-meter-wrap">
+        <div class="hire-meter-track">
+          <div class="hire-meter-fill" data-width="${hireData.score}"
+            style="width:0%;background:linear-gradient(90deg,${hireData.grade.color},${hireData.grade.color}aa)"></div>
+        </div>
+      </div>
+      <div class="hire-signals">
+        ${hireData.signals.map(s => `
+        <div class="hire-signal ${s.type}">
+          <span class="hire-signal-icon">${s.icon}</span>
+          <div class="hire-signal-body">
+            <div class="hire-signal-name">${s.name}</div>
+            <div class="hire-signal-desc">${s.desc}</div>
+          </div>
+        </div>`).join('')}
+      </div>
+      <div class="hire-tip">${hireData.tip}</div>
+    </div>
+  </div>
+
+  <!-- CONTRIBUTION CALENDAR -->
+  <div class="anim anim-d4 section-title">// contribution calendar</div>
+  <div class="anim anim-d4 contrib-panel">
+    <div class="contrib-header">
+      <div class="contrib-title">📅 Activity Calendar <span style="font-size:0.65rem;font-weight:400;color:var(--muted);font-family:var(--mono)">— last 52 weeks (based on push dates)</span></div>
+      <div class="contrib-stats">
+        <span><span class="contrib-stat-val">${contribData.totalContribs}</span> pushes</span>
+        <span><span class="contrib-stat-val">${contribData.activeDays}</span> active days</span>
+      </div>
+    </div>
+    <div class="contrib-body">
+      <div class="contrib-months">
+        ${(() => {
+          const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+          const labels = [];
+          contribData.weeks.forEach((w, i) => {
+            if (i % 4 === 0) {
+              const m = new Date(w[0].date || new Date()).getMonth();
+              labels.push(`<span class="contrib-month-label">${months[m]||''}</span>`);
+            }
+          });
+          return labels.join('');
+        })()}
+      </div>
+      <div class="contrib-grid-wrap">
+        <div class="contrib-days-label">
+          <div class="contrib-day-lbl"></div>
+          <div class="contrib-day-lbl">Mon</div>
+          <div class="contrib-day-lbl"></div>
+          <div class="contrib-day-lbl">Wed</div>
+          <div class="contrib-day-lbl"></div>
+          <div class="contrib-day-lbl">Fri</div>
+          <div class="contrib-day-lbl"></div>
+        </div>
+        <div class="contrib-weeks">
+          ${contribData.weeks.map(week => `
+          <div class="contrib-week">
+            ${week.map(day => {
+              const lvl = !day.date ? 0 : day.count === 0 ? 0 : day.count === 1 ? 1 : day.count <= 3 ? 2 : 3;
+              const colors = ['rgba(255,255,255,0.06)','rgba(0,229,255,0.25)','rgba(0,229,255,0.55)','rgba(0,229,255,0.9)'];
+              const title = day.date ? `${day.date}: ${day.count} push${day.count!==1?'es':''}` : '';
+              return `<div class="contrib-cell" style="background:${colors[lvl]}" title="${title}"></div>`;
+            }).join('')}
+          </div>`).join('')}
+        </div>
+      </div>
+      <div class="contrib-legend">
+        <span>Less</span>
+        <div class="contrib-legend-cells">
+          ${['rgba(255,255,255,0.06)','rgba(0,229,255,0.25)','rgba(0,229,255,0.55)','rgba(0,229,255,0.9)'].map(c =>
+            `<div style="width:11px;height:11px;border-radius:2px;background:${c}"></div>`).join('')}
+        </div>
+        <span>More</span>
+      </div>
+      <div class="contrib-streak-row">
+        <div class="contrib-streak-card">
+          <div class="contrib-streak-num">${contribData.curStreak}</div>
+          <div class="contrib-streak-lbl">Current Streak</div>
+        </div>
+        <div class="contrib-streak-card">
+          <div class="contrib-streak-num">${contribData.maxStreak}</div>
+          <div class="contrib-streak-lbl">Longest Streak</div>
+        </div>
+        <div class="contrib-streak-card">
+          <div class="contrib-streak-num">${contribData.activeDays}</div>
+          <div class="contrib-streak-lbl">Active Days</div>
+        </div>
+        <div class="contrib-streak-card">
+          <div class="contrib-streak-num">${contribData.totalContribs}</div>
+          <div class="contrib-streak-lbl">Total Pushes</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- README QUALITY SCORER -->
+  <div class="anim anim-d5 section-title">// readme quality scorer</div>
+  <div class="anim anim-d5 readme-panel">
+    <div class="readme-header">
+      <div class="readme-title">📄 README Quality Analysis</div>
+      ${readmeScores.length > 0 ? (() => {
+        const avg = Math.round(readmeScores.filter(r=>r&&r.hasReadme).reduce((a,r)=>a+r.score,0) / Math.max(readmeScores.filter(r=>r&&r.hasReadme).length, 1));
+        const grade = avg >= 80 ? 'A' : avg >= 60 ? 'B' : avg >= 40 ? 'C' : 'D';
+        const gColor = avg >= 80 ? '#10b981' : avg >= 60 ? '#00e5ff' : avg >= 40 ? '#f59e0b' : '#ef4444';
+        return `<div class="readme-overall grade-${grade}" style="background:rgba(0,0,0,0.2);color:${gColor}">
+          Avg ${avg}/100 · Grade ${grade}
+        </div>`;
+      })() : ''}
+    </div>
+    ${readmeScores.length === 0
+      ? `<div class="readme-empty">No public repos to analyze, or GitHub API limit reached.</div>`
+      : `<div class="readme-grid">
+        ${readmeScores.filter(r=>r&&r.repo).map(r => {
+          const grade = !r.hasReadme ? 'D' : r.score >= 80 ? 'A' : r.score >= 60 ? 'B' : r.score >= 40 ? 'C' : 'D';
+          const fillColor = r.score >= 80 ? '#10b981' : r.score >= 60 ? '#00e5ff' : r.score >= 40 ? '#f59e0b' : '#ef4444';
+          const allChecks = r.hasReadme ? [
+            { key:'hasTitle',     label:'Title' },
+            { key:'hasBadges',    label:'Badges' },
+            { key:'hasInstall',   label:'Install' },
+            { key:'hasUsage',     label:'Usage' },
+            { key:'hasScreenshot',label:'Screenshot' },
+            { key:'hasLicense',   label:'License' },
+            { key:'hasContrib',   label:'Contributing' },
+          ] : [];
+          return `
+          <div class="readme-repo-card">
+            <div class="readme-repo-head">
+              <a class="readme-repo-name" href="${r.repo.html_url}/blob/HEAD/README.md" target="_blank" rel="noopener">${r.repo.name}</a>
+              <span class="readme-repo-grade grade-${grade}">${!r.hasReadme ? '✗ No README' : grade + ' · ' + r.score + '/100'}</span>
+            </div>
+            ${r.hasReadme ? `
+            <div class="readme-checks">
+              ${allChecks.map(c => `
+              <span class="readme-check ${r.checks[c.key]?'y':'n'}">
+                ${r.checks[c.key]?'✓':'✗'} ${c.label}
+              </span>`).join('')}
+            </div>
+            <div class="readme-score-bar">
+              <div class="readme-score-fill" data-width="${r.score}" style="background:${fillColor};width:0%"></div>
+            </div>
+            <div style="font-family:var(--mono);font-size:0.6rem;color:var(--muted);margin-top:3px">
+              ${r.checks.wordCount} words · ${Math.round(r.checks.length/1024*10)/10}KB
+            </div>` : `
+            <div style="font-family:var(--mono);font-size:0.7rem;color:var(--danger)">
+              ⚠ Missing README — this repo is invisible to most developers.
+            </div>`}
+          </div>`;
+        }).join('')}
+      </div>`}
+  </div>
+
+  <!-- SCORE CARD PNG -->
+  <div class="anim anim-d5 section-title">// shareable score card</div>
+  <div class="anim anim-d5 scorecard-wrap">
+    <div style="font-family:var(--mono);font-size:0.7rem;color:var(--muted);margin-bottom:12px">
+      Your personal GitHub score card — download as PNG and share on LinkedIn, Twitter, or your portfolio.
+    </div>
+    <div class="scorecard-preview">
+      <canvas id="scorecard-canvas"></canvas>
+    </div>
+    <div class="scorecard-actions">
+      <button class="scorecard-btn primary" onclick="downloadScoreCard()">⬇ Download PNG</button>
+      <button class="scorecard-btn secondary" id="sc-copy-btn" onclick="copyScoreCard()">📋 Copy to Clipboard</button>
+    </div>
+  </div>
+
   <!-- PORTFOLIO ROAST / TOAST -->
   <div class="anim anim-d6 section-title">// portfolio roast &amp; toast</div>
   <div class="anim anim-d6 roast-toast-wrap">
@@ -2199,9 +2943,9 @@ function renderResults(user, repos) {
       if (cur >= finalScore) clearInterval(counter);
     }, 16);
 
-    // All progress bars (health + sbd)
+    // All progress bars (health + sbd + hire meter + readme)
     setTimeout(() => {
-      document.querySelectorAll('.progress-fill, .lang-fill, .sbd-dim-fill, .health-fill').forEach(bar => {
+      document.querySelectorAll('.progress-fill, .lang-fill, .sbd-dim-fill, .health-fill, .hire-meter-fill, .readme-score-fill').forEach(bar => {
         bar.style.width = bar.getAttribute('data-width') + '%';
       });
       // Global percentile bar
@@ -2220,6 +2964,10 @@ function renderResults(user, repos) {
 
       // Draw radar chart
       drawRadar(scores, finalScore);
+
+      // Draw score card PNG
+      const canvas = document.getElementById('scorecard-canvas');
+      if (canvas) drawScoreCard(canvas, user, repos, finalScore, rank, globalRank);
     }, 350);
   });
 }
@@ -2640,13 +3388,19 @@ async function analyze() {
 
     const user  = await userRes.json();
     const repos = await reposRes.json();
+    const cleanRepos = Array.isArray(repos) ? repos : [];
+
+    // Fetch README quality in background (non-blocking)
+    document.getElementById('loading-text').textContent = 'Scoring READMEs...';
+    const readmeScores = await scoreREADMEs(cleanRepos).catch(() => []);
 
     // Cache for user comparison and radar redraw
-    window._lastUser  = user;
-    window._lastRepos = Array.isArray(repos) ? repos : [];
+    window._lastUser        = user;
+    window._lastRepos       = cleanRepos;
+    window._lastReadmeScores = readmeScores;
 
     hideLoading();
-    renderResults(user, Array.isArray(repos) ? repos : []);
+    renderResults(user, cleanRepos, readmeScores);
 
   } catch (err) {
     clearInterval(stepTimer);
