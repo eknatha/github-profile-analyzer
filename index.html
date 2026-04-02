@@ -563,6 +563,97 @@
   }
   .share-btn:hover { border-color: var(--accent); color: var(--accent); }
 
+  /* ── REPO HEALTH MONITOR ── */
+  .repo-health-panel {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 14px; overflow: hidden; margin-bottom: 24px;
+  }
+  .rhm-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 16px 22px; background: var(--surface2);
+    border-bottom: 1px solid var(--border); flex-wrap: wrap; gap: 10px;
+  }
+  .rhm-title { font-size: 0.95rem; font-weight: 800; display: flex; align-items: center; gap: 10px; }
+  .rhm-summary { display: flex; gap: 8px; flex-wrap: wrap; font-family: var(--mono); font-size: 0.68rem; }
+  .rhm-summary-badge {
+    display: flex; align-items: center; gap: 5px;
+    padding: 4px 10px; border-radius: 6px; font-weight: 700;
+  }
+  .rhm-badge-healthy  { background: rgba(16,185,129,0.12); color: var(--accent3); border: 1px solid rgba(16,185,129,0.25); }
+  .rhm-badge-warn     { background: rgba(245,158,11,0.12);  color: var(--warn);   border: 1px solid rgba(245,158,11,0.25); }
+  .rhm-badge-critical { background: rgba(239,68,68,0.12);   color: var(--danger); border: 1px solid rgba(239,68,68,0.25); }
+  .rhm-overall-bar { height: 4px; background: var(--surface2); display: flex; gap: 2px; }
+  .rhm-overall-seg { height: 100%; transition: flex .8s ease; }
+  .rhm-controls {
+    display: flex; align-items: center; gap: 8px; padding: 10px 22px;
+    border-bottom: 1px solid var(--border); flex-wrap: wrap;
+  }
+  .rhm-filter-btn, .rhm-sort-btn {
+    font-family: var(--mono); font-size: 0.65rem;
+    padding: 4px 10px; border-radius: 5px;
+    border: 1px solid var(--border); background: transparent;
+    color: var(--muted); cursor: pointer; transition: all .15s;
+  }
+  .rhm-filter-btn.active,
+  .rhm-sort-btn.active   { background: rgba(0,229,255,0.1); border-color: rgba(0,229,255,0.3); color: var(--accent); }
+  .rhm-filter-btn:hover:not(.active),
+  .rhm-sort-btn:hover:not(.active) { border-color: var(--accent); color: var(--accent); }
+  .rhm-ctrl-sep { color: var(--border); font-size: 0.8rem; }
+  .rhm-ctrl-label { font-family: var(--mono); font-size: 0.62rem; color: var(--muted); }
+  .rhm-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+  }
+  .rhm-repo-card {
+    padding: 16px 20px; border-bottom: 1px solid var(--border);
+    border-right: 1px solid var(--border); transition: background .15s; position: relative;
+  }
+  .rhm-repo-card:hover { background: rgba(255,255,255,0.02); }
+  .rhm-repo-head { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+  .rhm-grade-badge {
+    width: 34px; height: 34px; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.88rem; font-weight: 800; font-family: var(--mono); flex-shrink: 0;
+  }
+  .rh-grade-A { background: rgba(16,185,129,0.15); color: #10b981; border: 1px solid rgba(16,185,129,0.3); }
+  .rh-grade-B { background: rgba(0,229,255,0.1);   color: #00e5ff; border: 1px solid rgba(0,229,255,0.25); }
+  .rh-grade-C { background: rgba(245,158,11,0.12); color: #f59e0b; border: 1px solid rgba(245,158,11,0.3); }
+  .rh-grade-D { background: rgba(239,68,68,0.1);   color: #ef4444; border: 1px solid rgba(239,68,68,0.25); }
+  .rh-grade-F { background: rgba(239,68,68,0.2);   color: #ff5555; border: 1px solid rgba(239,68,68,0.4); }
+  .rhm-repo-name {
+    font-family: var(--mono); font-size: 0.82rem; font-weight: 700;
+    color: var(--accent); flex: 1; min-width: 0;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .rhm-repo-ext { color: var(--muted); font-size: 0.68rem; text-decoration: none; flex-shrink: 0; }
+  .rhm-repo-ext:hover { color: var(--accent); }
+  .rhm-score-track { height: 4px; background: var(--surface2); border-radius: 2px; overflow: hidden; margin-bottom: 10px; }
+  .rhm-score-fill  { height: 100%; border-radius: 2px; transition: width 1s cubic-bezier(.4,0,.2,1); width: 0%; }
+  .rhm-checks { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 8px; }
+  .rhm-check {
+    font-family: var(--mono); font-size: 0.6rem;
+    padding: 2px 6px; border-radius: 4px; display: flex; align-items: center; gap: 3px;
+  }
+  .rhm-check.pass { background: rgba(16,185,129,0.08); color: var(--accent3); border: 1px solid rgba(16,185,129,0.18); }
+  .rhm-check.fail { background: rgba(239,68,68,0.08);  color: var(--danger);  border: 1px solid rgba(239,68,68,0.16); }
+  .rhm-check.warn { background: rgba(245,158,11,0.08); color: var(--warn);    border: 1px solid rgba(245,158,11,0.18); }
+  .rhm-issues { display: flex; flex-direction: column; gap: 4px; }
+  .rhm-issue {
+    font-size: 0.72rem; color: var(--muted); line-height: 1.45;
+    padding: 5px 8px; border-radius: 5px;
+    background: rgba(239,68,68,0.04); border-left: 2px solid var(--danger);
+  }
+  .rhm-issue.warn-iss { background: rgba(245,158,11,0.04); border-left-color: var(--warn); }
+  .rhm-issue strong { color: var(--text); }
+  .rhm-meta { display: flex; gap: 10px; margin-top: 8px; flex-wrap: wrap; font-family: var(--mono); font-size: 0.62rem; color: var(--muted); }
+  .rhm-empty { padding: 28px; text-align: center; font-family: var(--mono); font-size: 0.8rem; color: var(--muted); }
+  .rhm-score-legend {
+    display: flex; gap: 14px; flex-wrap: wrap; padding: 10px 22px;
+    border-top: 1px solid var(--border); background: var(--surface2);
+    font-family: var(--mono); font-size: 0.62rem; color: var(--muted);
+  }
+  .rhm-legend-item { display: flex; align-items: center; gap: 5px; }
+  .rhm-legend-dot { width: 10px; height: 10px; border-radius: 3px; }
+
   /* ── HIRABILITY SCORE ── */
   .hire-card {
     background: var(--surface); border: 1px solid var(--border);
@@ -2297,6 +2388,125 @@ function copyScoreCard() {
   });
 }
 
+// ── REPO HEALTH MONITOR ENGINE ───────────────────────────────────────────────
+function getRepoHealthData(repos) {
+  const now = Date.now();
+  const DAY = 86400000;
+
+  function daysSince(dateStr) {
+    return Math.floor((now - new Date(dateStr).getTime()) / DAY);
+  }
+
+  function gradeFromScore(score) {
+    if (score >= 85) return 'A';
+    if (score >= 70) return 'B';
+    if (score >= 50) return 'C';
+    if (score >= 30) return 'D';
+    return 'F';
+  }
+
+  function gradeColor(grade) {
+    return { A:'#10b981', B:'#00e5ff', C:'#f59e0b', D:'#ef4444', F:'#ff5555' }[grade] || '#64748b';
+  }
+
+  const ownRepos = repos.filter(r => !r.fork && !r.archived);
+
+  const scored = ownRepos.map(r => {
+    const age     = daysSince(r.pushed_at);
+    const created = daysSince(r.created_at);
+    const issues  = r.open_issues_count || 0;
+
+    // ── Individual checks ──────────────────────────────────────────────────
+    const checks = {
+      hasDesc:     { pass: !!(r.description && r.description.trim().length > 5),
+                     label: 'Description', pts: 15,
+                     fix: 'Add a short description to improve discoverability' },
+      hasTopics:   { pass: !!(r.topics && r.topics.length > 0),
+                     label: 'Topics', pts: 12,
+                     fix: 'Add 2–5 topic tags — GitHub uses these for search' },
+      hasLicense:  { pass: !!(r.license),
+                     label: 'License', pts: 10,
+                     fix: 'Add a LICENSE file — without it others cannot legally use your code' },
+      recentPush:  { pass: age <= 180,
+                     label: age <= 30  ? 'Active'
+                           : age <= 90  ? 'Recent'
+                           : age <= 180 ? 'Ageing'
+                           : 'Stale',
+                     pts: age <= 30 ? 20 : age <= 90 ? 16 : age <= 180 ? 10 : 0,
+                     warn: age > 90 && age <= 180,
+                     fix: `Last push was ${age} days ago — push an update to stay relevant` },
+      notTooManyIssues: {
+                     pass: issues < 20,
+                     warn: issues >= 5 && issues < 20,
+                     label: issues === 0 ? 'No open issues'
+                           : issues < 5   ? `${issues} issues`
+                           : `${issues} open issues`,
+                     pts: issues === 0 ? 8 : issues < 5 ? 7 : issues < 20 ? 5 : 0,
+                     fix: issues >= 20
+                       ? `${issues} open issues with no resolution signals abandonment`
+                       : `${issues} open issues — review and close stale ones` },
+      hasBranch:   { pass: r.default_branch === 'main',
+                     warn: r.default_branch !== 'main',
+                     label: `Branch: ${r.default_branch}`,
+                     pts: r.default_branch === 'main' ? 5 : 3,
+                     fix: 'Rename default branch from "master" to "main" — modern convention' },
+      notTooLarge: { pass: r.size < 50000,
+                     warn: r.size >= 50000 && r.size < 200000,
+                     label: r.size < 1000   ? `${r.size}KB`
+                           : r.size < 50000 ? `${Math.round(r.size/1024)}MB`
+                           : `⚠ ${Math.round(r.size/1024)}MB`,
+                     pts: r.size < 50000 ? 5 : r.size < 200000 ? 3 : 0,
+                     fix: r.size >= 200000
+                       ? `Repo is ${Math.round(r.size/1024)}MB — likely contains committed binaries. Use Git LFS or .gitignore`
+                       : null },
+      hasStars:    { pass: r.stargazers_count > 0,
+                     label: r.stargazers_count === 0 ? 'No stars'
+                           : `⭐ ${r.stargazers_count}`,
+                     pts: Math.min(r.stargazers_count * 2, 10),
+                     fix: r.stargazers_count === 0
+                       ? 'No stars yet — share this repo on LinkedIn or in dev communities'
+                       : null },
+      notArchived: { pass: !r.archived, label: r.archived ? 'Archived' : 'Active',
+                     pts: r.archived ? 0 : 5,
+                     fix: r.archived ? 'Repo is archived — unarchive if still relevant' : null },
+    };
+
+    // Total score (max 90 from checks)
+    const rawScore = Object.values(checks).reduce((sum, c) => sum + (c.pass ? c.pts : c.warn ? Math.floor(c.pts * 0.5) : 0), 0);
+    // Bonus: if recently created (<30 days) don't penalise for low stars
+    const bonus = created < 30 ? 10 : 0;
+    const score = Math.min(rawScore + bonus, 100);
+    const grade = gradeFromScore(score);
+
+    // Build issues list (only failures and warnings)
+    const issues_list = Object.values(checks)
+      .filter(c => !c.pass && c.fix)
+      .map(c => ({ text: c.fix, warn: !!c.warn }));
+
+    return {
+      repo: r,
+      score,
+      grade,
+      gradeColor: gradeColor(grade),
+      checks,
+      issues_list,
+      age,
+    };
+  });
+
+  // Sort by score ascending (worst first) by default
+  scored.sort((a, b) => a.score - b.score);
+
+  const healthy  = scored.filter(s => s.score >= 70).length;
+  const warning  = scored.filter(s => s.score >= 40 && s.score < 70).length;
+  const critical = scored.filter(s => s.score < 40).length;
+  const avgScore = scored.length
+    ? Math.round(scored.reduce((a, s) => a + s.score, 0) / scored.length)
+    : 0;
+
+  return { repos: scored, healthy, warning, critical, avgScore, total: scored.length };
+}
+
 // ── MAIN RENDER ──────────────────────────────────────────────────────────────
 
 function renderResults(user, repos, readmeScores = []) {
@@ -2318,6 +2528,7 @@ function renderResults(user, repos, readmeScores = []) {
   // NEW feature data
   const hireData    = getHirabilityScore(user, repos);
   const contribData = buildContribCalendar(repos);
+  const repoHealth  = getRepoHealthData(repos);
 
   const circumference = 2 * Math.PI * 44;
   const dashOffset    = circumference - (finalScore / 100) * circumference;
@@ -2694,6 +2905,113 @@ function renderResults(user, repos, readmeScores = []) {
     </a>`).join('')}
   </div>` : ''}
 
+  <!-- REPO HEALTH MONITOR -->
+  ${repoHealth.total > 0 ? `
+  <div class="anim anim-d5 section-title">// real-time repo health monitor</div>
+  <div class="anim anim-d5 repo-health-panel">
+
+    <!-- Header with summary badges -->
+    <div class="rhm-header">
+      <div class="rhm-title">🏥 Repo Health Monitor
+        <span style="font-family:var(--mono);font-size:0.65rem;font-weight:400;color:var(--muted)">
+          ${repoHealth.total} repos analysed · avg score ${repoHealth.avgScore}/100
+        </span>
+      </div>
+      <div class="rhm-summary">
+        <span class="rhm-summary-badge rhm-badge-healthy">✓ ${repoHealth.healthy} Healthy</span>
+        <span class="rhm-summary-badge rhm-badge-warn">⚠ ${repoHealth.warning} Warning</span>
+        <span class="rhm-summary-badge rhm-badge-critical">✗ ${repoHealth.critical} Critical</span>
+      </div>
+    </div>
+
+    <!-- Colour bar: proportion of grades -->
+    <div class="rhm-overall-bar">
+      ${repoHealth.repos.map(s => `<div class="rhm-overall-seg" style="flex:1;background:${s.gradeColor}44;border-right:1px solid var(--bg)" title="${s.repo.name}: ${s.score}/100"></div>`).join('')}
+    </div>
+
+    <!-- Filter + Sort controls -->
+    <div class="rhm-controls" id="rhm-controls">
+      <span class="rhm-ctrl-label">Filter:</span>
+      <button class="rhm-filter-btn active" onclick="rhmFilter(this,'all')">All (${repoHealth.total})</button>
+      ${repoHealth.critical > 0 ? `<button class="rhm-filter-btn" onclick="rhmFilter(this,'critical')">Critical (${repoHealth.critical})</button>` : ''}
+      ${repoHealth.warning  > 0 ? `<button class="rhm-filter-btn" onclick="rhmFilter(this,'warn')">Warning (${repoHealth.warning})</button>` : ''}
+      ${repoHealth.healthy  > 0 ? `<button class="rhm-filter-btn" onclick="rhmFilter(this,'healthy')">Healthy (${repoHealth.healthy})</button>` : ''}
+      <span class="rhm-ctrl-sep">|</span>
+      <span class="rhm-ctrl-label">Sort:</span>
+      <button class="rhm-sort-btn active" onclick="rhmSort(this,'score-asc')">Worst first</button>
+      <button class="rhm-sort-btn" onclick="rhmSort(this,'score-desc')">Best first</button>
+      <button class="rhm-sort-btn" onclick="rhmSort(this,'name')">A–Z</button>
+      <button class="rhm-sort-btn" onclick="rhmSort(this,'stars')">Stars</button>
+    </div>
+
+    <!-- Repo cards grid -->
+    <div class="rhm-grid" id="rhm-grid">
+      ${repoHealth.repos.map((s, i) => {
+        const r     = s.repo;
+        const checks = s.checks;
+        const checkList = [
+          { key:'hasDesc',   label:'Desc' },
+          { key:'hasTopics', label:'Topics' },
+          { key:'hasLicense',label:'License' },
+          { key:'recentPush',label: checks.recentPush.label },
+          { key:'notTooManyIssues', label: checks.notTooManyIssues.label },
+          { key:'hasBranch', label: checks.hasBranch.label },
+          { key:'hasStars',  label: checks.hasStars.label },
+        ];
+        return `
+        <div class="rhm-repo-card"
+          data-score="${s.score}"
+          data-name="${r.name.toLowerCase()}"
+          data-stars="${r.stargazers_count}"
+          data-status="${s.score >= 70 ? 'healthy' : s.score >= 40 ? 'warn' : 'critical'}">
+          <div class="rhm-repo-head">
+            <div class="rhm-grade-badge rh-grade-${s.grade}">${s.grade}</div>
+            <div class="rhm-repo-name" title="${r.name}">${r.name}</div>
+            <a class="rhm-repo-ext" href="${r.html_url}" target="_blank" rel="noopener" title="Open on GitHub">↗</a>
+          </div>
+          <div class="rhm-score-track">
+            <div class="rhm-score-fill" data-width="${s.score}"
+              style="width:0%;background:${s.gradeColor}"></div>
+          </div>
+          <div class="rhm-checks">
+            ${checkList.map(c => {
+              const chk = checks[c.key];
+              const cls = chk.pass ? 'pass' : chk.warn ? 'warn' : 'fail';
+              const icon = chk.pass ? '✓' : chk.warn ? '~' : '✗';
+              return `<span class="rhm-check ${cls}" title="${chk.fix || chk.label}">${icon} ${c.label}</span>`;
+            }).join('')}
+          </div>
+          ${s.issues_list.length > 0 ? `
+          <div class="rhm-issues">
+            ${s.issues_list.slice(0, 2).map(iss =>
+              `<div class="rhm-issue${iss.warn ? ' warn-iss' : ''}"><strong>${iss.warn ? '⚠' : '✗'}</strong> ${iss.text}</div>`
+            ).join('')}
+            ${s.issues_list.length > 2 ? `<div style="font-family:var(--mono);font-size:0.6rem;color:var(--muted);padding:3px 4px">+${s.issues_list.length - 2} more issues</div>` : ''}
+          </div>` : `
+          <div style="font-size:0.72rem;color:var(--accent3);padding:3px 0">✓ This repo looks healthy!</div>`}
+          <div class="rhm-meta">
+            <span>🕐 ${s.age === 0 ? 'today' : s.age < 7 ? s.age + 'd ago' : s.age < 30 ? Math.floor(s.age/7) + 'w ago' : Math.floor(s.age/30) + 'mo ago'}</span>
+            <span>⭐ ${r.stargazers_count}</span>
+            <span>🍴 ${r.forks_count}</span>
+            ${r.language ? `<span>⬡ ${r.language}</span>` : ''}
+            <span style="margin-left:auto;color:${s.gradeColor};font-weight:700">${s.score}/100</span>
+          </div>
+        </div>`;
+      }).join('')}
+    </div>
+
+    <!-- Grade legend -->
+    <div class="rhm-score-legend">
+      <span style="font-weight:700;color:var(--text)">Grade:</span>
+      ${[['A','#10b981','85–100'],['B','#00e5ff','70–84'],['C','#f59e0b','50–69'],['D','#ef4444','30–49'],['F','#ff5555','0–29']].map(([g,c,r]) =>
+        `<div class="rhm-legend-item">
+          <div class="rhm-legend-dot" style="background:${c}22;border:1px solid ${c}66"></div>
+          <span style="color:${c};font-weight:700">${g}</span> ${r}
+        </div>`).join('')}
+      <span style="margin-left:auto">Scores based on: description, topics, license, activity, issues, branch naming, size, stars</span>
+    </div>
+  </div>` : ''}
+
   <!-- SUGGESTIONS -->
   <div class="anim anim-d5 section-title">// improvement checklist</div>
   <div class="anim anim-d5 suggestions-list">
@@ -2938,9 +3256,9 @@ function renderResults(user, repos, readmeScores = []) {
       if (cur >= finalScore) clearInterval(counter);
     }, 16);
 
-    // All progress bars (health + sbd + hire meter + readme)
+    // All progress bars (health + sbd + hire meter + readme + repo health)
     setTimeout(() => {
-      document.querySelectorAll('.progress-fill, .lang-fill, .sbd-dim-fill, .health-fill, .hire-meter-fill, .readme-score-fill').forEach(bar => {
+      document.querySelectorAll('.progress-fill, .lang-fill, .sbd-dim-fill, .health-fill, .hire-meter-fill, .readme-score-fill, .rhm-score-fill').forEach(bar => {
         bar.style.width = bar.getAttribute('data-width') + '%';
       });
       // Global percentile bar
@@ -2976,7 +3294,6 @@ function switchTab(btn, paneId) {
   const pane = document.getElementById(paneId);
   if (pane) {
     pane.classList.add('active');
-    // Animate health bars if switching to health tab
     if (paneId === 'tab-health') {
       setTimeout(() => {
         pane.querySelectorAll('.health-fill').forEach(bar => {
@@ -2985,6 +3302,36 @@ function switchTab(btn, paneId) {
       }, 50);
     }
   }
+}
+
+// ── REPO HEALTH MONITOR CONTROLS ─────────────────────────────────────────────
+function rhmFilter(btn, filter) {
+  const grid = document.getElementById('rhm-grid');
+  if (!grid) return;
+  // Update active button
+  btn.closest('.rhm-controls').querySelectorAll('.rhm-filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  // Show/hide cards
+  grid.querySelectorAll('.rhm-repo-card').forEach(card => {
+    const status = card.getAttribute('data-status');
+    card.style.display = (filter === 'all' || status === filter) ? '' : 'none';
+  });
+}
+
+function rhmSort(btn, mode) {
+  const grid = document.getElementById('rhm-grid');
+  if (!grid) return;
+  btn.closest('.rhm-controls').querySelectorAll('.rhm-sort-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const cards = Array.from(grid.querySelectorAll('.rhm-repo-card'));
+  cards.sort((a, b) => {
+    if (mode === 'score-asc')  return parseInt(a.dataset.score) - parseInt(b.dataset.score);
+    if (mode === 'score-desc') return parseInt(b.dataset.score) - parseInt(a.dataset.score);
+    if (mode === 'name')       return a.dataset.name.localeCompare(b.dataset.name);
+    if (mode === 'stars')      return parseInt(b.dataset.stars) - parseInt(a.dataset.stars);
+    return 0;
+  });
+  cards.forEach(c => grid.appendChild(c));
 }
 
 // ── DIM TOGGLE ────────────────────────────────────────────────────────────────
