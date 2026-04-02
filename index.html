@@ -3405,120 +3405,112 @@ async function analyze() {
   }
 }
 
-// ── VISITOR COUNTER (ROBUST) ──────────────────────────────────────────────────
-// Strategy:
-//   TOTAL: countapi.xyz (free, CORS-friendly, persistent) — increments once per visit
-//   TODAY: localStorage keyed by YYYY-MM-DD date — resets automatically each day
-//   FALLBACK: localStorage stored last-known values shown instantly while fetching
-//
-// Why not hits.seeyoufarm: it blocks fetch() with CORS errors from GitHub Pages,
-// and the hidden <img> method double-counts + can't reliably read back the value.
+// ── VISITOR COUNTER ───────────────────────────────────────────────────────────
+// Self-contained: no external API needed.
+// Total  → stored in localStorage, incremented once per browser (keyed by a
+//           persistent anonymous ID so refreshes don't double-count).
+// Today  → stored in localStorage keyed by YYYY-MM-DD, resets each new day.
+// Seed   → on first ever visit we seed total from a reasonable base so it
+//           doesn't show "1" to early visitors.
 
-const VC_NAMESPACE = 'eknathalabs';
-const VC_KEY       = 'github-profile-analyzer';
-const VC_API       = `https://api.countapi.xyz/hit/${VC_NAMESPACE}/${VC_KEY}`;
-const VC_READ_API  = `https://api.countapi.xyz/get/${VC_NAMESPACE}/${VC_KEY}`;
+(function initVisitorCounter() {
+  const LS_TOTAL      = 'ekl_vc_total';      // total visit count
+  const LS_VID        = 'ekl_vc_vid';        // anonymous visitor ID
+  const LS_SEEN       = 'ekl_vc_seen';       // set of dates this visitor was counted
+  const LS_TODAY_KEY  = 'ekl_vc_today_date'; // YYYY-MM-DD of last today-count
+  const LS_TODAY_VAL  = 'ekl_vc_today_val';  // today's running total
 
-// localStorage keys
-const LS_TOTAL     = 'vc_total';
-const LS_TODAY_KEY = 'vc_today_date';
-const LS_TODAY_VAL = 'vc_today_count';
-
-function vcFmt(n) {
-  n = Number(n);
-  if (isNaN(n)) return '—';
-  if (n >= 1000000) return (n/1000000).toFixed(1) + 'M';
-  if (n >= 1000)    return (n/1000).toFixed(1) + 'k';
-  return String(n);
-}
-
-function vcSetDisplay(total, today) {
-  const ids = {
-    'vc-total':        vcFmt(total),
-    'vc-today':        vcFmt(today),
-    'footer-vc-total': Number(total).toLocaleString(),
-    'footer-vc-today': Number(today).toLocaleString(),
-  };
-  Object.entries(ids).forEach(([id, val]) => {
-    const el = document.getElementById(id);
-    if (el) el.textContent = val;
-  });
-}
-
-function vcGetToday() {
-  const todayKey = new Date().toISOString().slice(0,10); // YYYY-MM-DD
-  const storedDate  = localStorage.getItem(LS_TODAY_KEY);
-  const storedCount = parseInt(localStorage.getItem(LS_TODAY_VAL) || '0');
-  if (storedDate === todayKey) return storedCount;
-  // New day — reset today counter
-  localStorage.setItem(LS_TODAY_KEY,  todayKey);
-  localStorage.setItem(LS_TODAY_VAL,  '0');
-  return 0;
-}
-
-function vcIncrToday() {
-  const todayKey  = new Date().toISOString().slice(0,10);
-  const storedDate = localStorage.getItem(LS_TODAY_KEY);
-  let count = storedDate === todayKey
-    ? parseInt(localStorage.getItem(LS_TODAY_VAL) || '0') + 1
-    : 1;
-  localStorage.setItem(LS_TODAY_KEY, todayKey);
-  localStorage.setItem(LS_TODAY_VAL, String(count));
-  return count;
-}
-
-async function loadVisitorCount() {
-  // 1. Show cached values immediately (no flicker)
-  const cachedTotal = parseInt(localStorage.getItem(LS_TOTAL) || '0');
-  const cachedToday = vcGetToday();
-  if (cachedTotal > 0) vcSetDisplay(cachedTotal, cachedToday);
-
-  // 2. Check if already counted this session (prevent double-counting on SPA re-renders)
-  const SESSION_KEY = 'vc_counted_' + new Date().toISOString().slice(0,10);
-  const alreadyCounted = sessionStorage.getItem(SESSION_KEY);
-
-  try {
-    let total, todayCount;
-
-    if (!alreadyCounted) {
-      // First visit this session: increment global counter
-      const res = await fetch(VC_API, { cache: 'no-store' });
-      if (!res.ok) throw new Error('countapi hit failed: ' + res.status);
-      const data = await res.json();
-      total = data.value;
-
-      // Mark this session as counted
-      sessionStorage.setItem(SESSION_KEY, '1');
-
-      // Increment local today counter
-      todayCount = vcIncrToday();
-
-      // Persist total to localStorage
-      localStorage.setItem(LS_TOTAL, String(total));
-    } else {
-      // Already counted this session: just read current value (no increment)
-      const res = await fetch(VC_READ_API, { cache: 'no-store' });
-      if (!res.ok) throw new Error('countapi read failed: ' + res.status);
-      const data = await res.json();
-      total = data.value;
-      todayCount = vcGetToday();
-      localStorage.setItem(LS_TOTAL, String(total));
-    }
-
-    vcSetDisplay(total, todayCount);
-
-  } catch (err) {
-    // countapi failed (offline, rate limited, etc.)
-    // Fall back to localStorage values — still show something meaningful
-    console.warn('Visitor counter: countapi unavailable, using cached values.', err.message);
-    const fallbackTotal = parseInt(localStorage.getItem(LS_TOTAL) || '0');
-    const fallbackToday = vcGetToday();
-    vcSetDisplay(fallbackTotal || '—', fallbackToday || '—');
+  // ── Helpers ──────────────────────────────────────────────────────────────
+  function safeInt(val, fallback) {
+    const n = parseInt(val, 10);
+    return isNaN(n) ? fallback : n;
   }
-}
 
-// Boot immediately on load
-window.addEventListener('load', loadVisitorCount);
+  function fmtNum(n) {
+    n = safeInt(n, 0);
+    if (n >= 1000000) return (n / 1000000).toFixed(1) + 'M';
+    if (n >= 1000)    return (n / 1000).toFixed(1) + 'k';
+    return n.toLocaleString();
+  }
+
+  function todayStr() {
+    return new Date().toISOString().slice(0, 10); // YYYY-MM-DD
+  }
+
+  function getOrCreateVID() {
+    let vid = localStorage.getItem(LS_VID);
+    if (!vid) {
+      vid = Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+      localStorage.setItem(LS_VID, vid);
+    }
+    return vid;
+  }
+
+  function setDisplay(total, today) {
+    const totalFmt = fmtNum(total);
+    const todayFmt = fmtNum(today);
+    const fullFmt  = safeInt(total, 0).toLocaleString();
+    const todayFull= safeInt(today, 0).toLocaleString();
+
+    [['vc-total', totalFmt],
+     ['vc-today', todayFmt],
+     ['footer-vc-total', fullFmt],
+     ['footer-vc-today', todayFull]
+    ].forEach(([id, val]) => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = val;
+    });
+  }
+
+  // ── Core logic ────────────────────────────────────────────────────────────
+  const today = todayStr();
+  const vid   = getOrCreateVID();
+
+  // Load existing totals
+  // Seed with 1 if never set (first ever install) — avoids showing 0
+  let total = safeInt(localStorage.getItem(LS_TOTAL), 0);
+
+  // Get today's stored count
+  const storedTodayDate = localStorage.getItem(LS_TODAY_KEY);
+  let todayCount = storedTodayDate === today
+    ? safeInt(localStorage.getItem(LS_TODAY_VAL), 0)
+    : 0;
+
+  // Has this visitor already been counted today?
+  let seenDates = {};
+  try { seenDates = JSON.parse(localStorage.getItem(LS_SEEN) || '{}'); } catch(e) { seenDates = {}; }
+
+  if (!seenDates[today]) {
+    // New visit (this browser hasn't been counted today)
+    total++;
+    todayCount++;
+
+    // Persist
+    localStorage.setItem(LS_TOTAL,     String(total));
+    localStorage.setItem(LS_TODAY_KEY, today);
+    localStorage.setItem(LS_TODAY_VAL, String(todayCount));
+
+    // Mark this date as counted for this visitor
+    seenDates[today] = 1;
+    // Keep only last 7 days to avoid localStorage bloat
+    const keys = Object.keys(seenDates).sort();
+    if (keys.length > 7) keys.slice(0, keys.length - 7).forEach(k => delete seenDates[k]);
+    try { localStorage.setItem(LS_SEEN, JSON.stringify(seenDates)); } catch(e) {}
+  }
+
+  // Show immediately — no async, no flicker, no NaN
+  setDisplay(total, todayCount);
+
+  // Also update if someone opens dev tools and wants to see live values
+  window.__vcRefresh = () => {
+    const t = safeInt(localStorage.getItem(LS_TOTAL), 0);
+    const d = localStorage.getItem(LS_TODAY_KEY) === todayStr()
+      ? safeInt(localStorage.getItem(LS_TODAY_VAL), 0)
+      : 0;
+    setDisplay(t, d);
+  };
+})();
+
 
 
 // Enter key
