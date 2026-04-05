@@ -1375,7 +1375,161 @@
   .compare-legend-item { font-family: var(--mono); font-size: 0.65rem; color: var(--muted); display: flex; align-items: center; gap: 5px; }
   .compare-legend-dot { width: 6px; height: 6px; border-radius: 50%; }
 
-  /* ── VISITOR COUNTER ── */
+  /* ── SCORE IMPROVEMENT SIMULATOR ── */
+  .sim-panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+    margin-bottom: 24px;
+  }
+  .sim-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 16px 22px;
+    background: var(--surface2);
+    border-bottom: 1px solid var(--border);
+    flex-wrap: wrap; gap: 10px;
+  }
+  .sim-header-left { display: flex; flex-direction: column; gap: 3px; }
+  .sim-title { font-size: 0.95rem; font-weight: 800; }
+  .sim-subtitle { font-family: var(--mono); font-size: 0.65rem; color: var(--muted); }
+  .sim-score-display {
+    display: flex; align-items: center; gap: 16px;
+    font-family: var(--mono);
+  }
+  .sim-score-now {
+    text-align: center;
+  }
+  .sim-score-label { font-size: 0.58rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); }
+  .sim-score-num   { font-size: 1.8rem; font-weight: 800; letter-spacing: -0.04em; line-height: 1; }
+  .sim-score-arrow { font-size: 1.2rem; color: var(--muted); }
+  .sim-score-projected {
+    text-align: center; position: relative;
+  }
+  .sim-score-projected .sim-score-num { transition: color .3s, transform .2s; }
+  .sim-delta {
+    font-size: 0.65rem; font-family: var(--mono); font-weight: 700;
+    padding: 2px 7px; border-radius: 4px; margin-top: 3px;
+    display: inline-block; transition: all .3s;
+  }
+  .sim-delta.positive { background: rgba(16,185,129,0.12); color: var(--accent3); border: 1px solid rgba(16,185,129,0.25); }
+  .sim-delta.zero     { background: rgba(255,255,255,0.05); color: var(--muted);   border: 1px solid var(--border); }
+
+  /* Progress arc */
+  .sim-arc-wrap {
+    display: flex; align-items: center; justify-content: center; gap: 32px;
+    padding: 22px 24px; border-bottom: 1px solid var(--border);
+    flex-wrap: wrap;
+  }
+  .sim-arc-container { position: relative; width: 140px; height: 80px; }
+  .sim-arc-svg { overflow: visible; }
+  .sim-arc-bg    { fill: none; stroke: var(--surface2); stroke-width: 10; stroke-linecap: round; }
+  .sim-arc-now   { fill: none; stroke-width: 10; stroke-linecap: round; transition: stroke-dashoffset .6s cubic-bezier(.4,0,.2,1); }
+  .sim-arc-proj  { fill: none; stroke-width: 10; stroke-linecap: round; opacity: .45; stroke-dasharray: 4 4; transition: stroke-dashoffset .6s cubic-bezier(.4,0,.2,1); }
+  .sim-arc-label {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    text-align: center; font-family: var(--mono); font-size: 0.6rem; color: var(--muted);
+  }
+  .sim-rank-badge {
+    padding: 12px 20px; border-radius: 10px; text-align: center;
+    border: 1px solid var(--border); background: var(--surface2);
+    min-width: 140px; transition: all .3s;
+  }
+  .sim-rank-emoji { font-size: 1.6rem; display: block; margin-bottom: 5px; }
+  .sim-rank-name  { font-weight: 800; font-size: 0.88rem; transition: color .3s; }
+  .sim-rank-range { font-family: var(--mono); font-size: 0.62rem; color: var(--muted); margin-top: 2px; }
+  .sim-rank-change {
+    font-family: var(--mono); font-size: 0.62rem; color: var(--accent3);
+    margin-top: 4px; display: none; font-weight: 700;
+  }
+
+  /* Sliders */
+  .sim-sliders { padding: 20px 24px; display: flex; flex-direction: column; gap: 18px; }
+  .sim-slider-group { display: flex; flex-direction: column; gap: 8px; }
+  .sim-slider-head {
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .sim-slider-label-wrap { display: flex; align-items: center; gap: 8px; }
+  .sim-slider-icon { font-size: 1rem; }
+  .sim-slider-name { font-size: 0.84rem; font-weight: 700; }
+  .sim-slider-category {
+    font-family: var(--mono); font-size: 0.6rem; color: var(--muted);
+    background: var(--surface2); border: 1px solid var(--border);
+    padding: 1px 7px; border-radius: 4px;
+  }
+  .sim-slider-values {
+    font-family: var(--mono); font-size: 0.72rem;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .sim-val-now  { color: var(--muted); }
+  .sim-val-sep  { color: var(--border); }
+  .sim-val-proj { font-weight: 700; transition: color .3s; }
+  .sim-pts-badge {
+    font-family: var(--mono); font-size: 0.62rem; font-weight: 700;
+    padding: 2px 7px; border-radius: 4px; min-width: 52px; text-align: center;
+    transition: all .25s;
+  }
+  .sim-pts-badge.gain  { background: rgba(16,185,129,0.12); color: var(--accent3); border: 1px solid rgba(16,185,129,0.25); }
+  .sim-pts-badge.zero  { background: rgba(255,255,255,0.04); color: var(--muted);   border: 1px solid var(--border); }
+
+  /* The actual slider */
+  .sim-range-wrap { position: relative; }
+  .sim-range {
+    -webkit-appearance: none; appearance: none;
+    width: 100%; height: 5px; border-radius: 3px;
+    background: var(--surface2); outline: none; cursor: pointer;
+    position: relative; z-index: 1;
+  }
+  .sim-range::-webkit-slider-thumb {
+    -webkit-appearance: none; appearance: none;
+    width: 18px; height: 18px; border-radius: 50%;
+    background: var(--accent); cursor: pointer;
+    border: 2px solid var(--bg);
+    box-shadow: 0 0 8px rgba(0,229,255,0.4);
+    transition: transform .15s, box-shadow .15s;
+  }
+  .sim-range::-webkit-slider-thumb:hover {
+    transform: scale(1.2);
+    box-shadow: 0 0 14px rgba(0,229,255,0.6);
+  }
+  .sim-range::-moz-range-thumb {
+    width: 18px; height: 18px; border-radius: 50%;
+    background: var(--accent); cursor: pointer;
+    border: 2px solid var(--bg);
+  }
+  .sim-range-fill {
+    position: absolute; top: 50%; transform: translateY(-50%);
+    height: 5px; border-radius: 3px;
+    background: linear-gradient(90deg, var(--accent2), var(--accent));
+    pointer-events: none; transition: width .1s;
+    left: 0;
+  }
+  .sim-range-markers {
+    display: flex; justify-content: space-between;
+    font-family: var(--mono); font-size: 0.58rem; color: var(--muted);
+    margin-top: 4px; padding: 0 2px;
+  }
+
+  /* Reset button */
+  .sim-reset-row {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 12px 24px; border-top: 1px solid var(--border);
+    background: var(--surface2);
+  }
+  .sim-reset-btn {
+    background: transparent; border: 1px solid var(--border);
+    color: var(--muted); font-family: var(--mono); font-size: 0.7rem;
+    padding: 6px 14px; border-radius: 6px; cursor: pointer;
+    transition: all .2s;
+  }
+  .sim-reset-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .sim-insight {
+    font-family: var(--mono); font-size: 0.68rem; color: var(--muted);
+    max-width: 380px; line-height: 1.5; text-align: right;
+  }
+  .sim-insight strong { color: var(--accent3); }
+
+  /* ── SCORE IMPROVEMENT SIMULATOR END ── */
   .visitor-counter {
     display: flex;
     align-items: center;
@@ -2388,6 +2542,239 @@ function copyScoreCard() {
   });
 }
 
+// ── SCORE IMPROVEMENT SIMULATOR ──────────────────────────────────────────────
+// Mirrors the exact scoring weights in scoreProfile() so deltas are accurate.
+// Each lever maps to a specific scoring dimension and shows projected pts gain.
+
+let _simUser  = null;
+let _simRepos = null;
+let _simBase  = 0;
+let _simSliders = [];
+
+function buildSimulatorLevers(user, repos, scores, finalScore) {
+  _simUser  = user;
+  _simRepos = repos;
+  _simBase  = finalScore;
+
+  const now       = Date.now();
+  const totalStars = repos.reduce((a,r) => a + r.stargazers_count, 0);
+  const withDesc   = repos.filter(r => r.description && r.description.length > 10).length;
+  const withTopics = repos.filter(r => r.topics && r.topics.length > 0).length;
+  const ownRepos   = repos.filter(r => !r.fork).length;
+  const recentRepos = repos.filter(r => (now - new Date(r.pushed_at)) < 90*86400*1000).length;
+
+  // ── Current field values pulled from real data ────────────────────────────
+  const curCompleteness = scores.completeness.pts;
+  const curFollowers    = user.followers;
+  const curStars        = totalStars;
+  const curRepos        = user.public_repos;
+  const curActive       = recentRepos;
+  const curDesc         = withDesc;
+  const curTopics       = withTopics;
+
+  // ── Max values for sliders ────────────────────────────────────────────────
+  const levers = [
+    {
+      id: 'followers', icon: '👥', name: 'Followers', category: 'Popularity',
+      cur: curFollowers, min: curFollowers, max: Math.max(curFollowers, 500),
+      step: 5,
+      marks: [curFollowers, 50, 100, 200, 500],
+      fmt: v => v,
+      // Points contribution: Math.min(v/10, 8) from popularity + Math.min(v/15, 5) from community
+      pts: v => {
+        const popGain  = Math.min(v/10, 8) - Math.min(curFollowers/10, 8);
+        const comGain  = Math.min(v/15, 5) - Math.min(curFollowers/15, 5);
+        return Math.round(Math.max(0, popGain + comGain));
+      }
+    },
+    {
+      id: 'stars', icon: '⭐', name: 'Total Stars', category: 'Popularity',
+      cur: curStars, min: curStars, max: Math.max(curStars, 200),
+      step: 1,
+      marks: [curStars, 20, 50, 100, 200],
+      fmt: v => v,
+      pts: v => {
+        const gain = Math.min(v/2, 10) - Math.min(curStars/2, 10);
+        return Math.round(Math.max(0, gain));
+      }
+    },
+    {
+      id: 'repos', icon: '📦', name: 'Public Repos', category: 'Activity',
+      cur: curRepos, min: curRepos, max: Math.max(curRepos, 100),
+      step: 1,
+      marks: [curRepos, 10, 20, 50, 100],
+      fmt: v => v,
+      pts: v => {
+        const gain = Math.min(v*0.5, 10) - Math.min(curRepos*0.5, 10);
+        return Math.round(Math.max(0, gain));
+      }
+    },
+    {
+      id: 'active', icon: '🔥', name: 'Active Repos (90d)', category: 'Activity',
+      cur: curActive, min: curActive, max: Math.max(curActive, 20),
+      step: 1,
+      marks: [curActive, 3, 5, 10, 20],
+      fmt: v => v,
+      pts: v => {
+        const gain = Math.min(v*1.5, 8) - Math.min(curActive*1.5, 8);
+        return Math.round(Math.max(0, gain));
+      }
+    },
+    {
+      id: 'descriptions', icon: '📝', name: 'Repos with Descriptions', category: 'Quality',
+      cur: curDesc, min: curDesc, max: Math.max(curDesc, repos.length),
+      step: 1,
+      marks: [curDesc, Math.floor(repos.length*0.5), Math.floor(repos.length*0.75), repos.length],
+      fmt: v => `${v}/${repos.length}`,
+      pts: v => {
+        const gain = Math.min((v/Math.max(repos.length,1))*10, 10)
+                   - Math.min((curDesc/Math.max(repos.length,1))*10, 10);
+        return Math.round(Math.max(0, gain));
+      }
+    },
+    {
+      id: 'topics', icon: '🏷️', name: 'Repos with Topics', category: 'Quality',
+      cur: curTopics, min: curTopics, max: Math.max(curTopics, repos.length),
+      step: 1,
+      marks: [curTopics, Math.floor(repos.length*0.5), Math.floor(repos.length*0.75), repos.length],
+      fmt: v => `${v}/${repos.length}`,
+      pts: v => {
+        const gain = Math.min((v/Math.max(repos.length,1))*6, 6)
+                   - Math.min((curTopics/Math.max(repos.length,1))*6, 6);
+        return Math.round(Math.max(0, gain));
+      }
+    },
+    {
+      id: 'completeness', icon: '👤', name: 'Profile Completeness', category: 'Completeness',
+      cur: curCompleteness, min: curCompleteness, max: 20,
+      step: 1,
+      marks: [curCompleteness, 10, 15, 20],
+      fmt: v => `${v}/20 pts`,
+      pts: v => Math.round(Math.max(0, v - curCompleteness))
+    },
+  ];
+
+  _simSliders = levers;
+  return levers;
+}
+
+function simRecalculate() {
+  if (!_simSliders.length) return;
+
+  let totalGain = 0;
+  _simSliders.forEach(lever => {
+    const input = document.getElementById(`sim-range-${lever.id}`);
+    if (!input) return;
+    const val = parseInt(input.value);
+    const gain = lever.pts(val);
+    totalGain += gain;
+
+    // Update pts badge
+    const badge = document.getElementById(`sim-pts-${lever.id}`);
+    if (badge) {
+      badge.textContent = gain > 0 ? `+${gain} pts` : 'no gain';
+      badge.className   = `sim-pts-badge ${gain > 0 ? 'gain' : 'zero'}`;
+    }
+
+    // Update projected value display
+    const projEl = document.getElementById(`sim-proj-${lever.id}`);
+    if (projEl) {
+      projEl.textContent = lever.fmt(val);
+      projEl.style.color = gain > 0 ? 'var(--accent)' : 'var(--muted)';
+    }
+
+    // Update range fill visual
+    const fill = document.getElementById(`sim-fill-${lever.id}`);
+    if (fill) {
+      const pct = ((val - lever.min) / Math.max(lever.max - lever.min, 1)) * 100;
+      fill.style.width = pct + '%';
+    }
+  });
+
+  const projected = Math.min(_simBase + totalGain, 100);
+  const projRank  = getRank(projected);
+  const baseRank  = getRank(_simBase);
+  const rankChanged = projRank.label !== baseRank.label;
+
+  // Update score display
+  const projNum = document.getElementById('sim-proj-num');
+  if (projNum) {
+    projNum.textContent = projected;
+    projNum.style.color = getColor(projected / 100 * 100);
+  }
+
+  // Update delta badge
+  const delta = document.getElementById('sim-delta');
+  if (delta) {
+    if (totalGain > 0) {
+      delta.textContent  = `+${totalGain} pts`;
+      delta.className    = 'sim-delta positive';
+    } else {
+      delta.textContent  = 'move any slider';
+      delta.className    = 'sim-delta zero';
+    }
+  }
+
+  // Update projected rank badge
+  const rankBadge = document.getElementById('sim-rank-badge');
+  if (rankBadge) {
+    rankBadge.innerHTML = `
+      <span class="sim-rank-emoji">${projRank.emoji}</span>
+      <div class="sim-rank-name" style="color:${projRank.color}">${projRank.label}</div>
+      <div class="sim-rank-range">${projected}/100</div>
+      ${rankChanged ? `<div class="sim-rank-change" style="display:block">↑ Rank up! 🎉</div>` : ''}`;
+    rankBadge.style.borderColor = totalGain > 0 ? projRank.color + '44' : 'var(--border)';
+  }
+
+  // Update arc chart
+  simUpdateArc(projected);
+
+  // Insight text
+  const insight = document.getElementById('sim-insight');
+  if (insight && totalGain > 0) {
+    const biggest = [..._simSliders].sort((a, b) => {
+      const va = parseInt(document.getElementById(`sim-range-${a.id}`)?.value || a.cur);
+      const vb = parseInt(document.getElementById(`sim-range-${b.id}`)?.value || b.cur);
+      return b.pts(vb) - a.pts(va);
+    })[0];
+    const bigVal  = parseInt(document.getElementById(`sim-range-${biggest.id}`)?.value || biggest.cur);
+    const bigGain = biggest.pts(bigVal);
+    insight.innerHTML = bigGain > 0
+      ? `<strong>${biggest.name}</strong> gives the biggest boost (+${bigGain} pts). Projected rank: <strong style="color:${projRank.color}">${projRank.label}</strong>`
+      : 'Adjust sliders to see your projected score improvement.';
+  } else if (insight) {
+    insight.innerHTML = 'Adjust sliders to see your projected score improvement.';
+  }
+}
+
+function simUpdateArc(projected) {
+  const arcNow  = document.getElementById('sim-arc-now');
+  const arcProj = document.getElementById('sim-arc-proj');
+  if (!arcNow || !arcProj) return;
+
+  // Arc is a half-circle: strokeDasharray = π*r, full arc = 220 units (approx)
+  const R    = 60;
+  const CIRC = Math.PI * R; // ~188.5
+  const nowPct  = _simBase  / 100;
+  const projPct = projected / 100;
+  const nowOffset  = CIRC - nowPct  * CIRC;
+  const projOffset = CIRC - projPct * CIRC;
+
+  arcNow.style.strokeDashoffset  = nowOffset;
+  arcProj.style.strokeDashoffset = projOffset;
+  arcProj.style.stroke = getColor(projected);
+}
+
+function simReset() {
+  _simSliders.forEach(lever => {
+    const input = document.getElementById(`sim-range-${lever.id}`);
+    if (input) {
+      input.value = lever.cur;
+      input.dispatchEvent(new Event('input'));
+    }
+  });
+}
+
 // ── REPO HEALTH MONITOR ENGINE ───────────────────────────────────────────────
 function getRepoHealthData(repos) {
   const now = Date.now();
@@ -2529,6 +2916,7 @@ function renderResults(user, repos, readmeScores = []) {
   const hireData    = getHirabilityScore(user, repos);
   const contribData = buildContribCalendar(repos);
   const repoHealth  = getRepoHealthData(repos);
+  const simLevers   = buildSimulatorLevers(user, repos, scores, finalScore);
 
   const circumference = 2 * Math.PI * 44;
   const dashOffset    = circumference - (finalScore / 100) * circumference;
@@ -3225,6 +3613,125 @@ function renderResults(user, repos, readmeScores = []) {
     <div class="rt-spinner" id="rt-spinner">✦ Generating your ${finalScore >= 60 ? 'roast' : 'toast'}...</div>
     <div class="rt-output" id="rt-output"></div>
     <button class="rt-generate-btn" id="rt-regen" style="display:none" onclick="regenRT()">↺ Generate another</button>
+  </div>
+
+  <!-- SCORE IMPROVEMENT SIMULATOR -->
+  <div class="anim anim-d6 section-title">// score improvement simulator</div>
+  <div class="anim anim-d6 sim-panel">
+
+    <!-- Header: current vs projected scores -->
+    <div class="sim-header">
+      <div class="sim-header-left">
+        <div class="sim-title">🎯 What If Simulator</div>
+        <div class="sim-subtitle">Drag the sliders — see your projected score update live</div>
+      </div>
+      <div class="sim-score-display">
+        <div class="sim-score-now">
+          <div class="sim-score-label">Current</div>
+          <div class="sim-score-num" style="color:${scoreColor}">${finalScore}</div>
+          <div style="font-family:var(--mono);font-size:0.6rem;color:var(--muted)">/100</div>
+        </div>
+        <div class="sim-score-arrow">→</div>
+        <div class="sim-score-projected">
+          <div class="sim-score-label">Projected</div>
+          <div class="sim-score-num" id="sim-proj-num" style="color:${scoreColor}">${finalScore}</div>
+          <div id="sim-delta" class="sim-delta zero">move any slider</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Arc chart + Rank badge -->
+    <div class="sim-arc-wrap">
+      <div>
+        <div class="sim-arc-container">
+          <svg class="sim-arc-svg" viewBox="0 0 140 75" width="200" height="110">
+            <!-- Background arc -->
+            <path class="sim-arc-bg"
+              d="M 10 70 A 60 60 0 0 1 130 70"
+              stroke-dasharray="${Math.PI * 60} ${Math.PI * 60}"
+              stroke-dashoffset="0" />
+            <!-- Projected arc (dashed, lighter) -->
+            <path class="sim-arc-proj" id="sim-arc-proj"
+              d="M 10 70 A 60 60 0 0 1 130 70"
+              stroke="${scoreColor}"
+              stroke-dasharray="${Math.PI * 60} ${Math.PI * 60}"
+              stroke-dashoffset="${Math.PI * 60 - (finalScore / 100) * Math.PI * 60}" />
+            <!-- Current arc (solid) -->
+            <path class="sim-arc-now" id="sim-arc-now"
+              d="M 10 70 A 60 60 0 0 1 130 70"
+              stroke="${scoreColor}"
+              stroke-dasharray="${Math.PI * 60} ${Math.PI * 60}"
+              stroke-dashoffset="${Math.PI * 60 - (finalScore / 100) * Math.PI * 60}" />
+            <!-- Score text -->
+            <text x="70" y="62" text-anchor="middle"
+              font-family="Space Mono" font-size="9" fill="var(--muted)">SCORE</text>
+          </svg>
+          <div class="sim-arc-label" style="font-size:0.55rem">
+            <span style="color:${scoreColor}">─</span> current &nbsp;
+            <span style="color:var(--accent);opacity:.5">- -</span> projected
+          </div>
+        </div>
+      </div>
+      <div id="sim-rank-badge" class="sim-rank-badge">
+        <span class="sim-rank-emoji">${rank.emoji}</span>
+        <div class="sim-rank-name" style="color:${rank.color}">${rank.label}</div>
+        <div class="sim-rank-range">${finalScore}/100</div>
+      </div>
+      <div style="flex:1;min-width:180px">
+        <div style="font-family:var(--mono);font-size:0.65rem;color:var(--muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:0.08em">Rank tiers</div>
+        ${[['🏆','LEGENDARY','90+','#f59e0b'],['⚡','ELITE','75+','#00e5ff'],['🚀','ADVANCED','60+','#10b981'],['📈','RISING','45+','#7c3aed'],['🌱','DEVELOPING','30+','#64748b'],['🐣','BEGINNER','0+','#ef4444']].map(([e,l,r,c]) =>
+          `<div style="display:flex;align-items:center;gap:8px;padding:3px 0;${finalScore >= parseInt(r) ? 'opacity:1' : 'opacity:0.35'}">
+            <span style="font-size:0.8rem">${e}</span>
+            <span style="font-family:var(--mono);font-size:0.62rem;color:${c};font-weight:700">${l}</span>
+            <span style="font-family:var(--mono);font-size:0.58rem;color:var(--muted)">${r}</span>
+            ${finalScore >= parseInt(r) && (finalScore < parseInt([['90'],['75'],['60'],['45'],['30'],['0']][([['90'],['75'],['60'],['45'],['30'],['0']].findIndex(x=>x[0]===r))-1]||['999'])) ? '<span style="font-family:var(--mono);font-size:0.58rem;color:var(--accent3)">← you</span>' : ''}
+          </div>`).join('')}
+      </div>
+    </div>
+
+    <!-- Sliders -->
+    <div class="sim-sliders">
+      ${simLevers.map(lever => {
+        const marksFiltered = [...new Set([lever.min, ...lever.marks.filter(m => m > lever.min && m <= lever.max)])].sort((a,b)=>a-b);
+        const initPct = ((lever.cur - lever.min) / Math.max(lever.max - lever.min, 1)) * 100;
+        return `
+        <div class="sim-slider-group">
+          <div class="sim-slider-head">
+            <div class="sim-slider-label-wrap">
+              <span class="sim-slider-icon">${lever.icon}</span>
+              <span class="sim-slider-name">${lever.name}</span>
+              <span class="sim-slider-category">${lever.category}</span>
+            </div>
+            <div class="sim-slider-values">
+              <span class="sim-val-now">${lever.fmt(lever.cur)}</span>
+              <span class="sim-val-sep">→</span>
+              <span class="sim-val-proj" id="sim-proj-${lever.id}">${lever.fmt(lever.cur)}</span>
+              <span class="sim-pts-badge zero" id="sim-pts-${lever.id}">no gain</span>
+            </div>
+          </div>
+          <div class="sim-range-wrap">
+            <div class="sim-range-fill" id="sim-fill-${lever.id}" style="width:0%"></div>
+            <input
+              class="sim-range" type="range"
+              id="sim-range-${lever.id}"
+              min="${lever.min}" max="${lever.max}" step="${lever.step}" value="${lever.cur}"
+              oninput="simRecalculate()"
+              style="background:linear-gradient(90deg, rgba(0,229,255,0.3) ${initPct}%, var(--surface2) ${initPct}%)"
+              onmousemove="this.style.background='linear-gradient(90deg, rgba(0,229,255,0.3) '+((this.value-this.min)/(this.max-this.min)*100)+'%, var(--surface2) '+((this.value-this.min)/(this.max-this.min)*100)+'%)'"
+            />
+          </div>
+          <div class="sim-range-markers">
+            ${marksFiltered.map(m => `<span>${lever.fmt(m)}</span>`).join('')}
+          </div>
+        </div>`;
+      }).join('')}
+    </div>
+
+    <!-- Reset row -->
+    <div class="sim-reset-row">
+      <button class="sim-reset-btn" onclick="simReset()">↺ Reset to current values</button>
+      <div class="sim-insight" id="sim-insight">Adjust sliders to see your projected score improvement.</div>
+    </div>
   </div>
 
   <div class="anim anim-d6" style="text-align:center">
