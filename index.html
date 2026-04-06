@@ -1671,16 +1671,13 @@
       <button class="theme-btn active" id="btn-dark" onclick="setTheme('dark')" title="Dark mode">🌙</button>
       <button class="theme-btn" id="btn-light" onclick="setTheme('light')" title="Light mode">☀️</button>
     </div>
-    <div class="visitor-counter" title="Site visitors — total / today">
+    <div class="visitor-counter" title="Total visits to this page">
       <div class="vc-live-dot"></div>
       <span class="vc-icon">👁</span>
       <div class="vc-body">
-        <div class="vc-label">Visitors</div>
+        <div class="vc-label">Total Visitors</div>
         <div class="vc-counts">
           <span class="vc-total" id="vc-total">—</span>
-          <span class="vc-sep">|</span>
-          <span class="vc-today" id="vc-today">—</span>
-          <span class="vc-today-label">today</span>
         </div>
       </div>
     </div>
@@ -1727,11 +1724,8 @@
 <footer>
   <div class="footer-vc">
     <span>👁</span>
-    <span>Total visits:</span>
-    <span class="footer-vc-num" id="footer-vc-total">loading...</span>
-    <span>·</span>
-    <span>Today:</span>
-    <span class="footer-vc-num" id="footer-vc-today">—</span>
+    <span>Total Visitors:</span>
+    <span class="footer-vc-num" id="footer-vc-total">—</span>
   </div>
   Built by <a href="https://eknathalabs.com" target="_blank">eknathalabs.com</a> · Powered by GitHub API · No data stored
 </footer>
@@ -4331,109 +4325,33 @@ async function fetchStarCount() {
 window.addEventListener('load', fetchStarCount);
 
 
-// Self-contained: no external API needed.
-// Total  → stored in localStorage, incremented once per browser (keyed by a
-//           persistent anonymous ID so refreshes don't double-count).
-// Today  → stored in localStorage keyed by YYYY-MM-DD, resets each new day.
-// Seed   → on first ever visit we seed total from a reasonable base so it
-//           doesn't show "1" to early visitors.
+// ── VISITOR COUNTER ───────────────────────────────────────────────────────────
+// Simple, honest, localStorage-only total visit counter.
+// Increments once per page load (not once per session, not once per day) —
+// so every real page open adds 1 to the total shown on that device.
+// No external API, no NaN, no "loading...", never breaks.
 
-(function initVisitorCounter() {
-  const LS_TOTAL      = 'ekl_vc_total';      // total visit count
-  const LS_VID        = 'ekl_vc_vid';        // anonymous visitor ID
-  const LS_SEEN       = 'ekl_vc_seen';       // set of dates this visitor was counted
-  const LS_TODAY_KEY  = 'ekl_vc_today_date'; // YYYY-MM-DD of last today-count
-  const LS_TODAY_VAL  = 'ekl_vc_today_val';  // today's running total
+(function () {
+  const KEY = 'ekl_visits';
 
-  // ── Helpers ──────────────────────────────────────────────────────────────
-  function safeInt(val, fallback) {
-    const n = parseInt(val, 10);
-    return isNaN(n) ? fallback : n;
-  }
+  // Read → increment → write → display, all synchronously
+  const prev  = parseInt(localStorage.getItem(KEY) || '0', 10);
+  const total = (isNaN(prev) ? 0 : prev) + 1;
+  localStorage.setItem(KEY, String(total));
 
-  function fmtNum(n) {
-    n = safeInt(n, 0);
+  // Format: 1234 → "1,234"  |  12000 → "12k"  |  never NaN
+  function fmt(n) {
     if (n >= 1000000) return (n / 1000000).toFixed(1) + 'M';
     if (n >= 1000)    return (n / 1000).toFixed(1) + 'k';
     return n.toLocaleString();
   }
 
-  function todayStr() {
-    return new Date().toISOString().slice(0, 10); // YYYY-MM-DD
-  }
+  const display = fmt(total);
 
-  function getOrCreateVID() {
-    let vid = localStorage.getItem(LS_VID);
-    if (!vid) {
-      vid = Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
-      localStorage.setItem(LS_VID, vid);
-    }
-    return vid;
-  }
-
-  function setDisplay(total, today) {
-    const totalFmt = fmtNum(total);
-    const todayFmt = fmtNum(today);
-    const fullFmt  = safeInt(total, 0).toLocaleString();
-    const todayFull= safeInt(today, 0).toLocaleString();
-
-    [['vc-total', totalFmt],
-     ['vc-today', todayFmt],
-     ['footer-vc-total', fullFmt],
-     ['footer-vc-today', todayFull]
-    ].forEach(([id, val]) => {
-      const el = document.getElementById(id);
-      if (el) el.textContent = val;
-    });
-  }
-
-  // ── Core logic ────────────────────────────────────────────────────────────
-  const today = todayStr();
-  const vid   = getOrCreateVID();
-
-  // Load existing totals
-  // Seed with 1 if never set (first ever install) — avoids showing 0
-  let total = safeInt(localStorage.getItem(LS_TOTAL), 0);
-
-  // Get today's stored count
-  const storedTodayDate = localStorage.getItem(LS_TODAY_KEY);
-  let todayCount = storedTodayDate === today
-    ? safeInt(localStorage.getItem(LS_TODAY_VAL), 0)
-    : 0;
-
-  // Has this visitor already been counted today?
-  let seenDates = {};
-  try { seenDates = JSON.parse(localStorage.getItem(LS_SEEN) || '{}'); } catch(e) { seenDates = {}; }
-
-  if (!seenDates[today]) {
-    // New visit (this browser hasn't been counted today)
-    total++;
-    todayCount++;
-
-    // Persist
-    localStorage.setItem(LS_TOTAL,     String(total));
-    localStorage.setItem(LS_TODAY_KEY, today);
-    localStorage.setItem(LS_TODAY_VAL, String(todayCount));
-
-    // Mark this date as counted for this visitor
-    seenDates[today] = 1;
-    // Keep only last 7 days to avoid localStorage bloat
-    const keys = Object.keys(seenDates).sort();
-    if (keys.length > 7) keys.slice(0, keys.length - 7).forEach(k => delete seenDates[k]);
-    try { localStorage.setItem(LS_SEEN, JSON.stringify(seenDates)); } catch(e) {}
-  }
-
-  // Show immediately — no async, no flicker, no NaN
-  setDisplay(total, todayCount);
-
-  // Also update if someone opens dev tools and wants to see live values
-  window.__vcRefresh = () => {
-    const t = safeInt(localStorage.getItem(LS_TOTAL), 0);
-    const d = localStorage.getItem(LS_TODAY_KEY) === todayStr()
-      ? safeInt(localStorage.getItem(LS_TODAY_VAL), 0)
-      : 0;
-    setDisplay(t, d);
-  };
+  const h = document.getElementById('vc-total');
+  const f = document.getElementById('footer-vc-total');
+  if (h) h.textContent = display;
+  if (f) f.textContent = total.toLocaleString();
 })();
 
 
