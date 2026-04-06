@@ -229,6 +229,50 @@
   #analyze-btn:active { transform: translateY(0); }
   #analyze-btn:disabled { opacity: .5; cursor: not-allowed; transform: none; }
 
+  /* ── GITHUB STAR BUTTON ── */
+  .star-btn {
+    display: flex; align-items: center; gap: 6px;
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    padding: 0 14px;
+    height: 40px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all .2s;
+    white-space: nowrap;
+    flex-shrink: 0;
+    text-decoration: none;
+    margin: 6px 6px 6px 0;
+  }
+  .star-btn:hover {
+    background: rgba(245,158,11,0.1);
+    border-color: rgba(245,158,11,0.5);
+    color: #f59e0b;
+    transform: translateY(-1px);
+  }
+  .star-btn:hover .star-icon { transform: rotate(-15deg) scale(1.2); }
+  .star-icon {
+    font-size: 0.85rem;
+    transition: transform .2s;
+    display: inline-block;
+  }
+  .star-count {
+    background: rgba(245,158,11,0.12);
+    border: 1px solid rgba(245,158,11,0.2);
+    color: #f59e0b;
+    font-family: var(--mono);
+    font-size: 0.62rem;
+    font-weight: 700;
+    padding: 1px 6px;
+    border-radius: 4px;
+    min-width: 28px;
+    text-align: center;
+    transition: all .2s;
+  }
+
   /* ── LOADING ── */
   #loading {
     display: none;
@@ -1659,6 +1703,14 @@
         spellcheck="false"
       />
       <button id="analyze-btn" onclick="analyze()">Analyze →</button>
+      <a class="star-btn" id="star-btn"
+        href="https://github.com/eknatha/github-profile-analyzer"
+        target="_blank" rel="noopener"
+        title="⭐ Star this project on GitHub">
+        <span class="star-icon">⭐</span>
+        Star
+        <span class="star-count" id="star-count">★</span>
+      </a>
     </div>
   </section>
 
@@ -4259,7 +4311,26 @@ async function analyze() {
   }
 }
 
-// ── VISITOR COUNTER ───────────────────────────────────────────────────────────
+// ── GITHUB STAR COUNT ────────────────────────────────────────────────────────
+async function fetchStarCount() {
+  try {
+    const res  = await fetch('https://api.github.com/repos/eknatha/github-profile-analyzer', { cache: 'no-store' });
+    if (!res.ok) return;
+    const data = await res.json();
+    const stars = data.stargazers_count;
+    const el = document.getElementById('star-count');
+    if (el && typeof stars === 'number') {
+      el.textContent = stars >= 1000
+        ? (stars / 1000).toFixed(1) + 'k'
+        : stars > 0 ? stars : '★';
+    }
+  } catch (_) {
+    // silently fail — button still works without count
+  }
+}
+window.addEventListener('load', fetchStarCount);
+
+
 // Self-contained: no external API needed.
 // Total  → stored in localStorage, incremented once per browser (keyed by a
 //           persistent anonymous ID so refreshes don't double-count).
